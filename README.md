@@ -10,6 +10,7 @@
 ### Features
 
 - [ ] Map loading/saving abstraction
+- [ ] Backgrounds
 
 ### Neue Entities einfügen
 
@@ -21,4 +22,4 @@
 
 ### Grafiken
 
-- [ ] Hintergründe
+- [x] Hintergründe
