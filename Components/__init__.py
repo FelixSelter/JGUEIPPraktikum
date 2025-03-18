@@ -59,3 +59,13 @@ class GravityComponent:
     Requires MovementComponent
     """
     pass
+
+
+@component
+class TreasureComponent:
+    treasure: int
+
+
+@component
+class ScoreComponent:
+    score: int

@@ -1,5 +1,6 @@
 from typing import List
 
+import pygame
 from ecs_pattern import entity
 
 

@@ -1,12 +1,19 @@
-import time
 from typing import List
 
 import pygame
 from ecs_pattern import System, EntityManager
 
-from Entities import Tile, PlayerEntity
+from Entities import Tile, PlayerEntity, CoinEntity
 from Resources import GlobalStateResource, CameraResource, TimeResource, MapResource
+from util import Assets
 from util.math import Vec2
+
+
+def collect(self, item):
+    if isinstance(item, CoinEntity):
+        self.score += item.treasure
+        print(self.score)
+        # TODO item.delete
 
 
 def generate_map(lvl: str) -> [Tile]:
@@ -83,11 +90,20 @@ class InitSystem(System):
                 position=Vec2(3, 8),
                 width=1,
                 height=1,
-                sprite=pygame.image.load("rsc/example.bmp").convert_alpha(),
+                sprite=Assets.get().player,
                 acceleration=Vec2(0, 0),
                 speed=Vec2(0, 0),
-                hitboxEventHandler=lambda _: print("hit"),
+                hitboxEventHandler=collect,
                 tileCollisionEventHandler=lambda _: None,
+                score=0
+            ),
+            CoinEntity(
+                position=Vec2(5.25, 3.25),
+                width=0.5,
+                height=0.5,
+                sprite=Assets.get().coin,
+                hitboxEventHandler=lambda _a, _b: None,
+                treasure=1
             )
         )
 

@@ -1,7 +1,7 @@
 from ecs_pattern import entity
 
 from Components import SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, TileColliderComponent, \
-    GravityComponent
+    GravityComponent, TreasureComponent, ScoreComponent
 
 
 @entity
@@ -11,5 +11,10 @@ class Tile(SpriteComponent, TransformComponent):
 
 @entity
 class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, TileColliderComponent,
-                   GravityComponent):
+                   GravityComponent, ScoreComponent):
+    pass
+
+
+@entity
+class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureComponent):
     pass
