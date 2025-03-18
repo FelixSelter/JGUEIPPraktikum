@@ -20,7 +20,7 @@ def App():
     pygame.init()
     pygame.display.set_caption("Super Chicken 16")
 
-    screen = pygame.display.set_mode((16 * 100, 9 * 100))
+    screen = pygame.display.set_mode((16 * 80, 9 * 80))
     clock = pygame.time.Clock()
 
     entities = EntityManager()
