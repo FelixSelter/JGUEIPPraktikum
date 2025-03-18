@@ -1,6 +1,7 @@
 from ecs_pattern import entity
 
-from Components import SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, TileColliderComponent, \
+from Components import SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, \
+    TileColliderComponent, \
     GravityComponent, TreasureComponent, ScoreComponent
 
 

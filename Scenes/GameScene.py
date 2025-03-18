@@ -4,19 +4,19 @@ import pygame
 from ecs_pattern import SystemManager, EntityManager
 from pygame import Surface
 
-from src.Entities import CoinEntity, PlayerEntity, Tile
-from src.Resources import MapResource, CameraResource, TimeResource
-from src.Scenes import Scene
-from src.Systems.CollisionSystem import CollisionSystem
-from src.Systems.ControlSystem import ControllerSystem
-from src.Systems.GravitySystem import GravitySystem
-from src.Systems.MovementSystem import MovementSystem
-from src.Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
-from src.Systems.RenderingSystem import RenderingSystem
-from src.Systems.TileCollisionSystem import TileCollisionSystem
-from src.Systems.TimeSystem import TimeSystem
-from src.util import Assets
-from src.util.math import Vec2
+from Entities import CoinEntity, PlayerEntity, Tile
+from Resources import MapResource, CameraResource, TimeResource
+from Scenes import Scene
+from Systems.CollisionSystem import CollisionSystem
+from Systems.ControlSystem import ControllerSystem
+from Systems.GravitySystem import GravitySystem
+from Systems.MovementSystem import MovementSystem
+from Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
+from Systems.RenderingSystem import RenderingSystem
+from Systems.TileCollisionSystem import TileCollisionSystem
+from Systems.TimeSystem import TimeSystem
+from util import Assets
+from util.math import Vec2
 
 
 def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityManager):

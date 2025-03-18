@@ -2,7 +2,7 @@ import time
 
 from ecs_pattern import System, EntityManager
 
-from src.Resources import TimeResource
+from Resources import TimeResource
 
 
 class TimeSystem(System):
