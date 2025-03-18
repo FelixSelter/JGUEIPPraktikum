@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Any, Callable
 
-from ecs_pattern import component
+from ecs_pattern import component, EntityManager
 from pygame import Surface
 
 from util.math import Vec2
@@ -34,7 +34,7 @@ class HitboxComponent:
     Intersection between game objects excluding tiles
     Requires TransformComponent
     """
-    hitboxEventHandler: Callable[[Any, Any], None]
+    hitboxEventHandler: Callable[[Any, Any, EntityManager], None]  # hitboxEventHandler(this, other, entities)
 
 
 class TileCollisionDirection(Enum):
@@ -50,7 +50,7 @@ class TileColliderComponent:
     Prevents movable entities from entering tiles
     Requires HitboxComponent, MovementComponent
     """
-    tileCollisionEventHandler: Callable[[TileCollisionDirection], None]
+    tileCollisionEventHandler: Callable[[TileCollisionDirection, EntityManager], None]
 
 
 @component

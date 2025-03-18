@@ -1,6 +1,5 @@
-from typing import List
+from typing import List, Any
 
-import pygame
 from ecs_pattern import System, EntityManager
 
 from Entities import Tile, PlayerEntity, CoinEntity
@@ -9,11 +8,10 @@ from util import Assets
 from util.math import Vec2
 
 
-def collect(self, item):
+def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityManager):
     if isinstance(item, CoinEntity):
-        self.score += item.treasure
-        print(self.score)
-        # TODO item.delete
+        player.score += item.treasure
+        entities.delete_buffer_add(item)
 
 
 def generate_map(lvl: str) -> [Tile]:
@@ -93,8 +91,8 @@ class InitSystem(System):
                 sprite=Assets.get().player,
                 acceleration=Vec2(0, 0),
                 speed=Vec2(0, 0),
-                hitboxEventHandler=collect,
-                tileCollisionEventHandler=lambda _: None,
+                hitboxEventHandler=playerCollisionHandler,
+                tileCollisionEventHandler=lambda _a, _b: None,
                 score=0
             ),
             CoinEntity(
@@ -102,7 +100,7 @@ class InitSystem(System):
                 width=0.5,
                 height=0.5,
                 sprite=Assets.get().coin,
-                hitboxEventHandler=lambda _a, _b: None,
+                hitboxEventHandler=lambda _a, _b, _c: None,
                 treasure=1
             )
         )

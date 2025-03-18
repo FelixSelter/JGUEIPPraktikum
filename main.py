@@ -8,6 +8,7 @@ from Systems.CollisionSystem import CollisionSystem
 from Systems.GravitySystem import GravitySystem
 from Systems.InitSystem import InitSystem
 from Systems.MovementSystem import MovementSystem
+from Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
 from Systems.RenderingSystem import RenderingSystem
 from Systems.ControlSystem import ControllerSystem
 from Systems.TileCollisionSystem import TileCollisionSystem
@@ -33,6 +34,7 @@ def App():
         MovementSystem(entities),
         TileCollisionSystem(entities),
         CollisionSystem(entities),
+        PurgeDeleteBufferSystem(entities),
         RenderingSystem(entities, screen)
     ])
 

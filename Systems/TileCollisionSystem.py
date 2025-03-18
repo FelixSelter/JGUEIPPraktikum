@@ -59,4 +59,4 @@ class TileCollisionSystem(System):
                                 transform.position.x = tileX - transform.width
                                 movement.speed.x = 0
 
-                    tileCollider.tileCollisionEventHandler(direction)
+                    tileCollider.tileCollisionEventHandler(direction, self.entities)
