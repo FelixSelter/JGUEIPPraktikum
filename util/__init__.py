@@ -1,18 +1,25 @@
-from typing import List, Any, Iterator
+from pathlib import Path
+
+import pygame
+
+instance = None
 
 
-def requireAll(entityLists: List[Iterator[Any]]) -> Iterator[Any]:
-    entityLists = [list(l) for l in entityLists]
-    entities = [entity for entityList in entityLists for entity in entityList]
-    filteredEntities = []
+class Assets:
 
-    for entity in entities:
-        satisfiesAll = True
-        for entityList in entityLists:
-            if entity not in entityList:
-                satisfiesAll = False
-                break
-        if satisfiesAll:
-            filteredEntities.append(entity)
+    def __init__(self):
+        global instance
+        instance = self
 
-    return filteredEntities
+        self.player = pygame.image.load("rsc/example.bmp").convert_alpha()
+        self.coin = pygame.image.load("rsc/coin.bmp").convert_alpha()
+
+        self.tiles = {}
+        for file in Path("rsc/Tiles").iterdir():
+            self.tiles[file.name] = pygame.image.load(file.absolute()).convert_alpha()
+
+    @staticmethod
+    def get():
+        if instance is None:
+            return Assets()
+        return instance

@@ -1,11 +1,19 @@
-import time
+from typing import List
 
 import pygame
 from ecs_pattern import System, EntityManager
 
-from Entities import Tile, PlayerEntity
-from Resources import GlobalStateResource, CameraResource, TimeResource
+from Entities import Tile, PlayerEntity, CoinEntity
+from Resources import GlobalStateResource, CameraResource, TimeResource, MapResource
+from util import Assets
 from util.math import Vec2
+
+
+def collect(self, item):
+    if isinstance(item, CoinEntity):
+        self.score += item.treasure
+        print(self.score)
+        # TODO item.delete
 
 
 def generate_map(lvl: str) -> [Tile]:
@@ -15,8 +23,7 @@ def generate_map(lvl: str) -> [Tile]:
             position=Vec2(x_cor, y_cor),
             width=1,
             height=1,
-            sprite=image,
-            collisionCallback=lambda _: None
+            sprite=image
         )
 
     tile_array: [Tile] = []
@@ -39,12 +46,16 @@ def generate_map(lvl: str) -> [Tile]:
                     tile_ids.append(line.split(" "))
 
     map_height: int = len(tile_ids)
+    solid_tiles: List[List[bool]] = [[] for _ in range(map_height)]  # For Tile collisions
     for i in range(map_height):
+        y = map_height - i - 1
+        solid_tiles[y] = [False for _ in range(len(tile_ids[i]))]
         for x, tile_id in enumerate(tile_ids[i]):
             if not tile_id == "0":
-                tile_array.append(create_tile(tile_id, x, map_height - i - 1))
+                tile_array.append(create_tile(tile_id, x, y))
+                solid_tiles[y][x] = True
 
-    return tile_array
+    return tile_array, solid_tiles
 
 
 class InitSystem(System):
@@ -52,6 +63,8 @@ class InitSystem(System):
         self.entities = entities
 
     def start(self):
+        tiles, collisionTileMap = generate_map("Level1")
+
         self.entities.add(
             GlobalStateResource(
                 play=True,
@@ -69,15 +82,28 @@ class InitSystem(System):
                 x=0,
                 y=0
             ),
-            *generate_map("Level1"),
+            MapResource(
+                solidTiles=collisionTileMap
+            ),
+            *tiles,
             PlayerEntity(
-                position=Vec2(1, 1),
+                position=Vec2(3, 8),
                 width=1,
                 height=1,
-                sprite=pygame.image.load("rsc/example.bmp").convert_alpha(),
+                sprite=Assets.get().player,
                 acceleration=Vec2(0, 0),
                 speed=Vec2(0, 0),
-                collisionCallback=lambda _: print("hit")
+                hitboxEventHandler=collect,
+                tileCollisionEventHandler=lambda _: None,
+                score=0
+            ),
+            CoinEntity(
+                position=Vec2(5.25, 3.25),
+                width=0.5,
+                height=0.5,
+                sprite=Assets.get().coin,
+                hitboxEventHandler=lambda _a, _b: None,
+                treasure=1
             )
         )
 

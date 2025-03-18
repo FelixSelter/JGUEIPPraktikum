@@ -6,7 +6,6 @@ from pygame import Surface
 
 from Components import SpriteComponent, TransformComponent
 from Resources import CameraResource
-from util import requireAll
 
 
 class RenderingSystem(System):

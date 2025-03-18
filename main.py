@@ -5,10 +5,12 @@ from ecs_pattern import EntityManager, SystemManager
 
 from Resources import GlobalStateResource
 from Systems.CollisionSystem import CollisionSystem
+from Systems.GravitySystem import GravitySystem
 from Systems.InitSystem import InitSystem
 from Systems.MovementSystem import MovementSystem
 from Systems.RenderingSystem import RenderingSystem
 from Systems.ControlSystem import ControllerSystem
+from Systems.TileCollisionSystem import TileCollisionSystem
 from Systems.TimeSystem import TimeSystem
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
@@ -27,7 +29,9 @@ def App():
         InitSystem(entities),
         TimeSystem(entities),
         ControllerSystem(entities, pygame.event.get),
+        GravitySystem(entities),
         MovementSystem(entities),
+        TileCollisionSystem(entities),
         CollisionSystem(entities),
         RenderingSystem(entities, screen)
     ])

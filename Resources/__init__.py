@@ -1,3 +1,6 @@
+from typing import List
+
+import pygame
 from ecs_pattern import entity
 
 
@@ -5,6 +8,11 @@ from ecs_pattern import entity
 class GlobalStateResource:
     play: bool
     pause: bool
+
+
+@entity
+class MapResource:
+    solidTiles: List[List[bool]]  # For collisions solidTiles[y/row][x/col]
 
 
 @entity
