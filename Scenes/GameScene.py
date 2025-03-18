@@ -15,7 +15,7 @@ from Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
 from Systems.RenderingSystem import RenderingSystem
 from Systems.TileCollisionSystem import TileCollisionSystem
 from Systems.TimeSystem import TimeSystem
-from util import Assets
+from Assets import Assets
 from util.math import Vec2
 
 
