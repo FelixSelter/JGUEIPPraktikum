@@ -1,13 +1,6 @@
 from typing import List
 
-import pygame
 from ecs_pattern import entity
-
-
-@entity
-class GlobalStateResource:
-    play: bool
-    pause: bool
 
 
 @entity

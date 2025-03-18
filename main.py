@@ -1,18 +1,8 @@
 import os
 
 import pygame
-from ecs_pattern import EntityManager, SystemManager
 
-from Resources import GlobalStateResource
-from Systems.CollisionSystem import CollisionSystem
-from Systems.GravitySystem import GravitySystem
-from Systems.InitSystem import InitSystem
-from Systems.MovementSystem import MovementSystem
-from Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
-from Systems.RenderingSystem import RenderingSystem
-from Systems.ControlSystem import ControllerSystem
-from Systems.TileCollisionSystem import TileCollisionSystem
-from Systems.TimeSystem import TimeSystem
+from src.Scenes import GameScene
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
 
@@ -24,32 +14,15 @@ def App():
     screen = pygame.display.set_mode((16 * 80, 9 * 80))
     clock = pygame.time.Clock()
 
-    entities = EntityManager()
+    scene = GameScene(screen)
+    scene.load()
+    scene.start()
 
-    system_manager = SystemManager([
-        InitSystem(entities),
-        TimeSystem(entities),
-        ControllerSystem(entities, pygame.event.get),
-        GravitySystem(entities),
-        MovementSystem(entities),
-        TileCollisionSystem(entities),
-        CollisionSystem(entities),
-        PurgeDeleteBufferSystem(entities),
-        RenderingSystem(entities, screen)
-    ])
-
-    system_manager.start_systems()
-
-    global_state: GlobalStateResource = next(entities.get_by_class(GlobalStateResource))
-    while global_state.play:
+    while True:
         screen.fill((0, 0, 0))
-
         clock.tick_busy_loop(60)
-        system_manager.update_systems()
-
+        scene.update()
         pygame.display.flip()
-
-    system_manager.stop_systems()
 
 
 if __name__ == '__main__':

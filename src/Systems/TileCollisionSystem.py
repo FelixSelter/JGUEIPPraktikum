@@ -1,11 +1,10 @@
-from enum import Enum
-from math import floor, ceil
+from math import floor
 
 from ecs_pattern import System, EntityManager
 
-from Components import HitboxComponent, TransformComponent, TileColliderComponent, MovementComponent, \
+from src.Components import HitboxComponent, TransformComponent, TileColliderComponent, MovementComponent, \
     TileCollisionDirection
-from Resources import MapResource
+from src.Resources import MapResource
 
 
 class TileCollisionSystem(System):

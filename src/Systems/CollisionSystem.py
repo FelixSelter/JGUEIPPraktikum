@@ -2,7 +2,7 @@ from typing import List
 
 from ecs_pattern import System, EntityManager
 
-from Components import TransformComponent, HitboxComponent
+from src.Components import TransformComponent, HitboxComponent
 
 
 class CollisionSystem(System):

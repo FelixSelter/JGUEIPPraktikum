@@ -1,11 +1,22 @@
-from typing import List, Any
+from typing import Any, List
 
-from ecs_pattern import System, EntityManager
+import pygame
+from ecs_pattern import SystemManager, EntityManager
+from pygame import Surface
 
-from Entities import Tile, PlayerEntity, CoinEntity
-from Resources import GlobalStateResource, CameraResource, TimeResource, MapResource
-from util import Assets
-from util.math import Vec2
+from src.Entities import CoinEntity, PlayerEntity, Tile
+from src.Resources import MapResource, CameraResource, TimeResource
+from src.Scenes import Scene
+from src.Systems.CollisionSystem import CollisionSystem
+from src.Systems.ControlSystem import ControllerSystem
+from src.Systems.GravitySystem import GravitySystem
+from src.Systems.MovementSystem import MovementSystem
+from src.Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
+from src.Systems.RenderingSystem import RenderingSystem
+from src.Systems.TileCollisionSystem import TileCollisionSystem
+from src.Systems.TimeSystem import TimeSystem
+from src.util import Assets
+from src.util.math import Vec2
 
 
 def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityManager):
@@ -16,7 +27,7 @@ def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityMana
 
 def generate_map(lvl: str) -> [Tile]:
     def create_tile(tile: str, x_cor: float, y_cor: float) -> Tile:
-        image = Assets.get().tiles[tile]
+        image = Assets.get().tileImgs[tile]
         return Tile(
             position=Vec2(x_cor, y_cor),
             width=1,
@@ -56,18 +67,23 @@ def generate_map(lvl: str) -> [Tile]:
     return tile_array, solid_tiles
 
 
-class InitSystem(System):
-    def __init__(self, entities: EntityManager):
-        self.entities = entities
+class GameScene(Scene):
+    def __init__(self, screen: Surface):
+        self.system_manager = SystemManager([
+            TimeSystem(self.entities),
+            ControllerSystem(self.entities, pygame.event.get),
+            GravitySystem(self.entities),
+            MovementSystem(self.entities),
+            TileCollisionSystem(self.entities),
+            CollisionSystem(self.entities),
+            PurgeDeleteBufferSystem(self.entities),
+            RenderingSystem(self.entities, screen)
+        ])
 
-    def start(self):
+    def load(self):
         tiles, collisionTileMap = generate_map("Level1")
 
         self.entities.add(
-            GlobalStateResource(
-                play=True,
-                pause=False,
-            ),
             TimeResource(
                 totalTime=0,
                 deltaTime=0,
@@ -88,7 +104,7 @@ class InitSystem(System):
                 position=Vec2(3, 8),
                 width=1,
                 height=1,
-                sprite=Assets.get().player,
+                sprite=Assets.get().playerImg,
                 acceleration=Vec2(0, 0),
                 speed=Vec2(0, 0),
                 hitboxEventHandler=playerCollisionHandler,
@@ -99,11 +115,8 @@ class InitSystem(System):
                 position=Vec2(5.25, 3.25),
                 width=0.5,
                 height=0.5,
-                sprite=Assets.get().coin,
+                sprite=Assets.get().coinImg,
                 hitboxEventHandler=lambda _a, _b, _c: None,
                 treasure=1
             )
         )
-
-    def stop(self):
-        pass

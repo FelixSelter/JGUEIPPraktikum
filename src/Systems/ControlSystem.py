@@ -3,11 +3,11 @@ from math import copysign
 
 import pygame, sys
 from ecs_pattern import System, EntityManager
-from pygame.locals import QUIT, KEYDOWN, KEYUP, K_ESCAPE, K_a, K_d, K_SPACE
+from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_a, K_d, K_SPACE
 
-from Components import MovementComponent
-from Resources import GlobalStateResource, TimeResource
-from Entities import PlayerEntity
+from src.Components import MovementComponent
+from src.Resources import TimeResource
+from src.Entities import PlayerEntity
 
 
 class HorizontalMovementType(Enum):
@@ -37,17 +37,10 @@ class ControllerSystem(System):
         for event in self.event_getter():
             event_type = event.type
             event_key = getattr(event, 'key', None)
-            game_state_info = next(self.entities.get_by_class(GlobalStateResource))
 
             # Quit game
-            if event_type == QUIT:
-                game_state_info.play = False
-                sys.exit()
-
-            # Pause game
-            if event_key == K_ESCAPE:
+            if event_type == QUIT or event_key == K_ESCAPE:
                 pygame.quit()
-                game_state_info.play = False
                 sys.exit()
 
             # Jumping

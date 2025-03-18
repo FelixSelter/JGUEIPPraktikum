@@ -1,9 +1,6 @@
-from typing import List
-
 from ecs_pattern import System, EntityManager
 
-from Components import TransformComponent, HitboxComponent, GravityComponent, MovementComponent
-from Resources import MapResource
+from src.Components import GravityComponent, MovementComponent
 
 
 class GravitySystem(System):
