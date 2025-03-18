@@ -1,10 +1,11 @@
 import time
+from typing import List
 
 import pygame
 from ecs_pattern import System, EntityManager
 
 from Entities import Tile, PlayerEntity
-from Resources import GlobalStateResource, CameraResource, TimeResource
+from Resources import GlobalStateResource, CameraResource, TimeResource, MapResource
 from util.math import Vec2
 
 
@@ -15,8 +16,7 @@ def generate_map(lvl: str) -> [Tile]:
             position=Vec2(x_cor, y_cor),
             width=1,
             height=1,
-            sprite=image,
-            collisionCallback=lambda _: None
+            sprite=image
         )
 
     tile_array: [Tile] = []
@@ -39,12 +39,16 @@ def generate_map(lvl: str) -> [Tile]:
                     tile_ids.append(line.split(" "))
 
     map_height: int = len(tile_ids)
+    solid_tiles: List[List[bool]] = [[] for _ in range(map_height)]  # For Tile collisions
     for i in range(map_height):
+        y = map_height - i - 1
+        solid_tiles[y] = [False for _ in range(len(tile_ids[i]))]
         for x, tile_id in enumerate(tile_ids[i]):
             if not tile_id == "0":
-                tile_array.append(create_tile(tile_id, x, map_height - i - 1))
+                tile_array.append(create_tile(tile_id, x, y))
+                solid_tiles[y][x] = True
 
-    return tile_array
+    return tile_array, solid_tiles
 
 
 class InitSystem(System):
@@ -52,6 +56,8 @@ class InitSystem(System):
         self.entities = entities
 
     def start(self):
+        tiles, collisionTileMap = generate_map("Level1")
+
         self.entities.add(
             GlobalStateResource(
                 play=True,
@@ -69,15 +75,19 @@ class InitSystem(System):
                 x=0,
                 y=0
             ),
-            *generate_map("Level1"),
+            MapResource(
+                solidTiles=collisionTileMap
+            ),
+            *tiles,
             PlayerEntity(
-                position=Vec2(1, 1),
+                position=Vec2(3, 8),
                 width=1,
                 height=1,
                 sprite=pygame.image.load("rsc/example.bmp").convert_alpha(),
                 acceleration=Vec2(0, 0),
                 speed=Vec2(0, 0),
-                collisionCallback=lambda _: print("hit")
+                hitboxEventHandler=lambda _: print("hit"),
+                tileCollisionEventHandler=lambda _: None,
             )
         )
 

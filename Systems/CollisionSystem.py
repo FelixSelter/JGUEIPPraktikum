@@ -21,11 +21,6 @@ class CollisionSystem(System):
                         obj1.position.y + obj1.height >= obj2.position.y and \
                         obj1.position.y <= obj2.position.y + obj2.height:
                     obj1: HitboxComponent = obj1
-                    obj1.collisionCallback(obj2)
+                    obj1.hitboxEventHandler(obj1, obj2)
                     obj2: HitboxComponent = obj2
-                    obj2.collisionCallback(obj1)
-
-# r1x + r1w >= r2x &&     // r1 right edge past r2 left
-# r1x <= r2x + r2w &&       // r1 left edge past r2 right
-# r1y + r1h >= r2y &&       // r1 top edge past r2 bottom
-# r1y <= r2y + r2h) {       // r1 bottom edge past r2 top
+                    obj2.hitboxEventHandler(obj1, obj2)

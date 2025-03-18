@@ -50,7 +50,7 @@ class ControllerSystem(System):
             if event_key == K_SPACE:  # Sprung
                 # Start
                 if event_type == KEYDOWN:
-                    self.player_entity.speed.y = 2
+                    self.player_entity.speed.y = 18
                 # End
                 else:
                     self.player_entity.speed.y = 0

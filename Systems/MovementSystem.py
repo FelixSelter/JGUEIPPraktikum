@@ -1,12 +1,7 @@
-from typing import Iterator, List, Any
-
-import pygame.transform
 from ecs_pattern import System, EntityManager
-from pygame import Surface
 
-from Components import SpriteComponent, TransformComponent, MovementComponent
-from Resources import CameraResource, TimeResource
-from util import requireAll
+from Components import TransformComponent, MovementComponent
+from Resources import TimeResource
 
 
 class MovementSystem(System):
