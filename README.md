@@ -17,6 +17,7 @@
 
 - [ ] Screen shake
 - [ ] Particles
+- [ ] Sounds
 
 ### Grafiken
 
