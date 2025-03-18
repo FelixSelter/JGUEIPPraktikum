@@ -14,8 +14,8 @@ class ControllerSystem(System):
         self.time_rsc = None
         self.player_entity = None
 
+        self.vertical_start_speed: float = 7.5
         self.horizontal_start_speed: float = 1
-        self.start_vertical_speed = 2
         self.max_acceleration: float = 3
         self.min_speed: float = 0.1
 
@@ -50,8 +50,6 @@ class ControllerSystem(System):
 
             if abs(self.horizontal_speed) < self.max_speed:
                 self.horizontal_speed += self.horizontal_acceleration
-            else:
-                print("Max")
 
         self.player_entity.speed.x = self.horizontal_speed
 
@@ -83,7 +81,7 @@ class ControllerSystem(System):
             if event_key == K_SPACE:  # Sprung
                 # Start
                 if event_type == KEYDOWN and self.player_entity.speed.y == 0:
-                    self.player_entity.speed.y = 1 + self.start_vertical_speed
+                    self.player_entity.speed.y = self.vertical_start_speed
                 # End
                 else:
                     self.player_entity.speed.y = 0
