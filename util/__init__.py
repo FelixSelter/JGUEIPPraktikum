@@ -16,7 +16,7 @@ class Assets:
 
         self.tiles = {}
         for file in Path("rsc/Tiles").iterdir():
-            self.tiles[file.name] = pygame.image.load(file.absolute()).convert_alpha()
+            self.tiles[file.stem] = pygame.image.load(file.absolute()).convert_alpha()
 
     @staticmethod
     def get():

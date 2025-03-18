@@ -18,7 +18,7 @@ def collect(self, item):
 
 def generate_map(lvl: str) -> [Tile]:
     def create_tile(tile: str, x_cor: float, y_cor: float) -> Tile:
-        image = pygame.image.load("rsc/Tiles/" + tile + ".bmp").convert_alpha()
+        image = Assets.get().tiles[tile]
         return Tile(
             position=Vec2(x_cor, y_cor),
             width=1,
