@@ -78,7 +78,7 @@ class ControllerSystem(System):
         # Apply horizontal movement
         deceleration = 30
         acceleration = 30
-        maxSpeed = 15
+        maxSpeed = 10
 
         player_entity.acceleration.x = 0
         match horizontal_movement:
