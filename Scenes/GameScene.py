@@ -69,8 +69,6 @@ def generate_map(lvl: str) -> [Tile]:
 
 class GameScene(Scene):
     def __init__(self, screen: Surface):
-        self.entities = EntityManager()
-
         self.system_manager: SystemManager = SystemManager([
             TimeSystem(self.entities),
             ControllerSystem(self.entities, pygame.event.get),
