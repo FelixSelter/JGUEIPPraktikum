@@ -1,5 +1,4 @@
-from enum import Enum
-from math import floor, ceil
+from math import floor
 
 from ecs_pattern import System, EntityManager
 
@@ -32,7 +31,7 @@ class TileCollisionSystem(System):
 
                     direction = None
                     if map_rsc.solidTiles[tileY][tileX]:
-                        threshold = 0.3  # Prevents above and below to trigger if hit from the sides. Tune if gravity and jump speed etc change
+                        threshold = 0.25  # Prevents above and below to trigger if hit from the sides. Tune if gravity and jump speed etc change
 
                         # above
                         if tileY < minY < tileY + 1 and tileY + 1 - minY < threshold:
@@ -55,6 +54,8 @@ class TileCollisionSystem(System):
 
                             # left
                             elif tileX < maxX < tileX + 1 and maxX - tileX < threshold:
-                                idrection = TileCollisionDirection.Left
+                                direction = TileCollisionDirection.Left
                                 transform.position.x = tileX - transform.width
                                 movement.speed.x = 0
+
+                    tileCollider.tileCollisionEventHandler(direction, self.entities)

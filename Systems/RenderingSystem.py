@@ -1,5 +1,3 @@
-from typing import Iterator, List, Any
-
 import pygame.transform
 from ecs_pattern import System, EntityManager
 from pygame import Surface

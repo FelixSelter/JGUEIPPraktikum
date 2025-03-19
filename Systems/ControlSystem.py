@@ -1,113 +1,101 @@
+from enum import Enum
+from math import copysign
+
 import pygame, sys
 from ecs_pattern import System, EntityManager
-from pygame.locals import QUIT, KEYDOWN, KEYUP, K_ESCAPE, K_a, K_d, K_SPACE
+from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_a, K_d, K_SPACE
 
-from Resources import GlobalStateResource, TimeResource
+from Components import MovementComponent
+from Resources import TimeResource
 from Entities import PlayerEntity
+
+
+class HorizontalMovementType(Enum):
+    AccelerateLeft = 0
+    AccelerateRight = 1
+    Decelerate = 2
+    NoMovement = 3
 
 
 class ControllerSystem(System):
     def __init__(self, entities: EntityManager, event_getter):
         self.entities = entities
         self.event_getter = event_getter
-        self.game_state_info = None
-        self.time_rsc = None
-        self.player_entity = None
-
-        self.horizontal_start_speed: float = 1
-        self.start_vertical_speed = 2
-        self.max_acceleration: float = 3
-        self.min_speed: float = 0.1
-
-        self.horizontal_speed: float = 0
-        self.horizontal_acceleration: float = 0
-        self.horizontal_direction: int = 0
-        self.max_speed = self.horizontal_start_speed + self.max_acceleration
 
         self.movement_keys = {K_a: False, K_d: False}
 
-
-    def calculate_speed(self):
-        if self.horizontal_direction == 0:
-            # Abbremsen
-            brake_factor = max(0.85, 1 - (abs(self.horizontal_speed) / self.max_speed) * 0.5)
-
-            if abs(self.horizontal_speed) < self.min_speed:
-                self.horizontal_speed = 0
-            else:
-                self.horizontal_speed *= brake_factor
-
-        else:
-            if self.player_entity.speed.x == 0:
-                self.horizontal_speed += self.horizontal_start_speed * self.horizontal_direction
-
-            if abs(self.horizontal_speed) < self.max_speed:
-
-                # Beschleunigen
-                dist = (self.max_acceleration - self.horizontal_acceleration)
-                dist = (dist > 0.05) and dist or 0.05
-                self.horizontal_acceleration = min(self.max_acceleration, abs(self.horizontal_acceleration) + dist / 15) * self.horizontal_direction
-
-            if abs(self.horizontal_speed) < self.max_speed:
-                self.horizontal_speed += self.horizontal_acceleration
-            else:
-                print("Max")
-
-        self.player_entity.speed.x = self.horizontal_speed
-
-
     def start(self):
-        self.game_state_info = next(self.entities.get_by_class(GlobalStateResource))
-        self.time_rsc = next(self.entities.get_by_class(TimeResource))
-        self.player_entity = next(self.entities.get_by_class(PlayerEntity))
+        pass
 
+    def calculate_acceleration(self, speed):
+        pass
 
     def update(self):
+        player_entity: MovementComponent = next(self.entities.get_by_class(PlayerEntity))
+        time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
+
         for event in self.event_getter():
             event_type = event.type
             event_key = getattr(event, 'key', None)
 
             # Quit game
-            if event_type == QUIT:
-                self.game_state_info.play = False
-                sys.exit()
-
-            # Pause game
-            if event_key == K_ESCAPE:
+            if event_type == QUIT or event_key == K_ESCAPE:
                 pygame.quit()
-                self.game_state_info.play = False
                 sys.exit()
-                #self.game_state_info.pause = not self.game_state_info.pause
 
-            # Vertical Movement
-            if event_key == K_SPACE:  # Sprung
-                # Start
-                if event_type == KEYDOWN and self.player_entity.speed.y == 0:
-                    self.player_entity.speed.y = 1 + self.start_vertical_speed
-                # End
-                else:
-                    self.player_entity.speed.y = 0
+            # Jumping
+            if event_key == K_SPACE:
+                if event_type == KEYDOWN and player_entity.speed.y == 0:
+                    player_entity.speed.y = 15
 
-            # Horizontal Movement
+            # Horizontal Controls
             if event_key in self.movement_keys:
-                # Start
-                if event_type == KEYDOWN:
-                    self.movement_keys[event_key] = True
-                # End
-                else:
-                    self.movement_keys[event_key] = False
+                self.movement_keys[event_key] = event_type == KEYDOWN
 
-        # Horizontal Movement
-        if self.movement_keys[K_a] and not self.movement_keys[K_d]:
-            # Links
-            self.horizontal_direction = -1
+        # Determine horizontal movement
+        horizontal_movement = HorizontalMovementType.NoMovement
+
+        # Stop the player if no or both keys pressed
+        if self.movement_keys[K_a] == self.movement_keys[K_d]:
+            if not player_entity.speed.x == 0:
+                horizontal_movement = HorizontalMovementType.Decelerate
+
+        # Stop right movement then move left
+        elif self.movement_keys[K_a] and not self.movement_keys[K_d]:
+            horizontal_movement = HorizontalMovementType.AccelerateLeft if player_entity.speed.x <= 0 else HorizontalMovementType.Decelerate
+
+        # Stop left movement then move right
         elif self.movement_keys[K_d] and not self.movement_keys[K_a]:
-            # Rechts
-            self.horizontal_direction = 1
-        else:
-            # Beides oder keins
-            self.horizontal_direction = 0
+            horizontal_movement = HorizontalMovementType.AccelerateRight if player_entity.speed.x >= 0 else HorizontalMovementType.Decelerate
 
-        self.calculate_speed()
+        # Apply horizontal movement
+        deceleration = 30
+        acceleration = 30
+        maxSpeed = 10
 
+        player_entity.acceleration.x = 0
+        match horizontal_movement:
+            case HorizontalMovementType.NoMovement:
+                pass
 
+            case HorizontalMovementType.Decelerate:
+                requiredStopAcceleration = -player_entity.speed.x / time_rsc.deltaTime
+                if abs(requiredStopAcceleration) <= deceleration:  # If can fully stop do that
+                    player_entity.speed.x = 0
+                else:  # Continue decelerating
+                    player_entity.acceleration.x = copysign(deceleration,
+                                                            requiredStopAcceleration)  # apply max deceleration in the correct direction
+
+            case HorizontalMovementType.AccelerateLeft:
+                if abs(player_entity.speed.x) >= maxSpeed:
+                    player_entity.speed.x = -maxSpeed
+                    player_entity.acceleration.x = 0
+                else:
+                    player_entity.acceleration.x = -acceleration
+
+            case HorizontalMovementType.AccelerateRight:
+                if abs(player_entity.speed.x) >= maxSpeed:
+                    player_entity.speed.x = maxSpeed
+                    player_entity.acceleration.x = 0
+                else:
+                    player_entity.acceleration.x = acceleration
