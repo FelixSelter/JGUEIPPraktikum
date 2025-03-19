@@ -19,6 +19,7 @@ def App():
     scene.load()
     scene.start()
 
+
     pygame.mixer.Sound.play(Assets.get().backgroundMusic)
 
     while True:
