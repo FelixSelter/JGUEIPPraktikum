@@ -16,12 +16,17 @@ class Assets:
 
         self.coinImg = self.__load_img("rsc/img/objects/coin.bmp")
 
-        # self.backgroundMusic = pygame.mixer.Sound('rsc\sounds\cyber-farm-271090.mp3')
-        # self.backgroundMusic.set_volume(0.1)
+        self.backgroundMusic = self.__load_audio('rsc/sounds/cyber-farm-271090.mp3', 0.5)
 
         self.tileImgs = {}
         for file in [file for file in Path("rsc/img/tiles").iterdir() if file.suffix == ".bmp"]:
             self.tileImgs[file.stem] = pygame.image.load(file.absolute()).convert_alpha()
+
+    @staticmethod
+    def __load_audio(path, volume):
+        sound = pygame.mixer.Sound(path)
+        sound.set_volume(volume)
+        return sound
 
     @staticmethod
     def __load_img(path):
