@@ -2,7 +2,7 @@
 
 ### Base mechanics
 
-- [ ] Camera folgt Spieler
+- [x] Camera folgt Spieler
 - [ ] Animationen
 - [ ] Event system
 - [x] Scenes
