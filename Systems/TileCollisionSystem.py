@@ -4,7 +4,7 @@ from ecs_pattern import System, EntityManager
 
 from Components import HitboxComponent, TransformComponent, TileColliderComponent, MovementComponent, \
     TileCollisionDirection
-from Resources import MapResource
+from Map import MapResource
 
 
 class TileCollisionSystem(System):
@@ -26,11 +26,11 @@ class TileCollisionSystem(System):
             minY, maxY = transform.position.y, transform.position.y + transform.height
             for tileX in range(floor(minX), floor(maxX) + 1):
                 for tileY in range(floor(minY), floor(maxY) + 1):
-                    if not (0 <= tileY < len(map_rsc.solidTiles) and 0 <= tileX < len(map_rsc.solidTiles[tileY])):
+                    if not (0 <= tileY < len(map_rsc.map.tiles) and 0 <= tileX < len(map_rsc.map.tiles[tileY])):
                         continue
 
                     direction = None
-                    if map_rsc.solidTiles[tileY][tileX]:
+                    if map_rsc.map.tiles[tileY][tileX].isSolid():
                         threshold = 0.25  # Prevents above and below to trigger if hit from the sides. Tune if gravity and jump speed etc change
 
                         # above

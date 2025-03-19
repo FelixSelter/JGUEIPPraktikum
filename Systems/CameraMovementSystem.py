@@ -1,8 +1,9 @@
 import pygame
 from ecs_pattern import System, EntityManager
+
+from Map import MapResource
 from Resources import CameraResource
 from Entities import PlayerEntity
-
 
 
 class CameraMovementSystem(System):
@@ -15,10 +16,6 @@ class CameraMovementSystem(System):
         self.player_entity: PlayerEntity = None
         self.screen_width_factor, self.screen_height_factor = None, None
 
-        # Set camera boundaries based on map size
-        self.min_camera_x, self.max_camera_x = 0.0, 8
-        self.min_camera_y, self.max_camera_y = 0.0, 1
-
         # Mittiges Rechteck
         rect_width: float = self.screen_width // 2.8
         rect_height: float = self.screen_height // 1.9
@@ -28,7 +25,6 @@ class CameraMovementSystem(System):
             rect_width, rect_height
         )
 
-
     def start(self):
         self.camera = next(self.entities.get_by_class(CameraResource))
         self.player_entity = next(self.entities.get_by_class(PlayerEntity))
@@ -36,6 +32,11 @@ class CameraMovementSystem(System):
         self.screen_width_factor: float = self.screen_width / self.camera.screenWidthInTiles
         self.screen_height_factor: float = self.screen_height / self.camera.screenHeightInTiles
 
+        map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
+
+        # Set camera boundaries based on map size
+        self.min_camera_x, self.max_camera_x = 0.0, map_rsc.map.width - self.camera.screenWidthInTiles
+        self.min_camera_y, self.max_camera_y = 0.0, map_rsc.map.height - self.camera.screenHeightInTiles
 
     def update(self):
         player_x: float = self.player_entity.position.x
@@ -62,7 +63,7 @@ class CameraMovementSystem(System):
         # Kamera innerhalb Ränder (nicht vor/hinter Map schauen)
         self.camera.x = max(self.min_camera_x, min(self.camera.x, self.max_camera_x))
         self.camera.y = max(self.min_camera_y, min(self.camera.y, self.max_camera_y))
-
+        print(self.camera.x)
 
         # Debug
         pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 2)

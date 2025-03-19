@@ -1,6 +1,8 @@
 import pickle
 from enum import Enum
-from typing import List, Self
+from typing import List
+
+from ecs_pattern import entity
 
 from Assets import Assets
 from Entities import TileEntity
@@ -33,6 +35,8 @@ class Tiles(Enum):
 class Map:
     def __init__(self, tiles: List[List[Tiles]]):
         self.tiles = tiles  # [row][col]
+        self.height = len(tiles)
+        self.width = len(tiles[0])
 
     def save(self, path: str):
         with open(path, "wb") as outfile:
@@ -44,7 +48,6 @@ class Map:
             return pickle.load(infile)
 
     def parse(self):
-        solidTiles = [[tile.isSolid() for tile in row] for row in reversed(self.tiles)]
         tiles = []
 
         for rowIndex, row in enumerate(self.tiles):
@@ -52,10 +55,15 @@ class Map:
                 if tile == Tiles.Air:
                     continue
                 tiles.append(TileEntity(
-                    position=Vec2(colIndex, len(self.tiles) - 1 - rowIndex),
+                    position=Vec2(colIndex, rowIndex),
                     width=1,
                     height=1,
                     sprite=tile.getSprite()
                 ))
 
-        return tiles, solidTiles
+        return tiles
+
+
+@entity
+class MapResource:
+    map: Map

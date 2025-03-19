@@ -12,14 +12,16 @@ class RenderingSystem(System):
         self.screen = screen
 
     def update(self):
+        screenWidth, screenHeight = pygame.display.get_surface().get_size()
+        camera: CameraResource = next(self.entities.get_by_class(CameraResource))
+
+        tileWidthInPixel, tileHeightInPixel = screenWidth / camera.screenWidthInTiles, screenHeight / camera.screenHeightInTiles
+
+        print("Renderer:", camera.x, "\n")
+
         for entity in self.entities.get_with_component(SpriteComponent, TransformComponent):
             sprite: SpriteComponent = entity
             transform: TransformComponent = entity
-
-            screenWidth, screenHeight = pygame.display.get_surface().get_size()
-            camera: CameraResource = next(self.entities.get_by_class(CameraResource))
-
-            tileWidthInPixel, tileHeightInPixel = screenWidth / camera.screenWidthInTiles, screenHeight / camera.screenHeightInTiles
 
             p = pygame.transform.scale(sprite.sprite, (
                 int(tileWidthInPixel * transform.width), int(tileHeightInPixel * transform.height)))

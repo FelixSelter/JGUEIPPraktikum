@@ -1,14 +1,13 @@
-from typing import Any, List
+from typing import Any
 
 import pygame
-from Components import TileCollisionDirection
 from ecs_pattern import SystemManager, EntityManager
 from pygame import Surface
 
-from Entities import CoinEntity, EnemyEntity, PlayerEntity, TileEntity
+from Entities import CoinEntity, PlayerEntity
 from Animation import Animation, AnimationFrame, AnimationSystem
-from Map import Map
-from Resources import MapResource, CameraResource, TimeResource
+from Map import Map, MapResource
+from Resources import CameraResource, TimeResource
 from Scenes import Scene
 from Systems.CameraMovementSystem import CameraMovementSystem
 from Systems.CollisionSystem import CollisionSystem
@@ -28,6 +27,7 @@ def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityMana
         player.score += item.treasure
         entities.delete_buffer_add(item)
 
+
 class GameScene(Scene):
     def __init__(self, screen: Surface):
         self.system_manager: SystemManager = SystemManager([
@@ -44,7 +44,8 @@ class GameScene(Scene):
         ])
 
     def load(self):
-        tiles, collisionTileMap = Map.load("rsc/Maps/Level1").parse()
+        map = Map.load("rsc/Maps/Level1")
+        tiles = map.parse()
 
         self.entities.add(
             TimeResource(
@@ -60,7 +61,7 @@ class GameScene(Scene):
                 y=0
             ),
             MapResource(
-                solidTiles=collisionTileMap
+                map=map
             ),
             *tiles,
             PlayerEntity(

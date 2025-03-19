@@ -1,11 +1,4 @@
-from typing import List
-
 from ecs_pattern import entity
-
-
-@entity
-class MapResource:
-    solidTiles: List[List[bool]]  # For collisions solidTiles[y/row][x/col]
 
 
 @entity

@@ -1,7 +1,7 @@
 from Map import Tiles, Map
 
 if __name__ == "__main__":
-    m = Map([
+    m = Map(list(reversed([
         [Tiles.Hay, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air,
          Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Air,
          Tiles.Air, Tiles.Air, Tiles.Air, Tiles.Hay],
@@ -31,5 +31,5 @@ if __name__ == "__main__":
          Tiles.DirtBottom, Tiles.DirtBottom, Tiles.DirtBottom, Tiles.DirtBottom, Tiles.DirtBottom, Tiles.DirtBottom,
          Tiles.DirtBottom, Tiles.DirtBottom, Tiles.DirtBottom, Tiles.DirtBottom, Tiles.DirtRightCorner, Tiles.Hay]
 
-    ])
+    ])))
     m.save("Level1")
