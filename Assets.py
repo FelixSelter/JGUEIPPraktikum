@@ -11,7 +11,8 @@ class Assets:
         self.playerImgs = [self.__load_img(f"rsc/img/example{i}.bmp") for i in range(3)]
         self.enemyImg_cow = self.__load_img("rsc/img/entities/cow.bmp")
         self.coinImg = self.__load_img("rsc/img/objects/coin.bmp")
-
+        self.backgroundMusic = pygame.mixer.Sound('rsc\sounds\cyber-farm-271090.mp3')
+        self.backgroundMusic.set_volume(0.1)
         self.tileImgs = {}
         for file in [file for file in Path("rsc/img/tiles").iterdir() if file.suffix == ".bmp"]:
             self.tileImgs[file.stem] = pygame.image.load(file.absolute()).convert_alpha()

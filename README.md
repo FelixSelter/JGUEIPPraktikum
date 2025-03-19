@@ -1,13 +1,16 @@
 # TODO
 
 ### Bugs:
+
 - [ ] Stecken bleiben, wenn man links gedrückt hält
 - [ ] Max vertical speed um nicht durch Blöcke durch zu fallen
 
 ### Base mechanics
 
-- [ ] Camera folgt Spieler
 - [x] Animationen
+- [x] Camera folgt Spieler
+- [ ] Animationen
+- [ ] Event system
 - [x] Scenes
 - [ ] Click event
 - [ ] UI renderer
