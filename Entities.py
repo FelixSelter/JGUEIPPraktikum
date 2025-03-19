@@ -8,7 +8,7 @@ from Components import EnemyNameComponent, SpriteComponent, TransformComponent, 
 from util.math import Vec2
 
 @entity
-class Tile(SpriteComponent, TransformComponent):
+class TileEntity(SpriteComponent, TransformComponent):
     pass
 
 

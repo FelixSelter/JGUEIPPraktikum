@@ -5,8 +5,9 @@ from Components import TileCollisionDirection
 from ecs_pattern import SystemManager, EntityManager
 from pygame import Surface
 
-from Entities import CoinEntity, PlayerEntity, Tile
+from Entities import CoinEntity, EnemyEntity, PlayerEntity, TileEntity
 from Animation import Animation, AnimationFrame, AnimationSystem
+from Map import Map
 from Resources import MapResource, CameraResource, TimeResource
 from Scenes import Scene
 from Systems.CameraMovementSystem import CameraMovementSystem
@@ -27,47 +28,6 @@ def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityMana
         player.score += item.treasure
         entities.delete_buffer_add(item)
 
-def generate_map(lvl: str) -> [Tile]:
-    def create_tile(tile: str, x_cor: float, y_cor: float) -> Tile:
-        image = Assets.get().tileImgs[tile]
-        return Tile(
-            position=Vec2(x_cor, y_cor),
-            width=1,
-            height=1,
-            sprite=image
-        )
-
-    tile_array: [Tile] = []
-    tile_ids: [[str]] = []
-
-    with open("rsc/Maps/" + lvl, 'r') as file:
-        lines = file.readlines()
-
-        map_part: bool = False
-        for index, line in enumerate(lines):
-            line = line.strip()
-
-            if line == "MAP":
-                if map_part:
-                    break
-                else:
-                    map_part = True
-            else:
-                if map_part:
-                    tile_ids.append(line.split(" "))
-
-    map_height: int = len(tile_ids)
-    solid_tiles: List[List[bool]] = [[] for _ in range(map_height)]  # For Tile collisions
-    for i in range(map_height):
-        y = map_height - i - 1
-        solid_tiles[y] = [False for _ in range(len(tile_ids[i]))]
-        for x, tile_id in enumerate(tile_ids[i]):
-            if not tile_id == "0":
-                tile_array.append(create_tile(tile_id, x, y))
-                solid_tiles[y][x] = True
-
-    return tile_array, solid_tiles
-
 class GameScene(Scene):
     def __init__(self, screen: Surface):
         self.system_manager: SystemManager = SystemManager([
@@ -84,7 +44,7 @@ class GameScene(Scene):
         ])
 
     def load(self):
-        tiles, collisionTileMap = generate_map("Level1")
+        tiles, collisionTileMap = Map.load("rsc/Maps/Level1").parse()
 
         self.entities.add(
             TimeResource(
