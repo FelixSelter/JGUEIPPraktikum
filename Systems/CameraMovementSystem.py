@@ -23,9 +23,11 @@ class CameraMovementSystem(System):
             rect_width, rect_height
         )
 
+
     def start(self):
         self.camera = next(self.entities.get_by_class(CameraResource))
         self.player_entity = next(self.entities.get_by_class(PlayerEntity))
+
 
     def update(self):
         player_x: float = self.player_entity.position.x
