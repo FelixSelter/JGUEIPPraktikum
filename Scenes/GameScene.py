@@ -4,11 +4,12 @@ import pygame
 from ecs_pattern import SystemManager, EntityManager
 from pygame import Surface
 
-from Entities import CoinEntity, PlayerEntity
+from Entities import CoinEntity, PlayerEntity, SpawnerEntity, TileEntity
 from Animation import Animation, AnimationFrame, AnimationSystem
 from Map import Map, MapResource
 from Resources import CameraResource, TimeResource
 from Scenes import Scene
+from Systems.SpawnerSystem import SpawnerSystem
 from Systems.CameraMovementSystem import CameraMovementSystem
 from Systems.CollisionSystem import CollisionSystem
 from Systems.ControlSystem import ControllerSystem
@@ -40,7 +41,8 @@ class GameScene(Scene):
             PurgeDeleteBufferSystem(self.entities),
             AnimationSystem(self.entities),
             CameraMovementSystem(self.entities, screen),
-            RenderingSystem(self.entities, screen)
+            RenderingSystem(self.entities, screen),
+            SpawnerSystem(self.entities)
         ])
 
     def load(self):
@@ -88,5 +90,13 @@ class GameScene(Scene):
                 sprite=Assets.get().coinImg,
                 hitboxEventHandler=lambda _a, _b, _c: None,
                 treasure=1
+            ),
+            SpawnerEntity(
+                position=Vec2(6, 3),
+                width=1,
+                height=1,
+                sprite=Assets.get().playerImgs[2],
+                name="Cow",
+                counter=10
             )
         )

@@ -17,8 +17,6 @@ class RenderingSystem(System):
 
         tileWidthInPixel, tileHeightInPixel = screenWidth / camera.screenWidthInTiles, screenHeight / camera.screenHeightInTiles
 
-        print("Renderer:", camera.x, "\n")
-
         for entity in self.entities.get_with_component(SpriteComponent, TransformComponent):
             sprite: SpriteComponent = entity
             transform: TransformComponent = entity

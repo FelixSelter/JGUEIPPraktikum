@@ -18,13 +18,14 @@ class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColl
     @staticmethod
     def createEnemy(enemyName: str, x: float, y: float):
         return EnemyEntity(
-            enemyName=enemyName,
+
+            name=enemyName,
             position=Vec2(x, y),
             width=1,
             height=1,
             sprite=Assets.get().enemyImg_pig,
             acceleration=Vec2(0, 0),
-            speed=Vec2(EnemyEntity.animals_dict[enemyName], 0),
+            speed=Vec2(-EnemyEntity.animals_dict[enemyName], 0),
             tileCollisionEventHandler=enemyCollisionHandler,
             hitboxEventHandler=lambda _a, _b, _c: None
         )

@@ -63,7 +63,6 @@ class CameraMovementSystem(System):
         # Kamera innerhalb Ränder (nicht vor/hinter Map schauen)
         self.camera.x = max(self.min_camera_x, min(self.camera.x, self.max_camera_x))
         self.camera.y = max(self.min_camera_y, min(self.camera.y, self.max_camera_y))
-        print(self.camera.x)
 
         # Debug
         pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 2)

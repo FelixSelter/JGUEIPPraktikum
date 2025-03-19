@@ -74,3 +74,8 @@ class TreasureComponent:
 @component
 class ScoreComponent:
     score: int
+
+
+@component
+class SpawnerComponent:
+    counter: float
