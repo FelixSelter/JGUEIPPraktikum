@@ -50,7 +50,7 @@ class TileColliderComponent:
     Prevents movable entities from entering tiles
     Requires HitboxComponent, MovementComponent
     """
-    tileCollisionEventHandler: Callable[[TileCollisionDirection, EntityManager], None]
+    tileCollisionEventHandler: Callable[[Any, TileCollisionDirection, EntityManager], None]
 
 
 @component
