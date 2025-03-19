@@ -1,9 +1,9 @@
 import pygame
 from ecs_pattern import System, EntityManager
 
+from Entities.Player import PlayerEntity
 from Map import MapResource
 from Resources import CameraResource
-from Entities import PlayerEntity
 
 
 class CameraMovementSystem(System):

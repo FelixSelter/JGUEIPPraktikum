@@ -1,11 +1,10 @@
 from typing import Any
 
 import pygame
-from ecs_pattern import SystemManager, EntityManager
+from ecs_pattern import SystemManager
 from pygame import Surface
 
-from Entities import CoinEntity, PlayerEntity, SpawnerEntity, TileEntity
-from Animation import Animation, AnimationFrame, AnimationSystem
+from Animation import AnimationSystem
 from Map import Map, MapResource
 from Resources import CameraResource, TimeResource
 from Scenes import Scene
@@ -19,14 +18,6 @@ from Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
 from Systems.RenderingSystem import RenderingSystem
 from Systems.TileCollisionSystem import TileCollisionSystem
 from Systems.TimeSystem import TimeSystem
-from Assets import Assets
-from util.math import Vec2
-
-
-def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityManager):
-    if isinstance(item, CoinEntity):
-        player.score += item.treasure
-        entities.delete_buffer_add(item)
 
 
 class GameScene(Scene):
@@ -46,8 +37,8 @@ class GameScene(Scene):
         ])
 
     def load(self):
-        map = Map.load("rsc/Maps/Level1")
-        tiles = map.parse()
+        m = Map.load("rsc/Maps/Level1")
+        tiles, entities = m.parse()
 
         self.entities.add(
             TimeResource(
@@ -63,40 +54,9 @@ class GameScene(Scene):
                 y=0
             ),
             MapResource(
-                map=map
+                map=m
             ),
             *tiles,
-            PlayerEntity(
-                position=Vec2(3, 8),
-                width=1,
-                height=1,
-                sprite=Assets.get().playerImgs[0],
-                acceleration=Vec2(0, 0),
-                speed=Vec2(0, 0),
-                hitboxEventHandler=playerCollisionHandler,
-                tileCollisionEventHandler=lambda _a, _b, _c: None,
-                score=0,
-                animations={"default": Animation(
-                    [AnimationFrame(Assets.get().playerImgs[0], 0.3), AnimationFrame(Assets.get().playerImgs[1], 0.3),
-                     AnimationFrame(Assets.get().playerImgs[2], 0.3)])},
-                activeAnimation="default",
-                currentTime=0,
-                loopAnimation=True
-            ),
-            CoinEntity(
-                position=Vec2(5.25, 3.25),
-                width=0.5,
-                height=0.5,
-                sprite=Assets.get().coinImg,
-                hitboxEventHandler=lambda _a, _b, _c: None,
-                treasure=1
-            ),
-            SpawnerEntity(
-                position=Vec2(6, 3),
-                width=1,
-                height=1,
-                sprite=Assets.get().playerImgs[2],
-                name="Cow",
-                counter=10
-            )
+            *entities
+
         )

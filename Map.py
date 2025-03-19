@@ -1,4 +1,5 @@
 import pickle
+from abc import abstractmethod
 from enum import Enum
 from typing import List
 
@@ -33,10 +34,11 @@ class Tiles(Enum):
 
 
 class Map:
-    def __init__(self, tiles: List[List[Tiles]]):
+    def __init__(self, tiles: List[List[Tiles]], entityData: List):
         self.tiles = tiles  # [row][col]
         self.height = len(tiles)
         self.width = len(tiles[0])
+        self.entityData = entityData
 
     def save(self, path: str):
         with open(path, "wb") as outfile:
@@ -61,7 +63,9 @@ class Map:
                     sprite=tile.getSprite()
                 ))
 
-        return tiles
+        entities = [entity.deserialize() for entity in self.entityData]
+
+        return tiles, entities
 
 
 @entity

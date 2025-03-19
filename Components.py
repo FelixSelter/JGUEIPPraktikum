@@ -78,4 +78,5 @@ class ScoreComponent:
 
 @component
 class SpawnerComponent:
-    counter: float
+    spawnCounter: float
+    spawnDelay: float

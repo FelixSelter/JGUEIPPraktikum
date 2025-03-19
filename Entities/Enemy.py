@@ -15,20 +15,8 @@ class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColl
         "Sheep": 1
     }
 
-    @staticmethod
-    def createEnemy(enemyName: str, x: float, y: float):
-        return EnemyEntity(
-
-            name=enemyName,
-            position=Vec2(x, y),
-            width=1,
-            height=1,
-            sprite=Assets.get().enemyImg_pig,
-            acceleration=Vec2(0, 0),
-            speed=Vec2(-EnemyEntity.animals_dict[enemyName], 0),
-            tileCollisionEventHandler=enemyCollisionHandler,
-            hitboxEventHandler=lambda _a, _b, _c: None
-        )
+    def serialize(self):
+        return EnemyData(self.name, self.position)
 
 
 def enemyCollisionHandler(enemy: EnemyEntity, direction: TileCollisionDirection, entities: EntityManager):
@@ -38,3 +26,22 @@ def enemyCollisionHandler(enemy: EnemyEntity, direction: TileCollisionDirection,
     elif direction == TileCollisionDirection.Right:
         enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
         enemy.speed.x = EnemyEntity.animals_dict[enemy.name]
+
+
+class EnemyData:
+    def __init__(self, name: str, position: Vec2):
+        self.name = name
+        self.position = position
+
+    def deserialize(self):
+        return EnemyEntity(
+            name=self.name,
+            position=self.position,
+            width=1,
+            height=1,
+            sprite=Assets.get().enemyImg_pig,
+            acceleration=Vec2(0, 0),
+            speed=Vec2(-EnemyEntity.animals_dict[self.name], 0),
+            tileCollisionEventHandler=enemyCollisionHandler,
+            hitboxEventHandler=lambda _a, _b, _c: None
+        )
