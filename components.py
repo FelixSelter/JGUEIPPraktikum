@@ -34,7 +34,7 @@ class HitboxComponent:
     Intersection between game objects excluding tiles
     Requires TransformComponent
     """
-    hitboxEventHandler: Callable[[Any, Any, EntityManager], None]  # hitboxEventHandler(this, other, entities)
+    hitboxEventHandler: Callable[[Any, Any, EntityManager], None] | None  # hitboxEventHandler(this, other, entities)
 
 
 class TileCollisionDirection(Enum):
@@ -50,7 +50,8 @@ class TileColliderComponent:
     Prevents movable entities from entering tiles
     Requires HitboxComponent, MovementComponent
     """
-    tileCollisionEventHandler: Callable[[Any, TileCollisionDirection, EntityManager], None]
+    tileCollisionEventHandler: Callable[[Any, TileCollisionDirection,
+                                         EntityManager], None] | None  # tileCollisionEventHandler(this,direction,entities)
 
 
 @component

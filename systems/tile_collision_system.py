@@ -57,5 +57,5 @@ class TileCollisionSystem(System):
                                 direction = TileCollisionDirection.Left
                                 transform.position.x = tileX - transform.width
                                 movement.speed.x = 0
-
-                    tileCollider.tileCollisionEventHandler(entity, direction, self.entities)
+                    if tileCollider.tileCollisionEventHandler is not None:
+                        tileCollider.tileCollisionEventHandler(entity, direction, self.entities)

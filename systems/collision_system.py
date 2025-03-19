@@ -21,6 +21,8 @@ class CollisionSystem(System):
                         obj1.position.y + obj1.height >= obj2.position.y and \
                         obj1.position.y <= obj2.position.y + obj2.height:
                     obj1: HitboxComponent = obj1
-                    obj1.hitboxEventHandler(obj1, obj2, self.entities)
+                    if obj1.hitboxEventHandler is not None:
+                        obj1.hitboxEventHandler(obj1, obj2, self.entities)
                     obj2: HitboxComponent = obj2
-                    obj2.hitboxEventHandler(obj1, obj2, self.entities)
+                    if obj2.hitboxEventHandler is not None:
+                        obj2.hitboxEventHandler(obj1, obj2, self.entities)

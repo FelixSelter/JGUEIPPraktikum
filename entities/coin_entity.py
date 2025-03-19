@@ -25,6 +25,6 @@ class CoinData:
             width=0.5,
             height=0.5,
             sprite=Assets.get().coinImg,
-            hitboxEventHandler=lambda _a, _b, _c: None,
+            hitboxEventHandler=None,
             treasure=1
         )

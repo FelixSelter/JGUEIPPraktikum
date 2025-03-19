@@ -36,7 +36,7 @@ class PlayerData:
             acceleration=Vec2(0, 0),
             speed=Vec2(0, 0),
             hitboxEventHandler=playerCollisionHandler,
-            tileCollisionEventHandler=lambda _a, _b, _c: None,
+            tileCollisionEventHandler=None,
             score=0,
             animations={"default": Animation(
                 [AnimationFrame(Assets.get().playerImgs[0], 0.3), AnimationFrame(Assets.get().playerImgs[1], 0.3),

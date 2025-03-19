@@ -43,5 +43,5 @@ class EnemyData:
             acceleration=Vec2(0, 0),
             speed=Vec2(-EnemyEntity.animals_dict[self.name], 0),
             tileCollisionEventHandler=enemyCollisionHandler,
-            hitboxEventHandler=lambda _a, _b, _c: None
+            hitboxEventHandler=None
         )
