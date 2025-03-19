@@ -7,6 +7,7 @@ from pygame import Surface
 from Entities import CoinEntity, PlayerEntity, Tile
 from Resources import MapResource, CameraResource, TimeResource
 from Scenes import Scene
+from Systems.CameraMovementSystem import CameraMovementSystem
 from Systems.CollisionSystem import CollisionSystem
 from Systems.ControlSystem import ControllerSystem
 from Systems.GravitySystem import GravitySystem
@@ -77,6 +78,7 @@ class GameScene(Scene):
             CollisionSystem(self.entities),
             GravitySystem(self.entities),
             PurgeDeleteBufferSystem(self.entities),
+            CameraMovementSystem(self.entities, screen),
             RenderingSystem(self.entities, screen)
         ])
 
