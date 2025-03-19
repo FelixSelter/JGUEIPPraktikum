@@ -4,8 +4,13 @@ from ecs_pattern import entity, EntityManager
 
 from animation import AnimationComponent, Animation, AnimationFrame
 from assets import Assets
-from components import SpriteComponent, GravityComponent, TransformComponent, ScoreComponent, MovementComponent, \
-    HitboxComponent, TileColliderComponent
+from components.gravity_component import GravityComponent
+from components.hitbox_component import HitboxComponent
+from components.movement_component import MovementComponent
+from components.score_component import ScoreComponent
+from components.sprite_component import SpriteComponent
+from components.tile_collider_component import TileColliderComponent
+from components.transform_component import TransformComponent
 from entities.coin_entity import CoinEntity
 from util.math import Vec2
 

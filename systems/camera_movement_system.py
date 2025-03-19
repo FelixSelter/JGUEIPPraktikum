@@ -1,7 +1,7 @@
 import pygame
 from ecs_pattern import System, EntityManager
 
-from entities.player import PlayerEntity
+from entities.player_entity import PlayerEntity
 from map import MapResource
 from resources import CameraResource
 

@@ -2,7 +2,8 @@ import pygame.transform
 from ecs_pattern import System, EntityManager
 from pygame import Surface
 
-from components import SpriteComponent, TransformComponent
+from components.sprite_component import SpriteComponent
+from components.transform_component import TransformComponent
 from resources import CameraResource
 
 

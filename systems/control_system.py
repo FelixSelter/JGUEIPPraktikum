@@ -5,8 +5,8 @@ import pygame, sys
 from ecs_pattern import System, EntityManager
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_a, K_d, K_SPACE
 
-from components import MovementComponent
-from entities.player import PlayerEntity
+from components.movement_component import MovementComponent
+from entities.player_entity import PlayerEntity
 from resources import TimeResource
 
 

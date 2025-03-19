@@ -1,9 +1,22 @@
+from enum import Enum
+
 import pygame
 from assets import Assets
-from components import NameComponent, GravityComponent, HitboxComponent, MovementComponent, SpriteComponent, \
-    TileColliderComponent, TileCollisionDirection, TransformComponent
+from components.gravity_component import GravityComponent
+from components.hitbox_component import HitboxComponent
+from components.movement_component import MovementComponent
+from components.name_component import NameComponent
+from components.sprite_component import SpriteComponent
+from components.tile_collider_component import TileColliderComponent, TileCollisionDirection
+from components.transform_component import TransformComponent
 from util.math import Vec2
 from ecs_pattern import EntityManager, entity
+
+
+class EnemyType(Enum):
+    Cow = "Cow"
+    Pig = "Pig"
+    Sheep = "Sheep"
 
 
 @entity

@@ -3,7 +3,7 @@ from typing import List, Dict
 from ecs_pattern import component, System, EntityManager
 from pygame import Surface
 
-from components import SpriteComponent
+from components.sprite_component import SpriteComponent
 from resources import TimeResource
 
 

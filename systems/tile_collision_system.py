@@ -2,8 +2,10 @@ from math import floor
 
 from ecs_pattern import System, EntityManager
 
-from components import HitboxComponent, TransformComponent, TileColliderComponent, MovementComponent, \
-    TileCollisionDirection
+from components.hitbox_component import HitboxComponent
+from components.movement_component import MovementComponent
+from components.tile_collider_component import TileColliderComponent, TileCollisionDirection
+from components.transform_component import TransformComponent
 from map import MapResource
 
 

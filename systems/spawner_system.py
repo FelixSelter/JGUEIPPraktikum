@@ -1,7 +1,7 @@
 from ecs_pattern import System, EntityManager
 
-from components import SpawnerComponent
-from entities.enemy import EnemyData
+from components.spawner_component import SpawnerComponent
+from entities.enemy_entity import EnemyData
 from resources import TimeResource
 from util.math import Vec2
 
@@ -20,6 +20,6 @@ class SpawnerSystem(System):
             spawner.spawnCounter += time_rsc.deltaTime
             if spawner.spawnCounter >= spawner.spawnDelay:
                 spawner.spawnCounter = 0
-                enemy_array.append(EnemyData("Pig", Vec2(8, 4)).deserialize())
+                enemy_array.append(EnemyData(spawner.enemyType.value, Vec2(8, 4)).deserialize())
 
         self.entities.add(*enemy_array)
