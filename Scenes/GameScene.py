@@ -5,7 +5,7 @@ from Components import TileCollisionDirection
 from ecs_pattern import SystemManager, EntityManager
 from pygame import Surface
 
-from Entities import CoinEntity, EnemyEntity, PlayerEntity, Tile
+from Entities import CoinEntity, PlayerEntity, Tile
 from Animation import Animation, AnimationFrame, AnimationSystem
 from Resources import MapResource, CameraResource, TimeResource
 from Scenes import Scene
@@ -26,14 +26,6 @@ def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityMana
     if isinstance(item, CoinEntity):
         player.score += item.treasure
         entities.delete_buffer_add(item)
-
-def enemyCollisionHandler(enemy: EnemyEntity, direction: TileCollisionDirection, entities: EntityManager):
-    if direction == TileCollisionDirection.Left:
-        enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
-        enemy.speed.x = -2
-    elif direction == TileCollisionDirection.Right:
-        enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
-        enemy.speed.x = 2
 
 def generate_map(lvl: str) -> [Tile]:
     def create_tile(tile: str, x_cor: float, y_cor: float) -> Tile:
@@ -135,15 +127,5 @@ class GameScene(Scene):
                 sprite=Assets.get().coinImg,
                 hitboxEventHandler=lambda _a, _b, _c: None,
                 treasure=1
-            ),
-            EnemyEntity(
-                position=Vec2(10, 4),
-                width=1,
-                height=1,
-                sprite=Assets.get().enemyImg_cow,
-                acceleration=Vec2(0, 0),
-                speed=Vec2(-2, 0),
-                tileCollisionEventHandler=enemyCollisionHandler,
-                hitboxEventHandler=lambda _a, _b, _c: None
             )
         )

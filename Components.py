@@ -60,6 +60,9 @@ class GravityComponent:
     """
     pass
 
+@component
+class EnemyNameComponent:
+    enemyName: str
 
 @component
 class TreasureComponent:

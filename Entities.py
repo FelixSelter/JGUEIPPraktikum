@@ -1,10 +1,11 @@
+from Assets import Assets
 from ecs_pattern import entity
 
 from Animation import AnimationComponent
-from Components import SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, \
+from Components import EnemyNameComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, \
     TileColliderComponent, \
     GravityComponent, TreasureComponent, ScoreComponent
-
+from util.math import Vec2
 
 @entity
 class Tile(SpriteComponent, TransformComponent):
@@ -22,6 +23,4 @@ class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureC
     pass
 
 
-@entity
-class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColliderComponent, GravityComponent, MovementComponent):
-    pass
+
