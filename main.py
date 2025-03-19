@@ -4,7 +4,7 @@ import pygame
 
 from Scenes.GameScene import GameScene
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster test
+os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
 
 
 def App():

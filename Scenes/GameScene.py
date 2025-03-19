@@ -5,8 +5,10 @@ from ecs_pattern import SystemManager, EntityManager
 from pygame import Surface
 
 from Entities import CoinEntity, EnemyEntity, PlayerEntity, Tile
+from Animation import Animation, AnimationFrame, AnimationSystem
 from Resources import MapResource, CameraResource, TimeResource
 from Scenes import Scene
+from Systems.CameraMovementSystem import CameraMovementSystem
 from Systems.CollisionSystem import CollisionSystem
 from Systems.ControlSystem import ControllerSystem
 from Systems.GravitySystem import GravitySystem
@@ -76,6 +78,8 @@ class GameScene(Scene):
             CollisionSystem(self.entities),
             GravitySystem(self.entities),
             PurgeDeleteBufferSystem(self.entities),
+            AnimationSystem(self.entities),
+            CameraMovementSystem(self.entities, screen),
             RenderingSystem(self.entities, screen)
         ])
 
@@ -103,12 +107,18 @@ class GameScene(Scene):
                 position=Vec2(3, 8),
                 width=1,
                 height=1,
-                sprite=Assets.get().playerImg,
+                sprite=Assets.get().playerImgs[0],
                 acceleration=Vec2(0, 0),
                 speed=Vec2(0, 0),
                 hitboxEventHandler=playerCollisionHandler,
                 tileCollisionEventHandler=lambda _a, _b: None,
-                score=0
+                score=0,
+                animations={"default": Animation(
+                    [AnimationFrame(Assets.get().playerImgs[0], 0.3), AnimationFrame(Assets.get().playerImgs[1], 0.3),
+                     AnimationFrame(Assets.get().playerImgs[2], 0.3)])},
+                activeAnimation="default",
+                currentTime=0,
+                loopAnimation=True
             ),
             CoinEntity(
                 position=Vec2(5.25, 3.25),
