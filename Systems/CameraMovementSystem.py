@@ -15,6 +15,8 @@ class CameraMovementSystem(System):
         self.camera: CameraResource = None
         self.player_entity: PlayerEntity = None
         self.screen_width_factor, self.screen_height_factor = None, None
+        self.min_camera_x, self.max_camera_x = None, None
+        self.min_camera_y, self.max_camera_y = None, None
 
         # Mittiges Rechteck
         rect_width: float = self.screen_width // 2.8
