@@ -2,7 +2,7 @@ from Assets import Assets
 from ecs_pattern import entity
 
 from Animation import AnimationComponent
-from Components import EnemyNameComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, \
+from Components import NameComponent, SpawnerComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, \
     TileColliderComponent, \
     GravityComponent, TreasureComponent, ScoreComponent
 from util.math import Vec2
@@ -22,5 +22,7 @@ class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, Hitbo
 class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureComponent):
     pass
 
-
+@entity
+class SpawnerEntity(SpriteComponent, TransformComponent, NameComponent, SpawnerComponent):
+    pass
 

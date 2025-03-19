@@ -61,8 +61,8 @@ class GravityComponent:
     pass
 
 @component
-class EnemyNameComponent:
-    enemyName: str
+class NameComponent:
+    name: str
 
 @component
 class TreasureComponent:
@@ -72,3 +72,7 @@ class TreasureComponent:
 @component
 class ScoreComponent:
     score: int
+
+@component
+class SpawnerComponent:
+    counter: float
