@@ -1,5 +1,3 @@
-from typing import Any
-
 import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface
@@ -7,7 +5,7 @@ from pygame import Surface
 from animation import AnimationSystem
 from map import Map, MapResource
 from resources import CameraResource, TimeResource
-from Scenes import Scene
+from scenes import Scene
 from systems.spawner_system import SpawnerSystem
 from systems.camera_movement_system import CameraMovementSystem
 from systems.collision_system import CollisionSystem
