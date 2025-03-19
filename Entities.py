@@ -7,7 +7,7 @@ from Components import SpriteComponent, TransformComponent, MovementComponent, H
 
 
 @entity
-class Tile(SpriteComponent, TransformComponent):
+class TileEntity(SpriteComponent, TransformComponent):
     pass
 
 
