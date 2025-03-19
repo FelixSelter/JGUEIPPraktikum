@@ -9,6 +9,7 @@ class Assets:
 
     def __load_all_assets(self):
         self.playerImg = self.__load_img("rsc/img/example.bmp")
+        self.enemyImg_cow = self.__load_img("rsc/img/entities/cow.bmp")
         self.coinImg = self.__load_img("rsc/img/objects/coin.bmp")
 
         self.tileImgs = {}

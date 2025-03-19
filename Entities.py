@@ -19,3 +19,8 @@ class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, Hitbo
 @entity
 class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureComponent):
     pass
+
+
+@entity
+class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColliderComponent, GravityComponent, MovementComponent):
+    pass
