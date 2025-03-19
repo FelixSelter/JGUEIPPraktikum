@@ -3,8 +3,8 @@ from typing import List, Dict
 from ecs_pattern import component, System, EntityManager
 from pygame import Surface
 
-from Components import SpriteComponent
-from Resources import TimeResource
+from components import SpriteComponent
+from resources import TimeResource
 
 
 class AnimationFrame:

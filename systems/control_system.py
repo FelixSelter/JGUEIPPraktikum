@@ -5,9 +5,9 @@ import pygame, sys
 from ecs_pattern import System, EntityManager
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_a, K_d, K_SPACE
 
-from Components import MovementComponent
-from Entities.Player import PlayerEntity
-from Resources import TimeResource
+from components import MovementComponent
+from entities.player import PlayerEntity
+from resources import TimeResource
 
 
 class HorizontalMovementType(Enum):

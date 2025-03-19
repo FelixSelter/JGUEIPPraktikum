@@ -4,20 +4,20 @@ import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface
 
-from Animation import AnimationSystem
-from Map import Map, MapResource
-from Resources import CameraResource, TimeResource
+from animation import AnimationSystem
+from map import Map, MapResource
+from resources import CameraResource, TimeResource
 from Scenes import Scene
-from Systems.SpawnerSystem import SpawnerSystem
-from Systems.CameraMovementSystem import CameraMovementSystem
-from Systems.CollisionSystem import CollisionSystem
-from Systems.ControlSystem import ControllerSystem
-from Systems.GravitySystem import GravitySystem
-from Systems.MovementSystem import MovementSystem
-from Systems.PurgeDeleteBufferSystem import PurgeDeleteBufferSystem
-from Systems.RenderingSystem import RenderingSystem
-from Systems.TileCollisionSystem import TileCollisionSystem
-from Systems.TimeSystem import TimeSystem
+from systems.spawner_system import SpawnerSystem
+from systems.camera_movement_system import CameraMovementSystem
+from systems.collision_system import CollisionSystem
+from systems.control_system import ControllerSystem
+from systems.gravity_system import GravitySystem
+from systems.movement_system import MovementSystem
+from systems.purge_delete_buffer_system import PurgeDeleteBufferSystem
+from systems.rendering_system import RenderingSystem
+from systems.tile_collision_system import TileCollisionSystem
+from systems.time_system import TimeSystem
 
 
 class GameScene(Scene):

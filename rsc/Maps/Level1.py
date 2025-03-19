@@ -1,9 +1,9 @@
 import os
 
-from Entities.CoinEntity import CoinData
-from Entities.Player import PlayerData
-from Entities.Spawner import SpawnerData
-from Map import Tiles, Map
+from entities.coin_entity import CoinData
+from entities.player import PlayerData
+from entities.spawner import SpawnerData
+from map import Tiles, Map
 from util.math import Vec2
 
 if __name__ == "__main__":

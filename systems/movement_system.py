@@ -1,7 +1,7 @@
 from ecs_pattern import System, EntityManager
 
-from Components import TransformComponent, MovementComponent
-from Resources import TimeResource
+from components import TransformComponent, MovementComponent
+from resources import TimeResource
 
 
 class MovementSystem(System):

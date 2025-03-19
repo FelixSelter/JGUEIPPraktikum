@@ -1,7 +1,7 @@
 from ecs_pattern import entity
 
-from Assets import Assets
-from Components import SpriteComponent, TransformComponent, MovementComponent, \
+from assets import Assets
+from components import SpriteComponent, TransformComponent, MovementComponent, \
     HitboxComponent, \
     TreasureComponent
 from util.math import Vec2

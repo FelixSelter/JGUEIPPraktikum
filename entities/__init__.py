@@ -1,6 +1,6 @@
 from ecs_pattern import entity
 
-from Components import SpriteComponent, TransformComponent
+from components import SpriteComponent, TransformComponent
 
 
 @entity

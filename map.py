@@ -5,8 +5,8 @@ from typing import List
 
 from ecs_pattern import entity
 
-from Assets import Assets
-from Entities import TileEntity
+from assets import Assets
+from entities import TileEntity
 from util.math import Vec2
 
 

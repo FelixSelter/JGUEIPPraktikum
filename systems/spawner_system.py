@@ -1,8 +1,8 @@
 from ecs_pattern import System, EntityManager
 
-from Components import SpawnerComponent
-from Entities.Enemy import EnemyData
-from Resources import TimeResource
+from components import SpawnerComponent
+from entities.enemy import EnemyData
+from resources import TimeResource
 from util.math import Vec2
 
 

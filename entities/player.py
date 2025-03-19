@@ -2,11 +2,11 @@ from typing import Any
 
 from ecs_pattern import entity, EntityManager
 
-from Animation import AnimationComponent, Animation, AnimationFrame
-from Assets import Assets
-from Components import SpriteComponent, GravityComponent, TransformComponent, ScoreComponent, MovementComponent, \
+from animation import AnimationComponent, Animation, AnimationFrame
+from assets import Assets
+from components import SpriteComponent, GravityComponent, TransformComponent, ScoreComponent, MovementComponent, \
     HitboxComponent, TileColliderComponent
-from Entities.CoinEntity import CoinEntity
+from entities.coin_entity import CoinEntity
 from util.math import Vec2
 
 

@@ -1,6 +1,6 @@
 import pygame
-from Assets import Assets
-from Components import NameComponent, GravityComponent, HitboxComponent, MovementComponent, SpriteComponent, \
+from assets import Assets
+from components import NameComponent, GravityComponent, HitboxComponent, MovementComponent, SpriteComponent, \
     TileColliderComponent, TileCollisionDirection, TransformComponent
 from util.math import Vec2
 from ecs_pattern import EntityManager, entity

@@ -1,6 +1,6 @@
 from ecs_pattern import System, EntityManager
 
-from Components import GravityComponent, MovementComponent
+from components import GravityComponent, MovementComponent
 
 
 class GravitySystem(System):

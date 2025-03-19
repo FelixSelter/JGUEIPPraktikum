@@ -2,8 +2,8 @@ import os
 
 import pygame
 
-from Assets import Assets
-from Scenes.GameScene import GameScene
+from assets import Assets
+from Scenes.game_scene import GameScene
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
 
