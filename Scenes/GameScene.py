@@ -70,13 +70,13 @@ def generate_map(lvl: str) -> [Tile]:
 
 class GameScene(Scene):
     def __init__(self, screen: Surface):
-        self.system_manager = SystemManager([
+        self.system_manager: SystemManager = SystemManager([
             TimeSystem(self.entities),
             ControllerSystem(self.entities, pygame.event.get),
-            GravitySystem(self.entities),
             MovementSystem(self.entities),
             TileCollisionSystem(self.entities),
             CollisionSystem(self.entities),
+            GravitySystem(self.entities),
             PurgeDeleteBufferSystem(self.entities),
             AnimationSystem(self.entities),
             RenderingSystem(self.entities, screen)
