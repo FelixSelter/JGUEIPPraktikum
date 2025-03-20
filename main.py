@@ -2,6 +2,7 @@ import os
 
 import pygame
 
+from Assets import Assets
 from Scenes.GameScene import GameScene
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
@@ -17,6 +18,9 @@ def App():
     scene = GameScene(screen)
     scene.load()
     scene.start()
+
+    pygame.mixer.Sound.play(Assets.get().backgroundMusic)    
+    #pygame.mixer.Sound.set_volume(.3)
 
     while True:
         screen.fill((0, 0, 0))
