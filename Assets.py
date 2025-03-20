@@ -8,7 +8,8 @@ instance = None
 class Assets:
 
     def __load_all_assets(self):
-        self.playerImg = self.__load_img("rsc/img/example.bmp")
+        self.playerImgs = [self.__load_img(f"rsc/img/example{i}.bmp") for i in range(3)]
+        self.enemyImg_cow = self.__load_img("rsc/img/entities/cow.bmp")
         self.coinImg = self.__load_img("rsc/img/objects/coin.bmp")
         self.backgroundMusic = pygame.mixer.Sound('rsc\sounds\cyber-farm-271090.mp3')
         self.backgroundMusic.set_volume(0.1)
