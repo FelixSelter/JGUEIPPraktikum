@@ -14,7 +14,10 @@ class Assets:
         self.enemyImg_pig = self.__load_img("rsc/img/entities/pig.bmp")
         self.enemyImg_sheep = self.__load_img("rsc/img/entities/sheep.bmp")
 
-        self.coinImg = self.__load_img("rsc/img/objects/coin.bmp")
+        self.coinImgs = [self.__load_img(f"rsc/img/objects/coin_animated{i+1}.bmp") for i in range(4)]
+        self.shitImgs = [self.__load_img(f"rsc/img/objects/shit_animated{i+1}.bmp") for i in range(4)]
+        self.eggImgs = [self.__load_img(f"rsc/img/objects/egg_animated{i+1}.bmp") for i in range(4)]
+        self.mushroomImgs = [self.__load_img(f"rsc/img/objects/mushroom_animated{i+1}.bmp") for i in range(2)]
 
         self.backgroundMusic = self.__load_audio('rsc/sounds/cyber-farm-271090.mp3', 0.5)
 
