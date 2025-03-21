@@ -53,17 +53,17 @@ class EnemyData:
             name=self.name,
             position=self.position,
             width=1,
-            height=1,
-            sprite=Assets.get().enemyImgs_pig_left[0],
+            height=1,    
+            sprite=Assets.get().enemyImgsDict[self.name][0][0],
             acceleration=Vec2(0, 0),
             speed=Vec2(-EnemyEntity.animals_dict[self.name], 0),
             tileCollisionEventHandler=enemyCollisionHandler,
             hitboxEventHandler=None,
             animations={
                 "walking_left": Animation(
-                [AnimationFrame(Assets.get().enemyImgs_pig_left[0], 0.1), AnimationFrame(Assets.get().enemyImgs_pig_left[1], 0.1)]),
+                [AnimationFrame(Assets.get().enemyImgsDict[self.name][0][i], 0.1) for i in range(len(Assets.get().enemyImgsDict[self.name][0]))]),
                 "walking_right": Animation(
-                [AnimationFrame(Assets.get().enemyImgs_pig_right[0], 0.1), AnimationFrame(Assets.get().enemyImgs_pig_right[1], 0.1)])},
+                [AnimationFrame(Assets.get().enemyImgsDict[self.name][1][i], 0.1) for i in range(len(Assets.get().enemyImgsDict[self.name][1]))])},
             activeAnimation="walking_left",
             currentTime=0,
             loopAnimation=True

@@ -10,7 +10,7 @@ from util.math import Vec2
 
 
 @entity
-class SpawnerEntity(SpriteComponent, TransformComponent, NameComponent, SpawnerComponent):
+class SpawnerEntity(SpriteComponent, TransformComponent, SpawnerComponent):
     def serialize(self):
         return SpawnerData(self.position, self.spawnDelay, self.enemyType)
 
@@ -27,7 +27,6 @@ class SpawnerData:
             width=1,
             height=1,
             sprite=Assets.get().playerImgs[2],
-            name="Cow",
             spawnCounter=0,
             spawnDelay=self.spawnDelay,
             enemyType=self.enemyType
