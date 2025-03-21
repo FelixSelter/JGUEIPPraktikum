@@ -12,4 +12,4 @@ class GravitySystem(System):
         for entity in self.entities.get_with_component(GravityComponent, MovementComponent):
             movement: MovementComponent = entity
 
-            movement.acceleration.y = -30
+            movement.acceleration.y = -31

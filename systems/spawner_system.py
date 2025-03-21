@@ -3,7 +3,7 @@ from ecs_pattern import System, EntityManager
 from components.spawner_component import SpawnerComponent
 from entities.enemy_entity import EnemyData
 from resources import TimeResource
-from util.math import Vec2
+from util.additional_math import Vec2
 
 
 class SpawnerSystem(System):

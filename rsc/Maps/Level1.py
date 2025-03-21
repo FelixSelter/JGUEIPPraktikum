@@ -5,7 +5,7 @@ from entities.enemy_entity import EnemyType
 from entities.player_entity import PlayerData
 from entities.spawner_entity import SpawnerData
 from map import Tiles, Map
-from util.math import Vec2
+from util.additional_math import Vec2
 
 if __name__ == "__main__":
     name = "Level1"
@@ -52,7 +52,8 @@ if __name__ == "__main__":
 
     ]
 
-    entityData = [PlayerData(Vec2(3, 8)), CoinData(Vec2(5.25, 3.25), 1), SpawnerData(Vec2(6, 3), 5, EnemyType.Sheep)]
+    entityData = [PlayerData(Vec2(3, 8)),
+                  CoinData(Vec2(5.25, 3.25), 1), SpawnerData(Vec2(6, 3), 5, EnemyType.Cow)]
 
     m = Map(list(reversed(tiles)), entityData)
 

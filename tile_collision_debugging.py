@@ -1,32 +1,66 @@
+import sys
 from enum import Enum
-from math import copysign, floor, sqrt, inf, ceil
+from math import floor, ceil, sqrt, inf, copysign
 from typing import Any, List
 
-from ecs_pattern import System, EntityManager
+import pygame
+from pygame import Surface, QUIT, K_ESCAPE
 
 from components.movement_component import MovementComponent
-from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
-from map import MapResource
-from resources import TimeResource
-from util import CollisionDirection
-from util.additional_math import sign_zero, fract
+from entities.player_entity import PlayerData
+from map import MapResource, Map
+from util.additional_math import sign_zero, Vec2, fract
 
 epsilon = 0.0001
 
 
-def moveUntilCollision(entity: Any, target_delta_x: float, target_delta_y: float, map_rsc: MapResource,
-                       entities: EntityManager):
-    if target_delta_x == 0 and target_delta_y == 0:
+class CollisionDirection(Enum):
+    Top = 0
+    Bottom = 1
+    Right = 2
+    Left = 3
+
+
+def x_to_px(x):
+    return x * 80
+
+
+def y_to_px(y):
+    return 9 * 80 - y * 80
+
+
+def moveUntilCollision(entity: Any, targetDeltaX: float, targetDeltaY: float, map: MapResource, screen: Surface):
+    print("\n\n")
+    if targetDeltaX == 0 and targetDeltaY == 0:
         return
 
     transform: TransformComponent = entity
     movement: MovementComponent = entity
-    tile_collider: TileColliderComponent = entity
+
+    for cell_x in range(16):
+        for cell_y in range(9):
+            if map.map.tiles[cell_y][cell_x].isSolid():
+                pygame.draw.rect(screen, (100, 100, 100), (x_to_px(cell_x), y_to_px(cell_y) - 80, 80, 80))
+            else:
+                pygame.draw.rect(screen, (0, 0, 0), (x_to_px(cell_x), y_to_px(cell_y) - 80, 80, 80), 2)
 
     # Direction of movement
-    horizontal_direction = sign_zero(target_delta_x)
-    vertical_direction = sign_zero(target_delta_y)
+    horizontal_direction = sign_zero(targetDeltaX)
+    vertical_direction = sign_zero(targetDeltaY)
+
+    pygame.draw.rect(screen, (255, 0, 0), (x_to_px(transform.position.x), y_to_px(transform.position.y) - 80, 80, 80),
+                     2)
+    pygame.draw.circle(screen, (0, 255, 0),
+                       (x_to_px(transform.position.x + (0 if horizontal_direction < 0 else 1) + targetDeltaX),
+                        y_to_px(transform.position.y + (0 if vertical_direction < 0 else 1) + targetDeltaY)),
+                       8)
+    pygame.draw.line(screen, (0, 0, 0), (
+        x_to_px(transform.position.x + (0 if horizontal_direction < 0 else 1)),
+        y_to_px(transform.position.y + (0 if vertical_direction < 0 else 1))),
+                     (x_to_px(transform.position.x + targetDeltaX + (0 if horizontal_direction < 0 else 1)),
+                      y_to_px(transform.position.y + (0 if vertical_direction < 0 else 1) + targetDeltaY)),
+                     3)
 
     # How much distance needs to be traveled from each hitbox edge to reach the next tile edge
     initial_distance_left = -fract(transform.position.x)
@@ -40,19 +74,15 @@ def moveUntilCollision(entity: Any, target_delta_x: float, target_delta_y: float
     step_y = initial_distance_down if vertical_direction < 0 else initial_distance_up
 
     # How much x/y change if the entity moves one cell vertical/horizontal
-    y_increment_for_one_x_step = copysign(target_delta_y / target_delta_x if not target_delta_x == 0 else inf,
+    y_increment_for_one_x_step = copysign(targetDeltaY / targetDeltaX if not targetDeltaX == 0 else inf,
                                           vertical_direction)
-    x_increment_for_one_y_step = copysign(target_delta_x / target_delta_y if not target_delta_y == 0 else inf,
+    x_increment_for_one_y_step = copysign(targetDeltaX / targetDeltaY if not targetDeltaY == 0 else inf,
                                           horizontal_direction)
 
     # The algorithm decides to move horizontal/vertical depending on what distance to the next tile edge is shorter
     # If we move in x/y direction that decreases the distance to the next vertical/horizontal edge
-    current_distance_x = sqrt(
-        step_x ** 2 + (y_increment_for_one_x_step * abs(step_x)) ** 2) if not abs(
-        y_increment_for_one_x_step) == inf else inf
-    current_distance_y = sqrt(
-        step_y ** 2 + (x_increment_for_one_y_step * abs(step_y)) ** 2) if not abs(
-        x_increment_for_one_y_step) == inf else inf
+    current_distance_x = sqrt(step_x ** 2 + (y_increment_for_one_x_step * abs(step_x)) ** 2)
+    current_distance_y = sqrt(step_y ** 2 + (x_increment_for_one_y_step * abs(step_y)) ** 2)
 
     # We need these to reset current_distance_x, current_distance_y if we aligned with a tile edge
     distance_moved_for_one_x_step = sqrt(1 + y_increment_for_one_x_step ** 2)
@@ -66,17 +96,16 @@ def moveUntilCollision(entity: Any, target_delta_x: float, target_delta_y: float
     # Where we want to move relative to the current position
     # Position is relative to the bottom left hitbox corner
     # If our calculation is relative to the right/top edge we need to travel this distance additionally
-    target_x = target_delta_x + (0 if horizontal_direction < 0 else transform.width)
-    target_y = target_delta_y + (0 if vertical_direction < 0 else transform.height)
+    target_x = targetDeltaX + (0 if horizontal_direction < 0 else transform.width)
+    target_y = targetDeltaY + (0 if vertical_direction < 0 else transform.height)
 
     collision_direction = None
 
     while True:
+        print()
 
         # Check if target can be reached
-        if abs(target_x - edge_offset_x) <= abs(step_x) and abs(target_y - edge_offset_y) <= abs(step_y):
-            transform.position.x += target_delta_x
-            transform.position.y += target_delta_y
+        if abs(target_x - edge_offset_x) < abs(step_x) and abs(target_y - edge_offset_y) < abs(step_y):
             break
 
         # Move one step horizontal
@@ -103,6 +132,11 @@ def moveUntilCollision(entity: Any, target_delta_x: float, target_delta_y: float
             step_y = vertical_direction  # Once aligned we move in steps of one
             step_x -= x_move_amount
 
+        pygame.draw.circle(screen, (0, 0, 255),
+                           (x_to_px(transform.position.x + edge_offset_x),
+                            y_to_px(transform.position.y + edge_offset_y)),
+                           8)
+
         # Make offsets relative to the player position again
         pos_offset_x, pos_offset_y = edge_offset_x, edge_offset_y
         if not horizontal_direction < 0:
@@ -116,63 +150,57 @@ def moveUntilCollision(entity: Any, target_delta_x: float, target_delta_y: float
             case CollisionDirection.Left:
                 # Check all tiles right of the player
                 for cell_y in range(floor(transform.position.y + pos_offset_y),
-                                    floor(transform.position.y + pos_offset_y + transform.height - epsilon) + 1):
+                                    floor(transform.position.y + pos_offset_y + transform.height + epsilon) + 1):
                     collision_tiles.append(
-                        (floor(transform.position.x + transform.width + pos_offset_x), cell_y))
+                        (floor(transform.position.x + transform.width + pos_offset_x + epsilon), cell_y))
 
             case CollisionDirection.Right:
                 # Check all tiles left of the player
                 for cell_y in range(floor(transform.position.y + pos_offset_y),
-                                    floor(transform.position.y + pos_offset_y + transform.height - epsilon) + 1):
+                                    floor(transform.position.y + pos_offset_y + epsilon) + 2):
                     collision_tiles.append((floor(transform.position.x + pos_offset_x) - 1, cell_y))
 
             case CollisionDirection.Top:
                 # Check all tiles below the player
                 for cell_x in range(floor(transform.position.x + pos_offset_x),
-                                    floor(transform.position.x + pos_offset_x + transform.width - epsilon) + 1):
+                                    floor(transform.position.x + pos_offset_x + transform.width + epsilon) + 1):
                     collision_tiles.append((cell_x, floor(transform.position.y + pos_offset_y) - 1))
 
             case CollisionDirection.Bottom:
                 # Check all tiles above the player
                 for cell_x in range(floor(transform.position.x + pos_offset_x),
-                                    floor(transform.position.x + pos_offset_x + transform.width - epsilon) + 1):
+                                    floor(transform.position.x + pos_offset_x + transform.width + epsilon) + 1):
                     collision_tiles.append((cell_x, floor(transform.position.y + pos_offset_y) + 1))
 
         collided = False
         for cell_x, cell_y in collision_tiles:
-            if not (0 <= cell_x < map_rsc.map.width and 0 <= cell_y < map_rsc.map.height):
+            if not (0 <= cell_x < map.map.width and 0 <= cell_y < map.map.height):
                 continue
 
-            if map_rsc.map.tiles[cell_y][cell_x].isSolid():
+            pygame.draw.circle(screen, (255, 0, 255),
+                               (x_to_px(cell_x + 0.5),
+                                y_to_px(cell_y + 0.5)),
+                               8)
 
-                # Move until collision
-                transform.position.x += pos_offset_x
-                transform.position.y += pos_offset_y
-
-                # Cancel all x movement
-                if collision_direction in [CollisionDirection.Right, CollisionDirection.Left]:
-                    movement.speed.x = 0
-                    # Try to continue moving in y direction
-                    if not movement.speed.y == 0:
-                        moveUntilCollision(entity, 0, target_delta_y - pos_offset_y, map_rsc, entities)
-
-                # Cancel all y movement
-                else:
-                    movement.speed.y = 0
-                    # Try to continue moving in x direction
-                    if not movement.speed.x == 0:
-                        moveUntilCollision(entity, target_delta_x - pos_offset_x, 0, map_rsc, entities)
+            if map.map.tiles[cell_y][cell_x].isSolid():
+                pygame.draw.circle(screen, (255, 0, 255),
+                                   (x_to_px(cell_x + 0.5),
+                                    y_to_px(cell_y + 0.5)),
+                                   8)
 
                 # Call the collision handler
-                if not collision_direction == CollisionDirection.Top:
-                    if tile_collider.tileBottomLeftRightCollisionEventHandler is not None:
-                        tile_collider.tileBottomLeftRightCollisionEventHandler(entity, collision_direction,
-                                                                               (cell_x, cell_y), entities)
-                else:
-                    if tile_collider.tileTopCollisionEventHandler is not None:
-                        tile_collider.tileTopCollisionEventHandler(entity, (cell_x, cell_y), entities)
 
-                # Cancel all movement
+                pygame.draw.rect(screen, (0, 255, 0),
+                                 (x_to_px(transform.position.x + pos_offset_x),
+                                  y_to_px(transform.position.y + pos_offset_y) - 80, 80, 80),
+                                 2)
+
+                if collision_direction in [CollisionDirection.Right, CollisionDirection.Left]:
+                    movement.speed.x = 0
+                    movement.acceleration.x = 0
+                else:
+                    movement.speed.y = 0
+                    movement.acceleration.y = 0
 
                 collided = True
                 break
@@ -181,23 +209,33 @@ def moveUntilCollision(entity: Any, target_delta_x: float, target_delta_y: float
             break
 
 
-class MovementSystem(System):
-    def __init__(self, entities: EntityManager):
-        self.entities = entities
+if __name__ == "__main__":
+    pygame.init()
+    pygame.display.set_caption("Super Chicken 16")
 
-    def update(self):
-        time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
-        map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
+    screen = pygame.display.set_mode((16 * 80, 9 * 80))
+    clock = pygame.time.Clock()
 
-        for entity in self.entities.get_with_component(MovementComponent, TransformComponent):
-            movement: MovementComponent = entity
-            transform: TransformComponent = entity
-            movement.speed += movement.acceleration * time_rsc.deltaTime
+    entity = PlayerData(Vec2(5.1, 2.3)).deserialize()
+    m = Map.load("rsc/Maps/Level1")
 
-            # No tile collision
-            if not isinstance(entity, TileColliderComponent):
-                transform.position += movement.speed * time_rsc.deltaTime
-                return
+    while True:
+        screen.fill((255, 255, 255))
+        clock.tick_busy_loop(10)
 
-            target_delta_position = movement.speed * time_rsc.deltaTime
-            moveUntilCollision(entity, target_delta_position.x, target_delta_position.y, map_rsc, self.entities)
+        for event in pygame.event.get():
+            event_type = event.type
+            event_key = getattr(event, 'key', None)
+
+            # Quit game
+            if event_type == QUIT or event_key == K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+
+        moveUntilCollision(entity, pygame.mouse.get_pos()[0] / 80 - entity.position.x,
+                           8 - pygame.mouse.get_pos()[1] / 80 - entity.position.y,
+                           MapResource(
+                               map=m
+                           ), screen)
+
+        pygame.display.flip()

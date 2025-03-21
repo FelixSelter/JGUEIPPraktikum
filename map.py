@@ -6,7 +6,7 @@ from ecs_pattern import entity
 
 from assets import Assets
 from entities.tile_entity import TileEntity
-from util.math import Vec2
+from util.additional_math import Vec2
 
 
 class Tiles(Enum):

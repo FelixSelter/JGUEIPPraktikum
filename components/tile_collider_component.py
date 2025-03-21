@@ -3,12 +3,7 @@ from typing import Callable, Any
 
 from ecs_pattern import EntityManager, component
 
-
-class TileCollisionDirection(Enum):
-    Top = 0,
-    Bottom = 1,
-    Left = 2,
-    Right = 3
+from util import CollisionDirection
 
 
 @component
@@ -17,5 +12,12 @@ class TileColliderComponent:
     Prevents movable entities from entering tiles
     Requires HitboxComponent, MovementComponent
     """
-    tileCollisionEventHandler: Callable[[Any, TileCollisionDirection,
-                                         EntityManager], None] | None  # tileCollisionEventHandler(this,direction,entities)
+    # tileBottomLeftRightCollisionEventHandler(this,direction,tile,entities)
+    # not executed if colliding with the top of tiles like walking on the ground
+    tileBottomLeftRightCollisionEventHandler: Callable[[Any, CollisionDirection, (int, int),
+                                                        EntityManager], None] | None
+
+    # Only called if colliding with the top of tiles like walking on the ground
+    # tileTopCollisionEventHandler(this,tile,entities)
+    tileTopCollisionEventHandler: Callable[[Any, (int, int),
+                                            EntityManager], None] | None

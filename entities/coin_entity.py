@@ -5,7 +5,7 @@ from components.hitbox_component import HitboxComponent
 from components.sprite_component import SpriteComponent
 from components.transform_component import TransformComponent
 from components.treasure_component import TreasureComponent
-from util.math import Vec2
+from util.additional_math import Vec2
 
 
 @entity

@@ -1,3 +1,6 @@
+from math import floor, copysign
+
+
 class Vec2:
     x: float
     y: float
@@ -19,3 +22,14 @@ class Vec2:
             return Vec2(self.x * other, self.y * other)
         else:
             raise ValueError("Can only multiply Vec*float")
+
+    def __repr__(self):
+        return f"Vec2({self.x}|{self.y})"
+
+
+def fract(f):
+    return f - floor(f)
+
+
+def sign_zero(f):
+    return 0 if f == 0 else copysign(1, f)

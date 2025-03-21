@@ -6,7 +6,7 @@ from components.spawner_component import SpawnerComponent
 from components.sprite_component import SpriteComponent
 from components.transform_component import TransformComponent
 from entities.enemy_entity import EnemyType
-from util.math import Vec2
+from util.additional_math import Vec2
 
 
 @entity

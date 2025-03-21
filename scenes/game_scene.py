@@ -14,7 +14,6 @@ from systems.gravity_system import GravitySystem
 from systems.movement_system import MovementSystem
 from systems.purge_delete_buffer_system import PurgeDeleteBufferSystem
 from systems.rendering_system import RenderingSystem
-from systems.tile_collision_system import TileCollisionSystem
 from systems.time_system import TimeSystem
 
 
@@ -24,7 +23,6 @@ class GameScene(Scene):
             TimeSystem(self.entities),
             ControllerSystem(self.entities, pygame.event.get),
             MovementSystem(self.entities),
-            TileCollisionSystem(self.entities),
             CollisionSystem(self.entities),
             GravitySystem(self.entities),
             PurgeDeleteBufferSystem(self.entities),

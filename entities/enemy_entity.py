@@ -7,9 +7,10 @@ from components.hitbox_component import HitboxComponent
 from components.movement_component import MovementComponent
 from components.name_component import NameComponent
 from components.sprite_component import SpriteComponent
-from components.tile_collider_component import TileColliderComponent, TileCollisionDirection
+from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
-from util.math import Vec2
+from util import CollisionDirection
+from util.additional_math import Vec2
 from ecs_pattern import EntityManager, entity
 
 
@@ -32,11 +33,12 @@ class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColl
         return EnemyData(self.name, self.position)
 
 
-def enemyCollisionHandler(enemy: EnemyEntity, direction: TileCollisionDirection, entities: EntityManager):
-    if direction == TileCollisionDirection.Left:
+def enemyCollisionHandler(enemy: EnemyEntity, direction: CollisionDirection, tile: (int, int),
+                          entities: EntityManager):
+    if direction == CollisionDirection.Left:
         enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
         enemy.speed.x = -EnemyEntity.animals_dict[enemy.name]
-    elif direction == TileCollisionDirection.Right:
+    elif direction == CollisionDirection.Right:
         enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
         enemy.speed.x = EnemyEntity.animals_dict[enemy.name]
 
@@ -55,6 +57,7 @@ class EnemyData:
             sprite=Assets.get().enemyImg_pig,
             acceleration=Vec2(0, 0),
             speed=Vec2(-EnemyEntity.animals_dict[self.name], 0),
-            tileCollisionEventHandler=enemyCollisionHandler,
+            tileBottomLeftRightCollisionEventHandler=enemyCollisionHandler,
+            tileTopCollisionEventHandler=None,
             hitboxEventHandler=None
         )

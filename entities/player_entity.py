@@ -12,7 +12,7 @@ from components.sprite_component import SpriteComponent
 from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
 from entities.coin_entity import CoinEntity
-from util.math import Vec2
+from util.additional_math import Vec2
 
 
 @entity
@@ -34,14 +34,15 @@ class PlayerData:
 
     def deserialize(self):
         return PlayerEntity(
-            position=Vec2(3, 8),
+            position=self.position,
             width=1,
             height=1,
             sprite=Assets.get().playerImgs[0],
             acceleration=Vec2(0, 0),
             speed=Vec2(0, 0),
             hitboxEventHandler=playerCollisionHandler,
-            tileCollisionEventHandler=None,
+            tileBottomLeftRightCollisionEventHandler=None,
+            tileTopCollisionEventHandler=None,
             score=0,
             animations={"default": Animation(
                 [AnimationFrame(Assets.get().playerImgs[0], 0.3), AnimationFrame(Assets.get().playerImgs[1], 0.3),
