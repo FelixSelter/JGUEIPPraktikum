@@ -5,17 +5,17 @@ from pygame import Surface
 from animation import AnimationSystem
 from map import Map, MapResource
 from resources import CameraResource, TimeResource
-from scenes import Scene
-from systems.spawner_system import SpawnerSystem
-from systems.camera_movement_system import CameraMovementSystem
-from systems.collision_system import CollisionSystem
-from systems.control_system import ControllerSystem
-from systems.gravity_system import GravitySystem
-from systems.movement_system import MovementSystem
-from systems.purge_delete_buffer_system import PurgeDeleteBufferSystem
-from systems.rendering_system import RenderingSystem
-from systems.tile_collision_system import TileCollisionSystem
-from systems.time_system import TimeSystem
+from Scenes import Scene
+from Systems.spawner_system import SpawnerSystem
+from Systems.camera_movement_system import CameraMovementSystem
+from Systems.collision_system import CollisionSystem
+from Systems.control_system import ControllerSystem
+from Systems.gravity_system import GravitySystem
+from Systems.movement_system import MovementSystem
+from Systems.purge_delete_buffer_system import PurgeDeleteBufferSystem
+from Systems.rendering_system import RenderingSystem
+from Systems.tile_collision_system import TileCollisionSystem
+from Systems.time_system import TimeSystem
 
 
 class GameScene(Scene):
