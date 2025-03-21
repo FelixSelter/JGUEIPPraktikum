@@ -11,8 +11,19 @@ class Assets:
         self.playerImgs = [self.__load_img(f"rsc/img/example{i}.bmp") for i in range(3)]
 
         self.enemyImg_cow = self.__load_img("rsc/img/entities/cow.bmp")
-        self.enemyImg_pig = self.__load_img("rsc/img/entities/pig.bmp")
+        self.enemyImgs_cow_left = [self.__load_img(f"rsc/img/entities/cow_animated{i+1}.bmp") for i in range(2)]
+        self.enemyImgs_cow_right = [pygame.transform.flip(image, True, False) for image in self.enemyImgs_cow_left]
+
         self.enemyImg_sheep = self.__load_img("rsc/img/entities/sheep.bmp")
+        self.enemyImgs_sheep_left = [self.__load_img(f"rsc/img/entities/sheep_animated{i+1}.bmp") for i in range(3)]
+        self.enemyImgs_sheep_right = [pygame.transform.flip(image, True, False) for image in self.enemyImgs_sheep_left]
+
+        self.enemyImg_pig = self.__load_img("rsc/img/entities/pig.bmp")
+        self.enemyImgs_pig_left = [self.__load_img(f"rsc/img/entities/pig_animated{i+1}.bmp") for i in range(2)]
+        self.enemyImgs_pig_right = [pygame.transform.flip(image, True, False) for image in self.enemyImgs_pig_left]
+
+        self.roosterImg = self.__load_img("rsc/img/entities/rooster.bmp")
+        self.roosterImgs_jump = [self.__load_img(f"rsc/img/entities/rooster_jump{i+1}.bmp") for i in range(2)]
 
         self.coinImgs = [self.__load_img(f"rsc/img/objects/coin_animated{i+1}.bmp") for i in range(4)]
         self.shitImgs = [self.__load_img(f"rsc/img/objects/shit_animated{i+1}.bmp") for i in range(4)]
