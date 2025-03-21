@@ -3,7 +3,7 @@ import os
 import pygame
 
 from assets import Assets
-from Scenes import game_scene
+from Scenes.game_scene import GameScene
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
 
@@ -15,7 +15,7 @@ def App():
     screen = pygame.display.set_mode((16 * 80, 9 * 80))
     clock = pygame.time.Clock()
 
-    scene = game_scene(screen)
+    scene = GameScene(screen)
     scene.load()
     scene.start()
 
