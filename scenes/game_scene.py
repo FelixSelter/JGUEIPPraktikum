@@ -7,7 +7,7 @@ from resources import CameraResource, TimeResource
 from scenes import Scene
 from systems.spawner_system import SpawnerSystem
 from systems.camera_movement_system import CameraMovementSystem
-from systems.collision_system import CollisionSystem
+from systems.entity_collision_system import EntityCollisionSystem
 from systems.control_system import ControllerSystem
 from systems.gravity_system import GravitySystem
 from systems.movement_system import MovementSystem
@@ -22,7 +22,7 @@ class GameScene(Scene):
             TimeSystem(self.entities),
             ControllerSystem(self.entities, pygame.event.get),
             MovementSystem(self.entities),
-            CollisionSystem(self.entities),
+            EntityCollisionSystem(self.entities),
             GravitySystem(self.entities),
             PurgeDeleteBufferSystem(self.entities),
             AnimationSystem(self.entities),
@@ -43,8 +43,8 @@ class GameScene(Scene):
                 doUnPause=False,
             ),
             CameraResource(
-                screenWidthInTiles=16,
-                screenHeightInTiles=9,
+                screenWidthInTiles=16 * 2,
+                screenHeightInTiles=9 * 2,
                 x=0,
                 y=0
             ),

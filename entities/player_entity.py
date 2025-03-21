@@ -12,6 +12,8 @@ from components.sprite_component import SpriteComponent
 from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
 from entities.coin_entity import CoinEntity
+from entities.enemy_entity import EnemyEntity
+from util import CollisionDirection
 from util.additional_math import Vec2
 
 
@@ -22,10 +24,17 @@ class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, Hitbo
         return PlayerData(self.position)
 
 
-def playerCollisionHandler(player: PlayerEntity, item: Any, entities: EntityManager):
-    if isinstance(item, CoinEntity):
-        player.score += item.treasure
-        entities.delete_buffer_add(item)
+def playerCollisionHandler(player: PlayerEntity, other: Any, direction: CollisionDirection, entities: EntityManager):
+    if isinstance(other, CoinEntity):
+        player.score += other.treasure
+        entities.delete_buffer_add(other)
+
+    if isinstance(other, EnemyEntity):
+        if direction == CollisionDirection.Top:
+            player.speed.y = 10
+            entities.delete_buffer_add(other)
+        else:
+            exit()
 
 
 class PlayerData:
