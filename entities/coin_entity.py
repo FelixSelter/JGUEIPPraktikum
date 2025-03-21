@@ -6,10 +6,11 @@ from components.sprite_component import SpriteComponent
 from components.transform_component import TransformComponent
 from components.treasure_component import TreasureComponent
 from util.additional_math import Vec2
+from animation import AnimationComponent, Animation, AnimationFrame
 
 
 @entity
-class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureComponent):
+class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureComponent, AnimationComponent):
 
     def serialize(self):
         return CoinData(self.position, self.treasure)
@@ -25,7 +26,13 @@ class CoinData:
             position=self.position,
             width=0.5,
             height=0.5,
-            sprite=Assets.get().coinImg,
+            sprite=Assets.get().coinImgs[0],
             hitboxEventHandler=None,
-            treasure=1
+            treasure=1,
+            animations={"spinning": Animation(
+                [AnimationFrame(Assets.get().coinImgs[0], 0.1), AnimationFrame(Assets.get().coinImgs[1], 0.1),
+                 AnimationFrame(Assets.get().coinImgs[2], 0.1), AnimationFrame(Assets.get().coinImgs[3], 0.1)])},
+            activeAnimation="spinning",
+            currentTime=0,
+            loopAnimation=True
         )

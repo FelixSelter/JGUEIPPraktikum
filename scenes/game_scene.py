@@ -1,7 +1,6 @@
 import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface
-
 from animation import AnimationSystem
 from map import Map, MapResource
 from resources import CameraResource, TimeResource

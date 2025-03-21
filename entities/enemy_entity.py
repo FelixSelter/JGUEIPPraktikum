@@ -1,6 +1,5 @@
 from enum import Enum
 
-import pygame
 from assets import Assets
 from components.gravity_component import GravityComponent
 from components.hitbox_component import HitboxComponent
@@ -12,6 +11,7 @@ from components.transform_component import TransformComponent
 from util import CollisionDirection
 from util.additional_math import Vec2
 from ecs_pattern import EntityManager, entity
+from animation import AnimationComponent, Animation, AnimationFrame
 
 
 class EnemyType(Enum):
@@ -22,7 +22,7 @@ class EnemyType(Enum):
 
 @entity
 class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColliderComponent, GravityComponent,
-                  MovementComponent, NameComponent):
+                  MovementComponent, NameComponent, AnimationComponent):
     animals_dict = {
         "Cow": 3,
         "Pig": 2,
@@ -36,10 +36,12 @@ class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColl
 def enemyCollisionHandler(enemy: EnemyEntity, direction: CollisionDirection, tile: (int, int),
                           entities: EntityManager):
     if direction == CollisionDirection.Left:
-        enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
+        # enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
+        enemy.activeAnimation = "walking_left"
         enemy.speed.x = -EnemyEntity.animals_dict[enemy.name]
     elif direction == CollisionDirection.Right:
-        enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
+        # enemy.sprite = pygame.transform.flip(enemy.sprite, True, False)
+        enemy.activeAnimation = "walking_right"
         enemy.speed.x = EnemyEntity.animals_dict[enemy.name]
 
 
@@ -54,10 +56,20 @@ class EnemyData:
             position=self.position,
             width=1,
             height=1,
-            sprite=Assets.get().enemyImg_pig,
+            sprite=Assets.get().enemyImgsDict[self.name][0][0],
             acceleration=Vec2(0, 0),
             speed=Vec2(-EnemyEntity.animals_dict[self.name], 0),
             tileBottomLeftRightCollisionEventHandler=enemyCollisionHandler,
             tileTopCollisionEventHandler=None,
-            hitboxEventHandler=None
+            hitboxEventHandler=None,
+            animations={
+                "walking_left": Animation(
+                    [AnimationFrame(Assets.get().enemyImgsDict[self.name][0][i], 0.1) for i in
+                     range(len(Assets.get().enemyImgsDict[self.name][0]))]),
+                "walking_right": Animation(
+                    [AnimationFrame(Assets.get().enemyImgsDict[self.name][1][i], 0.1) for i in
+                     range(len(Assets.get().enemyImgsDict[self.name][1]))])},
+            activeAnimation="walking_left",
+            currentTime=0,
+            loopAnimation=True
         )

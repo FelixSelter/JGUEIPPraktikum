@@ -20,6 +20,6 @@ class SpawnerSystem(System):
             spawner.spawnCounter += time_rsc.deltaTime
             if spawner.spawnCounter >= spawner.spawnDelay:
                 spawner.spawnCounter = 0
-                enemy_array.append(EnemyData(spawner.enemyType.value, Vec2(8, 4)).deserialize())
+                enemy_array.append(EnemyData(spawner.enemyType.value, Vec2(entity.position.x-1, entity.position.y)).deserialize())
 
         self.entities.add(*enemy_array)
