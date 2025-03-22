@@ -33,11 +33,11 @@ class Tiles(Enum):
 
 
 class Map:
-    def __init__(self, tiles: List[List[Tiles]], entityData: List):
+    def __init__(self, tiles: List[List[Tiles]], entity_data: List):
         self.tiles = tiles  # [row][col]
         self.height = len(tiles)
-        self.width = len(tiles[0])
-        self.entityData = entityData
+        self.width = len(tiles[0]) if not self.height == 0 else 0
+        self.entity_data = entity_data
 
     def save(self, path: str):
         with open(path, "wb") as outfile:
@@ -62,7 +62,7 @@ class Map:
                     sprite=tile.getSprite()
                 ))
 
-        entities = [entity.deserialize() for entity in self.entityData]
+        entities = [entity.deserialize() for entity in self.entity_data]
 
         return tiles, entities
 
