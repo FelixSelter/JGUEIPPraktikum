@@ -8,4 +8,4 @@ class ClickableComponent:
     """
     Requires either HitBoxComponent or TileComponent
     """
-    click_event_handler: Callable[[Any, (float, float)], None]
+    click_event_handler: Callable[[Any], None] | None

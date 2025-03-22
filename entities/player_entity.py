@@ -4,6 +4,7 @@ from ecs_pattern import entity, EntityManager
 
 from animation import AnimationComponent, Animation, AnimationFrame
 from assets import Assets
+from components.clickable_component import ClickableComponent
 from components.gravity_component import GravityComponent
 from components.hitbox_component import HitboxComponent
 from components.movement_component import MovementComponent
@@ -19,7 +20,7 @@ from util.additional_math import Vec2
 
 @entity
 class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, TileColliderComponent,
-                   GravityComponent, ScoreComponent, AnimationComponent):
+                   GravityComponent, ScoreComponent, AnimationComponent, ClickableComponent):
     def serialize(self):
         return PlayerData(self.position)
 
@@ -58,5 +59,6 @@ class PlayerData:
                  AnimationFrame(Assets.get().playerImgs[2], 0.3)])},
             activeAnimation="default",
             currentTime=0,
-            loopAnimation=True
+            loopAnimation=True,
+            click_event_handler=None
         )
