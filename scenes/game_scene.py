@@ -2,9 +2,11 @@ import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface
 from animation import AnimationSystem
+from events import EventParsingSystem, MouseEventName, KeyboardEventName
 from map import Map, MapResource
 from resources import CameraResource, TimeResource
 from scenes import Scene
+from systems.click_event_system import ClickEventSystem
 from systems.spawner_system import SpawnerSystem
 from systems.camera_movement_system import CameraMovementSystem
 from systems.entity_collision_system import EntityCollisionSystem
@@ -18,9 +20,20 @@ from systems.time_system import TimeSystem
 
 class GameScene(Scene):
     def __init__(self, screen: Surface):
+        click_event_system = ClickEventSystem(self.entities)
+        controller_system = ControllerSystem(self.entities, pygame.event.get)
+
         self.system_manager: SystemManager = SystemManager([
+            EventParsingSystem(screen, self.entities, {
+                MouseEventName.MouseButtonUp: [click_event_system.click_event_handler],
+                MouseEventName.MouseButtonDown: [click_event_system.click_event_handler],
+                MouseEventName.MouseDragEnd: [click_event_system.click_event_handler],
+                KeyboardEventName.KeyDown: [controller_system.keypress_event_handler],
+                KeyboardEventName.KeyUp: [controller_system.keypress_event_handler],
+            }),
             TimeSystem(self.entities),
-            ControllerSystem(self.entities, pygame.event.get),
+            click_event_system,
+            controller_system,
             MovementSystem(self.entities),
             EntityCollisionSystem(self.entities),
             GravitySystem(self.entities),
