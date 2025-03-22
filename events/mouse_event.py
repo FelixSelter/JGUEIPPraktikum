@@ -47,7 +47,7 @@ class MouseEvent(Event):
         def px_to_world_pos(px_x: int, px_y: int):
             x = px_x / tile_width
             y = (screen_height - px_y) / tile_height  # Invert y
-            return x, y
+            return x + camera.x, y + camera.y
 
         self.world_start_pos = px_to_world_pos(*px_start_pos)
         self.world_end_pos = px_to_world_pos(*px_end_pos)
