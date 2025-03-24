@@ -168,7 +168,7 @@
       }
     }
   },
-  "#spawner-egg": {
+  "#button-spawner": {
     "colours": {
       "hovered_border": "rgb(255,0,0)"
     },
