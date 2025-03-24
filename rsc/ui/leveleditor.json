@@ -98,7 +98,7 @@
       }
     }
   },
-  "#spawner-egg": {
+  "#button-spawner": {
     "images": {
       "normal_image": {
         "path": "rsc/img/objects/spawner/spawner-60x60.png"
