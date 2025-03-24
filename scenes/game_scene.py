@@ -46,7 +46,7 @@ class GameScene(Scene):
         ])
 
     def load(self):
-        m = Map.load("rsc/Maps/40.map")
+        m = Map.load("rsc/Maps/Level1")
         tiles, entities = m.parse()
 
         self.entities.add(
@@ -57,8 +57,8 @@ class GameScene(Scene):
                 doUnPause=False,
             ),
             CameraResource(
-                screenWidthInTiles=16,# * 2,
-                screenHeightInTiles=9,#  * 2,
+                screenWidthInTiles=16,  # * 2,
+                screenHeightInTiles=9,  # * 2,
                 x=0,
                 y=0,
                 ui_manager=self.ui_manager
