@@ -55,8 +55,7 @@ class PlayerData:
             tileTopCollisionEventHandler=None,
             score=0,
             animations={"default": Animation(
-                [AnimationFrame(Assets.get().playerImgs[0], 0.3), AnimationFrame(Assets.get().playerImgs[1], 0.3),
-                 AnimationFrame(Assets.get().playerImgs[2], 0.3)])},
+                [AnimationFrame(Assets.get().playerImgs[i], 0.3) for i in range(len(Assets.get().playerImgs))])},
             activeAnimation="default",
             currentTime=0,
             loopAnimation=True,

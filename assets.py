@@ -8,7 +8,8 @@ instance = None
 class Assets:
 
     def __load_all_assets(self):
-        self.playerImgs = [self.__load_img(f"rsc/img/example{i}.bmp") for i in range(3)]
+        #self.playerImgs = [self.__load_img(f"rsc/img/example{i}.bmp") for i in range(3)]
+        self.playerImgs = [self.__load_img(f"rsc/img/entities/rooster/rooster_jump{i+1}.png") for i in range(2)]
 
         self.enemyImg_cow = self.__load_img("rsc/img/entities/cow/cow.bmp")
         self.enemyImgs_cow_left = [self.__load_img(f"rsc/img/entities/cow/cow_animated{i + 1}.bmp") for i in range(2)]
