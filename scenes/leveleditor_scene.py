@@ -140,14 +140,16 @@ class LevelEditorScene(Scene):
                 continue
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
-                     container=scrolling_container, object_id=ObjectID(object_id=f"#button-{tile.value}"),
+                     container=scrolling_container,
+                     object_id=ObjectID(class_id="@button-leveleditor", object_id=f"#button-{tile.value}"),
                      tool_tip_text=tile.value)
             i += 1
 
         for obj in ["coin", "egg", "spawner"]:
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
-                     container=scrolling_container, object_id=ObjectID(object_id=f"#button-{obj}"),
+                     container=scrolling_container,
+                     object_id=ObjectID(class_id="@button-leveleditor", object_id=f"#button-{obj}"),
                      tool_tip_text=obj)
             i += 1
 
