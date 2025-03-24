@@ -92,7 +92,7 @@ class LevelEditorScene(Scene):
                 e.click_event_handler = self.entity_click_handler
                 self.entities.add(e)
             case "spawner":
-                pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
+                pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
                 d = SpawnerData(pos, 5, "Sheep")
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()

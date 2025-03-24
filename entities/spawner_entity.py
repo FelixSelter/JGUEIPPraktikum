@@ -1,6 +1,7 @@
 from ecs_pattern import entity
 
 from assets import Assets
+from components.clickable_component import ClickableComponent
 from components.spawner_component import SpawnerComponent
 from components.sprite_component import SpriteComponent
 from components.transform_component import TransformComponent
@@ -9,7 +10,7 @@ from util.additional_math import Vec2
 
 
 @entity
-class SpawnerEntity(SpriteComponent, TransformComponent, SpawnerComponent):
+class SpawnerEntity(SpriteComponent, TransformComponent, SpawnerComponent, ClickableComponent):
     def serialize(self):
         return SpawnerData(self.position, self.spawnDelay, self.enemyType, self.spawnTile)
 
@@ -29,5 +30,6 @@ class SpawnerData:
             spawnCounter=0,
             spawnDelay=self.spawnDelay,
             enemyType=self.enemyType,
-            spawnTile=list()
+            spawnTile=list(),
+            click_event_handler=None
         )
