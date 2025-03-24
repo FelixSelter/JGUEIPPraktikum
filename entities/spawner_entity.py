@@ -26,7 +26,7 @@ class SpawnerData:
             position=self.position,
             width=1,
             height=1,
-            sprite=Assets.get().playerImgs[1],
+            sprite=Assets.get().spawnerImg,
             spawnCounter=0,
             spawnDelay=self.spawnDelay,
             enemyType=self.enemyType,
