@@ -39,6 +39,8 @@ class Assets:
 
 
         self.backgroundMusic = self.__load_audio('rsc/sounds/cyber-farm-271090.mp3', 0.5)
+        self.coinCollection = self.__load_audio('rsc/sounds/coin-collection-6075.mp3', 1)
+        self.eggCollection = self.__load_audio('rsc/sounds/level-win-6416.mp3', 1)
 
         self.enemyImgsDict = {"Cow": [self.enemyImgs_cow_left, self.enemyImgs_cow_right],
                               "Pig": [self.enemyImgs_pig_left, self.enemyImgs_pig_right],

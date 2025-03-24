@@ -1,6 +1,7 @@
 from typing import Any
 
 from ecs_pattern import entity, EntityManager
+import pygame
 
 from animation import AnimationComponent, Animation, AnimationFrame
 from assets import Assets
@@ -28,8 +29,10 @@ class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, Hitbo
 def playerCollisionHandler(player: PlayerEntity, other: Any, direction: CollisionDirection, entities: EntityManager):
     if isinstance(other, CoinEntity):
         if other.treasure == 42:
+            pygame.mixer.Sound.play(Assets.get().eggCollection)
             print("You win!")
         else:
+            pygame.mixer.Sound.play(Assets.get().coinCollection)
             player.score += other.treasure
         entities.delete_buffer_add(other)
 
