@@ -57,8 +57,8 @@ class GameScene(Scene):
                 doUnPause=False,
             ),
             CameraResource(
-                screenWidthInTiles=16 * 2,
-                screenHeightInTiles=9 * 2,
+                screenWidthInTiles=16,# * 2,
+                screenHeightInTiles=9,#  * 2,
                 x=0,
                 y=0,
                 ui_manager=self.ui_manager

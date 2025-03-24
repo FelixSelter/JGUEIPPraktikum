@@ -19,21 +19,22 @@ class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureC
 
 
 class CoinData:
-    def __init__(self, position: Vec2, treasure: int):
+    def __init__(self, position: Vec2, treasure: int, sprite: str):
         self.position = position
         self.treasure = treasure
+        self.sprite = sprite
 
     def deserialize(self):
         return CoinEntity(
             position=self.position,
             width=0.5,
             height=0.5,
-            sprite=Assets.get().coinImgs[0],
+            sprite=Assets.get().collectibleImgsDict[self.sprite][0],
             hitboxEventHandler=None,
-            treasure=1,
+            treasure=self.treasure,
             animations={"spinning": Animation(
-                [AnimationFrame(Assets.get().coinImgs[0], 0.1), AnimationFrame(Assets.get().coinImgs[1], 0.1),
-                 AnimationFrame(Assets.get().coinImgs[2], 0.1), AnimationFrame(Assets.get().coinImgs[3], 0.1)])},
+                [AnimationFrame(Assets.get().collectibleImgsDict[self.sprite][i], 0.1) for i in
+                 range(len(Assets.get().collectibleImgsDict[self.sprite]))])},
             activeAnimation="spinning",
             currentTime=0,
             loopAnimation=True,

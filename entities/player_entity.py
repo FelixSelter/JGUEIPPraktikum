@@ -1,6 +1,7 @@
 from typing import Any
 
 from ecs_pattern import entity, EntityManager
+import pygame
 
 from animation import AnimationComponent, Animation, AnimationFrame
 from assets import Assets
@@ -27,7 +28,12 @@ class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, Hitbo
 
 def playerCollisionHandler(player: PlayerEntity, other: Any, direction: CollisionDirection, entities: EntityManager):
     if isinstance(other, CoinEntity):
-        player.score += other.treasure
+        if other.treasure == 42:
+            pygame.mixer.Sound.play(Assets.get().eggCollection)
+            print("You win!")
+        else:
+            pygame.mixer.Sound.play(Assets.get().coinCollection)
+            player.score += other.treasure
         entities.delete_buffer_add(other)
 
     if isinstance(other, EnemyEntity):
@@ -35,7 +41,8 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
             player.speed.y = 10
             entities.delete_buffer_add(other)
         else:
-            exit()
+            entities.delete_buffer_add(player)
+            #exit()
 
 
 class PlayerData:
@@ -55,8 +62,7 @@ class PlayerData:
             tileTopCollisionEventHandler=None,
             score=0,
             animations={"default": Animation(
-                [AnimationFrame(Assets.get().playerImgs[0], 0.3), AnimationFrame(Assets.get().playerImgs[1], 0.3),
-                 AnimationFrame(Assets.get().playerImgs[2], 0.3)])},
+                [AnimationFrame(Assets.get().playerImgs[i], 0.3) for i in range(len(Assets.get().playerImgs))])},
             activeAnimation="default",
             currentTime=0,
             loopAnimation=True,
