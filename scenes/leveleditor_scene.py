@@ -1,6 +1,7 @@
 from math import floor
 from random import randint
 
+import pygame.event
 from ecs_pattern import SystemManager
 from pygame import Surface, Rect
 from pygame_gui.core import ObjectID
@@ -16,6 +17,7 @@ from map import Map, MapResource, Tiles
 from resources import CameraResource, TimeResource
 from scenes import Scene
 from systems.click_event_system import ClickEventSystem
+from systems.leveleditor_control_system import LevelEditorControlSystem
 from systems.purge_delete_buffer_system import PurgeDeleteBufferSystem
 from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
@@ -113,17 +115,19 @@ class LevelEditorScene(Scene):
         self.screen = screen
 
         click_event_system = ClickEventSystem(self.entities, self.space_click_handler)
+        control_system = LevelEditorControlSystem(self.entities, pygame.event.get())
 
         self.system_manager: SystemManager = SystemManager([
             EventParsingSystem(screen, self.entities, {
                 MouseEventName.MouseButtonUp: [click_event_system.click_event_handler],
                 MouseEventName.MouseButtonDown: [click_event_system.click_event_handler],
                 MouseEventName.MouseDragEnd: [click_event_system.click_event_handler],
-                KeyboardEventName.KeyDown: [],
-                KeyboardEventName.KeyUp: [],
+                KeyboardEventName.KeyDown: [control_system.keypress_event_handler],
+                KeyboardEventName.KeyUp: [control_system.keypress_event_handler],
                 UiButtonEventName: [self.button_click_handler]
             }),
             click_event_system,
+            control_system,
             TimeSystem(self.entities),
             PurgeDeleteBufferSystem(self.entities),
             AnimationSystem(self.entities),
