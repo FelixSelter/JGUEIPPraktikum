@@ -32,6 +32,11 @@ class Assets:
         self.eggImgs = [self.__load_img(f"rsc/img/objects/egg/egg_animated{i + 1}.bmp") for i in range(4)]
         self.mushroomImgs = [self.__load_img(f"rsc/img/objects/mushroom/mushroom_animated{i + 1}.bmp") for i in
                              range(2)]
+        self.collectibleImgsDict = {"Coin": self.coinImgs,
+                              "Shit": self.shitImgs,
+                              "Egg": self.eggImgs,
+                              "Mushroom": self.mushroomImgs}
+
 
         self.backgroundMusic = self.__load_audio('rsc/sounds/cyber-farm-271090.mp3', 0.5)
 

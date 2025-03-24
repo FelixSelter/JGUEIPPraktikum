@@ -53,7 +53,7 @@ if __name__ == "__main__":
     ]
 
     entityData = [PlayerData(Vec2(3, 8)),
-                  CoinData(Vec2(5.25, 3.25), 1), SpawnerData(Vec2(10, 3), 5, EnemyType.Pig), SpawnerData(Vec2(6, 3), 5, EnemyType.Cow)]
+                  CoinData(Vec2(5.25, 3.25), 1, "Coin"), CoinData(Vec2(12.25, 3.25), 42, "Egg"), SpawnerData(Vec2(10, 3), 5, EnemyType.Pig), SpawnerData(Vec2(6, 3), 5, EnemyType.Cow)]
 
     m = Map(list(reversed(tiles)), entityData)
 

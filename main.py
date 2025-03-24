@@ -8,7 +8,6 @@ from scenes.leveleditor_scene import LevelEditorScene
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
 
-
 def App():
     pygame.init()
     pygame.display.set_caption("Super Chicken 16")

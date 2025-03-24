@@ -27,7 +27,10 @@ class PlayerEntity(SpriteComponent, TransformComponent, MovementComponent, Hitbo
 
 def playerCollisionHandler(player: PlayerEntity, other: Any, direction: CollisionDirection, entities: EntityManager):
     if isinstance(other, CoinEntity):
-        player.score += other.treasure
+        if other.treasure == 42:
+            print("You win!")
+        else:
+            player.score += other.treasure
         entities.delete_buffer_add(other)
 
     if isinstance(other, EnemyEntity):
@@ -35,7 +38,8 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
             player.speed.y = 10
             entities.delete_buffer_add(other)
         else:
-            exit()
+            entities.delete_buffer_add(player)
+            #exit()
 
 
 class PlayerData:
