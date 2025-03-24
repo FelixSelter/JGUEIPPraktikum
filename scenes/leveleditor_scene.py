@@ -24,8 +24,8 @@ from util.additional_math import Vec2
 class LevelEditorScene(Scene):
     current_item = None
 
-    def entity_click_handler(self, ):
-        pass
+    def entity_click_handler(self, entity):
+        self.entities.delete_buffer_add(entity)
 
     def button_click_handler(self, event: UiButtonEvent):
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
@@ -47,15 +47,16 @@ class LevelEditorScene(Scene):
         map_rsc.map.width = max(map_rsc.map.width, floor(event.world_start_pos.x) + 1)
 
         # Set the tile
+        tilemap_x, tilemap_y = floor(event.world_start_pos.x), floor(
+            event.world_start_pos.y)
+
         if event.button == MouseButton.Left:
-            if not map_rsc.map.tiles[map_rsc.map.height - 1 - floor(event.world_start_pos.y)][
-                       floor(event.world_start_pos.x)] == Tiles.Air:
+            if not map_rsc.map.tiles[tilemap_y][tilemap_x] == Tiles.Air:
                 return
 
             tile = Tiles(self.current_item)
 
-            map_rsc.map.tiles[map_rsc.map.height - 1 - floor(event.world_start_pos.y)][
-                floor(event.world_start_pos.x)] = tile
+            map_rsc.map.tiles[tilemap_y][tilemap_x] = tile
 
             self.entities.add(TileEntity(
                 position=Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y)),
@@ -66,8 +67,7 @@ class LevelEditorScene(Scene):
 
         # Delete the tile
         else:
-            map_rsc.map.tiles[map_rsc.map.height - floor(event.world_start_pos.y)][
-                floor(event.world_start_pos.x)] = Tiles.Air
+            map_rsc.map.tiles[tilemap_y][tilemap_x] = Tiles.Air
             for tile in self.entities.get_by_class(TileEntity):
                 if tile.position.x == floor(event.world_start_pos.x) and tile.position.y == floor(
                         event.world_start_pos.y):
@@ -78,7 +78,7 @@ class LevelEditorScene(Scene):
         match self.current_item:
             case "coin":
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
-                d = CoinData(pos, 1)
+                d = CoinData(pos, 1, "Coin")
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
