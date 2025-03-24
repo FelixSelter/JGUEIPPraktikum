@@ -154,5 +154,31 @@
         "path": "rsc/img/objects/coin/coin-60x60.png"
       }
     }
+  },
+  "#button-egg": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/egg/egg-60x60.png"
+      }
+    }
+  },
+  "#spawner-egg": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/spawner/spawner-60x60.png"
+      }
+    }
   }
 }

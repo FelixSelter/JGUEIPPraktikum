@@ -8,6 +8,7 @@ from pygame_gui.elements import UIScrollingContainer, UIButton
 
 from animation import AnimationSystem
 from entities.coin_entity import CoinData
+from entities.spawner_entity import SpawnerData
 from entities.tile_entity import TileEntity
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, MouseEvent, UiButtonEventName, UiButtonEvent, \
     MouseButton
@@ -78,7 +79,21 @@ class LevelEditorScene(Scene):
         match self.current_item:
             case "coin":
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
-                d = CoinData(pos, 1)
+                d = CoinData(pos, 1, "Coin")
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
+            case "egg":
+                pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
+                d = CoinData(pos, 1, "Egg")
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
+            case "spawner":
+                pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
+                d = SpawnerData(pos, 5, "Sheep")
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
@@ -129,7 +144,7 @@ class LevelEditorScene(Scene):
                      tool_tip_text=tile.value)
             i += 1
 
-        for obj in ["coin"]:
+        for obj in ["coin", "egg", "spawner"]:
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
                      container=scrolling_container, object_id=ObjectID(object_id=f"#button-{obj}"),
