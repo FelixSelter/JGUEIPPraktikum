@@ -1,6 +1,7 @@
 from ecs_pattern import entity
 
 from assets import Assets
+from components.clickable_component import ClickableComponent
 from components.hitbox_component import HitboxComponent
 from components.sprite_component import SpriteComponent
 from components.transform_component import TransformComponent
@@ -10,7 +11,8 @@ from animation import AnimationComponent, Animation, AnimationFrame
 
 
 @entity
-class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureComponent, AnimationComponent):
+class CoinEntity(SpriteComponent, TransformComponent, HitboxComponent, TreasureComponent, AnimationComponent,
+                 ClickableComponent):
 
     def serialize(self):
         return CoinData(self.position, self.treasure)
@@ -34,5 +36,6 @@ class CoinData:
                  AnimationFrame(Assets.get().coinImgs[2], 0.1), AnimationFrame(Assets.get().coinImgs[3], 0.1)])},
             activeAnimation="spinning",
             currentTime=0,
-            loopAnimation=True
+            loopAnimation=True,
+            click_event_handler=None
         )

@@ -1,10 +1,14 @@
 import sys
+from copy import copy
 from math import sqrt
 from typing import Callable, List, Dict, Any
 
 import pygame
 from ecs_pattern import System, EntityManager
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, Surface, QUIT
+from pygame_gui import UI_BUTTON_PRESSED
+
+from resources import CameraResource
 
 
 class Event:
@@ -13,10 +17,13 @@ class Event:
 
 from events.mouse_event import MouseEvent, MouseEventType, MouseButton, MouseEventName
 from events.keyboard_event import KeyboardEvent, KeyboardEventName, KeyboardEventType
+from events.ui_button_event import UiButtonEventName, UiButtonEvent
 
 
 class EventParsingSystem(System):
     min_drag_distance = 3
+    delayed_events = []
+    i = 0
 
     def __init__(self, screen: Surface, entities: EntityManager,
                  event_handlers: Dict[Any, List[Callable[[Event], None]]]):
@@ -37,7 +44,16 @@ class EventParsingSystem(System):
             handler(event)
 
     def update(self):
+        self.i += 1
+        camera: CameraResource = next(self.entities.get_with_component(CameraResource))
+
+        # Delay events so click can be cancelled by ui click
+        delayed_events = copy(self.delayed_events)
+        self.delayed_events.clear()
+
+        was_ui_click = False
         for event in pygame.event.get():
+            camera.ui_manager.process_events(event)
 
             if event.type == QUIT:
                 pygame.quit()
@@ -72,14 +88,22 @@ class EventParsingSystem(System):
                         # Send additional drag event
                         if sqrt((start_pos[0] - mouse_pos[0]) ** 2 + (
                                 start_pos[1] - mouse_pos[1]) ** 2) > self.min_drag_distance:
-                            self.emit_event(MouseEventName.MouseDragEnd,
-                                            MouseEvent(self.screen, self.entities, MouseButton(i),
-                                                       MouseEventType.DragEnd, start_pos,
-                                                       mouse_pos))
+                            self.delayed_events.append((MouseEventName.MouseDragEnd,
+                                                        MouseEvent(self.screen, self.entities, MouseButton(i),
+                                                                   MouseEventType.DragEnd, start_pos,
+                                                                   mouse_pos)))
 
-                        self.emit_event(MouseEventName.MouseButtonUp,
-                                        MouseEvent(self.screen, self.entities, MouseButton(i),
-                                                   MouseEventType.Released, mouse_pos,
-                                                   mouse_pos))
+                        self.delayed_events.append((MouseEventName.MouseButtonUp,
+                                                    MouseEvent(self.screen, self.entities, MouseButton(i),
+                                                               MouseEventType.Released, mouse_pos,
+                                                               mouse_pos)))
 
                         self.mouse_button_state[i] = (False, mouse_pos)
+
+            elif event.type == UI_BUTTON_PRESSED:
+                self.emit_event(UiButtonEventName, UiButtonEvent(event.ui_element))
+                was_ui_click = True
+
+        if not was_ui_click:
+            for name, event in delayed_events:
+                self.emit_event(name, event)

@@ -4,7 +4,7 @@ from pygame import Surface
 
 from components.sprite_component import SpriteComponent
 from components.transform_component import TransformComponent
-from resources import CameraResource
+from resources import CameraResource, TimeResource
 
 
 class RenderingSystem(System):
@@ -13,6 +13,7 @@ class RenderingSystem(System):
         self.screen = screen
 
     def update(self):
+        time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
         screenWidth, screenHeight = pygame.display.get_surface().get_size()
         camera: CameraResource = next(self.entities.get_by_class(CameraResource))
 
@@ -28,3 +29,6 @@ class RenderingSystem(System):
                 int((transform.position.x - camera.x) * tileWidthInPixel),
                 int(screenHeight - (
                         transform.position.y - camera.y) * tileHeightInPixel - transform.height * tileHeightInPixel)))
+
+        camera.ui_manager.update(time_rsc.deltaTime)
+        camera.ui_manager.draw_ui(self.screen)

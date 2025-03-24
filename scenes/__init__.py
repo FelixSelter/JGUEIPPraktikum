@@ -1,14 +1,19 @@
 from abc import abstractmethod
 
+import pygame_gui
 from ecs_pattern import EntityManager
+from pygame import Surface
 
 
 class Scene:
     entities = EntityManager()
     system_manager: None
 
+    def __init__(self, screen: Surface, theme: str):
+        self.ui_manager = pygame_gui.UIManager((screen.width, screen.height), theme)
+
     @abstractmethod
-    def create(self):
+    def load(self):
         pass
 
     def destroy(self):

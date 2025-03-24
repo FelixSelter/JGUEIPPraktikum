@@ -20,7 +20,8 @@ from systems.time_system import TimeSystem
 
 class GameScene(Scene):
     def __init__(self, screen: Surface):
-        click_event_system = ClickEventSystem(self.entities)
+        super().__init__(screen, None)
+        click_event_system = ClickEventSystem(self.entities, None)
         controller_system = ControllerSystem(self.entities, pygame.event.get)
 
         self.system_manager: SystemManager = SystemManager([
@@ -45,7 +46,7 @@ class GameScene(Scene):
         ])
 
     def load(self):
-        m = Map.load("rsc/Maps/Level1")
+        m = Map.load("rsc/Maps/40.map")
         tiles, entities = m.parse()
 
         self.entities.add(
@@ -59,7 +60,8 @@ class GameScene(Scene):
                 screenWidthInTiles=16 * 2,
                 screenHeightInTiles=9 * 2,
                 x=0,
-                y=0
+                y=0,
+                ui_manager=self.ui_manager
             ),
             MapResource(
                 map=m

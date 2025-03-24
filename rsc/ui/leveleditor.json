@@ -1,0 +1,158 @@
+{
+  "#button-dirt2": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/dirt2-60x60.png"
+      }
+    }
+  },
+  "#button-dirt": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/dirt-60x60.png"
+      }
+    }
+  },
+  "#button-dirt-bottom": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/dirt-bottom-60x60.png"
+      }
+    }
+  },
+  "#button-dirt-left": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/dirt-left-60x60.png"
+      }
+    }
+  },
+  "#button-dirt-left-corner": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/dirt-left-corner-60x60.png"
+      }
+    }
+  },
+  "#button-dirt-right": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/dirt-left-60x60.png"
+      }
+    }
+  },
+  "#button-dirt-right-corner": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/dirt-left-corner-60x60.png"
+      }
+    }
+  },
+  "#button-grass": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/grass-60x60.png"
+      }
+    }
+  },
+  "#button-grass-left": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/grass-left-60x60.png"
+      }
+    }
+  },
+  "#button-grass-right": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/grass-right-60x60.png"
+      }
+    }
+  },
+  "#button-hay": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/tiles/hay-60x60.png"
+      }
+    }
+  },
+  "#button-coin": {
+    "colours": {
+      "hovered_border": "rgb(255,0,0)"
+    },
+    "misc": {
+      "border_width": 3
+    },
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/coin/coin-60x60.png"
+      }
+    }
+  }
+}

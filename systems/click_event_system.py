@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Callable
 
 import pygame
 from ecs_pattern import System, EntityManager
@@ -14,22 +14,15 @@ from resources import CameraResource
 class ClickEventSystem(System):
     mouse_events: List[MouseEvent] = []
 
-    def __init__(self, entities: EntityManager):
+    def __init__(self, entities: EntityManager, space_click_handler: Callable[[MouseEvent], None] | None):
         self.entities = entities
-
-        # Unnecessarily iterating over events multiple times
-        # Getting the tile from a position efficiently
-        # Clicks into space where no entity is
-
-        # Event system parses pygame events once
-        # Calls the required handlers
-        # event bubbling and cancellation. If a sprite has been clicked we dont check for tiles if a tile has been clicked we dont check for space
-        # Tiles register themself upon creation
+        self.space_click_handler = space_click_handler
 
     def click_event_handler(self, event: MouseEvent) -> None:
         self.mouse_events.append(event)
 
     def update(self):
+
         for mouse_event in self.mouse_events:
             if not mouse_event.event_type == MouseEventType.Released:
                 continue
@@ -47,5 +40,9 @@ class ClickEventSystem(System):
             # Dont continue searching if we already found an entity
             if mouse_event.canceled:
                 break
+
+            # Check if clicked in space
+            if self.space_click_handler is not None:
+                self.space_click_handler(mouse_event)
 
         self.mouse_events.clear()

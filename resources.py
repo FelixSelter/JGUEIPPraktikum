@@ -1,4 +1,5 @@
 from ecs_pattern import entity
+from pygame_gui import UIManager
 
 
 @entity
@@ -15,3 +16,4 @@ class CameraResource:
     screenHeightInTiles: int  # number of tiles visible on screen
     x: float  # In tile coordinates
     y: float  # In tile coordinates
+    ui_manager: UIManager
