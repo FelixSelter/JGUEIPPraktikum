@@ -11,7 +11,7 @@ from util.additional_math import Vec2
 @entity
 class SpawnerEntity(SpriteComponent, TransformComponent, SpawnerComponent):
     def serialize(self):
-        return SpawnerData(self.position, self.spawnDelay, self.enemyType)
+        return SpawnerData(self.position, self.spawnDelay, self.enemyType, self.spawnTile)
 
 
 class SpawnerData:
@@ -22,11 +22,12 @@ class SpawnerData:
 
     def deserialize(self) -> SpawnerEntity:
         return SpawnerEntity(
-            position=Vec2(6, 3),
+            position=self.position,
             width=1,
             height=1,
             sprite=Assets.get().playerImgs[2],
             spawnCounter=0,
             spawnDelay=self.spawnDelay,
-            enemyType=self.enemyType
+            enemyType=self.enemyType,
+            spawnTile=list()
         )
