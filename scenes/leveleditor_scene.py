@@ -115,7 +115,7 @@ class LevelEditorScene(Scene):
                 self.entities.add(e)
             case "egg":
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
-                d = CoinData(pos, 1, "Egg")
+                d = CoinData(pos, 42, "Egg")
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
