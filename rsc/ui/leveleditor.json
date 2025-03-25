@@ -91,6 +91,20 @@
       }
     }
   },
+  "#button-shit": {
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/shit/shit-60x60.png"
+      }
+    }
+  },
+  "#button-mushroom": {
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/mushroom/mushroom-60x60.png"
+      }
+    }
+  },
   "#button-egg": {
     "images": {
       "normal_image": {

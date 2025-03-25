@@ -37,7 +37,7 @@ class SpawnerSystem(System):
                 spawner.spawnCounter = 0
                 if len(spawner.spawnTile) == 4:
                     randomTuple = random.choice(spawner.spawnTile)
-                    enemy_array.append(EnemyData(spawner.enemyType.value, Vec2(entity.position.x+randomTuple[0], entity.position.y+randomTuple[1])).deserialize())
+                    enemy_array.append(EnemyData(spawner.enemyType, Vec2(entity.position.x+randomTuple[0], entity.position.y+randomTuple[1])).deserialize())
                 else:
                     self.isTileFree(entity)
 
