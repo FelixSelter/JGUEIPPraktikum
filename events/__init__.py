@@ -4,7 +4,7 @@ from math import sqrt
 from typing import Callable, List, Dict, Any
 
 import pygame
-from ecs_pattern import System, EntityManager
+from ecs_pattern import System, EntityManager, entity
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, Surface, QUIT
 from pygame_gui import UI_BUTTON_PRESSED
 
@@ -18,6 +18,11 @@ class Event:
 from events.mouse_event import MouseEvent, MouseEventType, MouseButton, MouseEventName
 from events.keyboard_event import KeyboardEvent, KeyboardEventName, KeyboardEventType
 from events.ui_button_event import UiButtonEventName, UiButtonEvent
+
+
+@entity
+class EventManagerResource:
+    emit_event: Callable[[Any, Event], None]  # emit_event(event_name, event)
 
 
 class EventParsingSystem(System):

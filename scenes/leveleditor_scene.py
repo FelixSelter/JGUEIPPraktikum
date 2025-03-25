@@ -9,6 +9,7 @@ from pygame_gui.elements import UIScrollingContainer, UIButton
 
 from animation import AnimationSystem
 from entities.coin_entity import CoinData
+from entities.player_entity import PlayerData, PlayerEntity
 from entities.spawner_entity import SpawnerData
 from entities.tile_entity import TileEntity
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, MouseEvent, UiButtonEventName, UiButtonEvent, \
@@ -26,6 +27,7 @@ from util.additional_math import Vec2
 
 class LevelEditorScene(Scene):
     current_item = None
+    placed_player = False
 
     def entity_click_handler(self, entity):
         self.entities.delete_buffer_add(entity)
@@ -79,6 +81,16 @@ class LevelEditorScene(Scene):
     def place_entity(self, event: MouseEvent):
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
         match self.current_item:
+            case "player":
+                if self.placed_player:
+                    return
+                self.placed_player = True
+                pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
+                d = PlayerData(pos)
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
             case "coin":
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
                 d = CoinData(pos, 1, "Coin")
@@ -110,9 +122,10 @@ class LevelEditorScene(Scene):
         else:
             self.place_entity(event)
 
-    def __init__(self, screen: Surface):
+    def __init__(self, screen: Surface, map: str | None):
         super().__init__(screen, "rsc/ui/leveleditor.json")
         self.screen = screen
+        self.map = map
 
         click_event_system = ClickEventSystem(self.entities, self.space_click_handler)
         control_system = LevelEditorControlSystem(self.entities, pygame.event.get())
@@ -149,7 +162,7 @@ class LevelEditorScene(Scene):
                      tool_tip_text=tile.value)
             i += 1
 
-        for obj in ["coin", "egg", "spawner"]:
+        for obj in ["player", "coin", "egg", "spawner"]:
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
                      container=scrolling_container,
@@ -166,7 +179,11 @@ class LevelEditorScene(Scene):
     def load(self):
         self.create_ui()
 
-        m = Map([], [])
+        m = Map([], []) if self.map is None else Map.load(self.map)
+        tiles, entities = m.parse()
+
+        for entity in entities:
+            entity.click_event_handler = self.entity_click_handler
 
         self.entities.add(
             TimeResource(
@@ -184,5 +201,7 @@ class LevelEditorScene(Scene):
             ),
             MapResource(
                 map=m
-            )
+            ),
+            *tiles,
+            *entities
         )

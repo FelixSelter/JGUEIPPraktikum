@@ -16,12 +16,10 @@ def App():
     screen = pygame.display.set_mode((16 * 80, 9 * 80))
     clock = pygame.time.Clock()
 
-    # scene = GameScene(screen)
-    scene = LevelEditorScene(screen)
+    scene = GameScene(screen, "rsc/Maps/Level1")
+    # scene = LevelEditorScene(screen, "rsc/Maps/78.map")
     scene.load()
     scene.start()
-
-    pygame.mixer.Sound.play(Assets.get().backgroundMusic)
 
     while True:
         screen.fill((0, 0, 0))

@@ -15,6 +15,8 @@ from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
 from entities.coin_entity import CoinEntity
 from entities.enemy_entity import EnemyEntity
+from events import EventManagerResource
+from events.game_end_event import GameEndEventName, GameEndEvent, GameEndEventType
 from util import CollisionDirection
 from util.additional_math import Vec2
 
@@ -31,6 +33,8 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
         if other.treasure == 42:
             pygame.mixer.Sound.play(Assets.get().eggCollection)
             print("You win!")
+            next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameWon,
+                                                                         GameEndEvent(GameEndEventType.GameWon))
         else:
             pygame.mixer.Sound.play(Assets.get().coinCollection)
             player.score += other.treasure
@@ -41,8 +45,8 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
             player.speed.y = 10
             entities.delete_buffer_add(other)
         else:
-            entities.delete_buffer_add(player)
-            #exit()
+            next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameLost,
+                                                                         GameEndEvent(GameEndEventType.GameLost))
 
 
 class PlayerData:

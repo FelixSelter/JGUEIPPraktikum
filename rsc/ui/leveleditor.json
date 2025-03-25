@@ -104,5 +104,12 @@
         "path": "rsc/img/objects/spawner/spawner-60x60.png"
       }
     }
+  },
+  "#button-player": {
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/entities/rooster/rooster-60x60.png"
+      }
+    }
   }
 }
