@@ -19,7 +19,6 @@ class PowerUpSystem(System):
 
         for player in self.entities.get_with_component(PlayerComponent):
             player: PlayerEntity = player
-            print(len(player.statusEffects))
             for powerUp in player.statusEffects:
                 powerUp[0] -= time_rsc.deltaTime
                 if powerUp[0] <= 0:
