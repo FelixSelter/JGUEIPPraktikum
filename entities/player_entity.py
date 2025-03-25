@@ -66,10 +66,12 @@ class PlayerData:
             tileTopCollisionEventHandler=None,
             score=0,
             animations={"right": Animation(
-                [AnimationFrame(Assets.get().playerImgs_right[i], 0.3) for i in range(len(Assets.get().playerImgs_right))]),
+                [AnimationFrame(Assets.get().playerImgs_right[i], 0.3) for i in
+                 range(len(Assets.get().playerImgs_right))]),
                 "left": Animation(
-                [AnimationFrame(Assets.get().playerImgs_left[i], 0.3) for i in range(len(Assets.get().playerImgs_left))])
-                },
+                    [AnimationFrame(Assets.get().playerImgs_left[i], 0.3) for i in
+                     range(len(Assets.get().playerImgs_left))])
+            },
             activeAnimation="right",
             currentTime=0,
             loopAnimation=True,

@@ -50,4 +50,4 @@ class EntityCollisionSystem(System):
                         obj1.hitboxEventHandler(obj1, obj2, collision_direction, self.entities)
                     obj2: HitboxComponent = obj2
                     if obj2.hitboxEventHandler is not None:
-                        obj2.hitboxEventHandler(obj1, obj2, collision_direction.mirror(), self.entities)
+                        obj2.hitboxEventHandler(obj2, obj1, collision_direction.mirror(), self.entities)
