@@ -1,3 +1,6 @@
+from datetime import timedelta, datetime
+from math import floor
+
 import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface, Rect
@@ -24,18 +27,33 @@ from systems.movement_system import MovementSystem
 from systems.purge_delete_buffer_system import PurgeDeleteBufferSystem
 from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
+from util.additional_math import fract
 
 
 class GameScene(Scene):
 
     def game_end_handler(self, event: GameEndEvent):
-        if event.event_type == GameEndEventType.GameLost:
-            self.loose_panel.show()
-        else:
-            self.win_panel.show()
+        time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
 
+        treasure_sum = 0
         for player_entity in self.entities.get_by_class(PlayerEntity):
             self.entities.delete_buffer_add(player_entity)
+            treasure_sum += player_entity.score
+
+        text = UITextBox(
+            f'<font face=noto_sans pixel_size=30 color=#000000><effect id=eff1>Du hast {"gewonnen !!!" if event.event_type == GameEndEventType.GameWon else "verloren :("}!</effect></font><br><br><effect id="eff2"><font color=#000000 pixel_size=20>Deine Zeit: <body bgcolor=#990000>{int(time_rsc.totalTime // 60)}:{floor(time_rsc.totalTime)},{round(fract(time_rsc.totalTime) * 100)}</body><br>Erreichte Punkte: <body bgcolor=#990000>{treasure_sum}</body></font></effect>',
+            Rect((0, -self.screen.height // 5),
+                 (self.screen.width // 3, self.screen.height // 3)),
+            anchors={"center": "center"},
+            manager=self.ui_manager,
+            object_id=ObjectID(class_id="@textbox",
+                               object_id="#textbox-win"))
+        text.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag='eff1')
+        text.set_active_effect(TEXT_EFFECT_TYPING_APPEAR, effect_tag='eff2')
+
+        UIButton(
+            Rect(0, -self.screen.height // 5 + 80, self.screen.width // 6, 30), "Menü",
+            manager=self.ui_manager, anchors={"center": "center"})
 
     def __init__(self, screen: Surface, map: str):
         super().__init__(screen, "rsc/ui/gamescene.json")
@@ -69,8 +87,6 @@ class GameScene(Scene):
         ])
 
     def load(self):
-        self.create_ui()
-
         m = Map.load(self.map)
         tiles, entities = m.parse()
 
@@ -98,45 +114,6 @@ class GameScene(Scene):
             *entities
 
         )
-
-    def create_ui(self):
-        self.win_panel = UIPanel(Rect(0, 0, self.screen.width, self.screen.height), manager=self.ui_manager,
-                                 visible=False, object_id=ObjectID(class_id="@panel"))
-
-        win_text = UITextBox(
-            f'<font face=noto_sans pixel_size=30 color=#000000><effect id=eff1>Du hast gewonnen!</effect></font><br><br><effect id="eff2"><font color=#000000 pixel_size=20>Deine Zeit: <body bgcolor=#990000>00:00:00</body><br>Erreichte Punkte: <body bgcolor=#990000>100</body></font></effect>',
-            Rect((0, -self.screen.height // 5),
-                 (self.screen.width // 3, self.screen.height // 3)),
-            anchors={"center": "center"},
-            manager=self.ui_manager,
-            container=self.win_panel.get_container(),
-            object_id=ObjectID(class_id="@textbox",
-                               object_id="#textbox-win"))
-        win_text.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag='eff1')
-        win_text.set_active_effect(TEXT_EFFECT_TYPING_APPEAR, effect_tag='eff2')
-
-        UIButton(
-            Rect(0, -self.screen.height // 5 + 80, self.screen.width // 6, 30), "Menü",
-            manager=self.ui_manager, anchors={"center": "center"}, container=self.win_panel.get_container())
-
-        self.loose_panel = UIPanel(Rect(0, 0, self.screen.width, self.screen.height), manager=self.ui_manager,
-                                   visible=False, object_id=ObjectID(class_id="@panel"))
-
-        loose_text = UITextBox(
-            f'<font face=noto_sans pixel_size=30 color=#000000><effect id=eff1>Du hast verloren :(</effect></font><br><br><effect id="eff2"><font color=#000000 pixel_size=20>Deine Zeit: <body bgcolor=#990000>00:00:00</body><br>Erreichte Punkte: <body bgcolor=#990000>100</body></font></effect>',
-            Rect((0, -self.screen.height // 5),
-                 (self.screen.width // 3, self.screen.height // 3)),
-            anchors={"center": "center"},
-            manager=self.ui_manager,
-            container=self.loose_panel.get_container(),
-            object_id=ObjectID(class_id="@textbox",
-                               object_id="#textbox-win"))
-        loose_text.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag='eff1')
-        loose_text.set_active_effect(TEXT_EFFECT_TYPING_APPEAR, effect_tag='eff2')
-
-        UIButton(
-            Rect(0, -self.screen.height // 5 + 80, self.screen.width // 6, 30), "Menü",
-            manager=self.ui_manager, anchors={"center": "center"}, container=self.loose_panel.get_container())
 
     def start(self):
         super().start()

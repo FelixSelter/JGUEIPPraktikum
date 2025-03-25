@@ -9,7 +9,7 @@ from pygame_gui.elements import UIScrollingContainer, UIButton
 
 from animation import AnimationSystem
 from entities.coin_entity import CoinData
-from entities.player_entity import PlayerData, PlayerEntity
+from entities.player_entity import PlayerData
 from entities.spawner_entity import SpawnerData
 from entities.tile_entity import TileEntity
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, MouseEvent, UiButtonEventName, UiButtonEvent, \
