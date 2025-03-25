@@ -18,6 +18,7 @@ def App():
 
     scene = GameScene(screen, "rsc/Maps/Level1")
     # scene = LevelEditorScene(screen, "rsc/Maps/78.map")
+
     scene.load()
     scene.start()
 

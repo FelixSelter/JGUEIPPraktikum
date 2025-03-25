@@ -98,10 +98,24 @@
       }
     }
   },
-  "#button-spawner": {
+  "#button-spawner-pig": {
     "images": {
       "normal_image": {
-        "path": "rsc/img/objects/spawner/spawner-60x60.png"
+        "path": "rsc/img/objects/spawner/spawner-pig-60x60.png"
+      }
+    }
+  },
+  "#button-spawner-cow": {
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/spawner/spawner-cow-60x60.png"
+      }
+    }
+  },
+  "#button-spawner-sheep": {
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/spawner/spawner-sheep-60x60.png"
       }
     }
   },

@@ -105,7 +105,21 @@ class LevelEditorScene(Scene):
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
                 self.entities.add(e)
-            case "spawner":
+            case "spawner-pig":
+                pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
+                d = SpawnerData(pos, 5, "Pig")
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
+            case "spawner-cow":
+                pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
+                d = SpawnerData(pos, 5, "Cow")
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
+            case "spawner-sheep":
                 pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
                 d = SpawnerData(pos, 5, "Sheep")
                 map_rsc.map.entity_data.append(d)
@@ -162,7 +176,7 @@ class LevelEditorScene(Scene):
                      tool_tip_text=tile.value)
             i += 1
 
-        for obj in ["player", "coin", "egg", "spawner"]:
+        for obj in ["coin", "egg", "spawner-pig", "spawner-cow", "spawner-sheep"]:
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
                      container=scrolling_container,

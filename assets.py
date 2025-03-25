@@ -8,9 +8,12 @@ instance = None
 class Assets:
 
     def __load_all_assets(self):
-        self.playerImgs = [self.__load_img(f"rsc/img/entities/rooster/rooster{i}.png") for i in range(2)]
+        self.playerImgs_right = [self.__load_img(f"rsc/img/entities/rooster/rooster{i}.png") for i in range(2)]
+        self.playerImgs_left = [pygame.transform.flip(image, True, False) for image in self.playerImgs_right]
 
-        self.spawnerImg = self.__load_img("rsc/img/objects/spawner/spawner-16x16.png")
+        self.spawnerImg = {"Pig": self.__load_img("rsc/img/objects/spawner/spawner-pig-16x16.png"),
+                            "Cow": self.__load_img("rsc/img/objects/spawner/spawner-cow-16x16.png"),
+                            "Sheep": self.__load_img("rsc/img/objects/spawner/spawner-sheep-16x16.png")}
 
         self.enemyImg_cow = self.__load_img("rsc/img/entities/cow/cow-16x16.png")
         self.enemyImgs_cow_left = [self.__load_img(f"rsc/img/entities/cow/cow_animated{i + 1}-16x16.png") for i in
