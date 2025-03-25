@@ -16,8 +16,8 @@ def App():
     screen = pygame.display.set_mode((16 * 80, 9 * 80))
     clock = pygame.time.Clock()
 
-    scene = GameScene(screen, "rsc/Maps/Level1")
-    # scene = LevelEditorScene(screen, "rsc/Maps/78.map")
+    scene = GameScene(screen, "rsc/Maps/23.map")
+    #scene = LevelEditorScene(screen, "rsc/Maps/71.map")
 
     scene.load()
     scene.start()

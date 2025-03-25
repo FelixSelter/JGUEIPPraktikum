@@ -126,6 +126,13 @@ class LevelEditorScene(Scene):
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
                 self.entities.add(e)
+            case "player":
+                pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
+                d = PlayerEntity(pos)
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
 
     def space_click_handler(self, event: MouseEvent):
         if self.current_item is None:
@@ -176,7 +183,7 @@ class LevelEditorScene(Scene):
                      tool_tip_text=tile.value)
             i += 1
 
-        for obj in ["coin", "egg", "spawner-pig", "spawner-cow", "spawner-sheep"]:
+        for obj in ["coin", "egg", "spawner-pig", "spawner-cow", "spawner-sheep", "player"]:
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
                      container=scrolling_container,
