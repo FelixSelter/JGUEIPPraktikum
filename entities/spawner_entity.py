@@ -29,7 +29,7 @@ class SpawnerData:
             height=1,
             sprite=Assets.get().spawnerImg[self.enemyType],
             spawnCounter=0,
-            spawnDelay=10,  # self.spawnDelay,
+            spawnDelay=self.spawnDelay,
             enemyType=self.enemyType,
             spawnTile=list(),
             hitboxEventHandler=None,

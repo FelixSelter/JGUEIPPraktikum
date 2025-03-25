@@ -62,7 +62,7 @@ class GameScene(Scene):
         self.event_parsing_system = EventParsingSystem(screen, self.entities, {
             MouseEventName.MouseButtonUp: [click_event_system.click_event_handler],
             MouseEventName.MouseButtonDown: [click_event_system.click_event_handler],
-            MouseEventName.MouseDragEnd: [click_event_system.click_event_handler, self.game_end_handler],
+            MouseEventName.MouseDragEnd: [click_event_system.click_event_handler],
             KeyboardEventName.KeyDown: [controller_system.keypress_event_handler],
             KeyboardEventName.KeyUp: [controller_system.keypress_event_handler],
             GameEndEventName.GameLost: [self.game_end_handler],
