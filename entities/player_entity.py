@@ -54,16 +54,19 @@ class PlayerData:
             position=self.position,
             width=1,
             height=1,
-            sprite=Assets.get().playerImgs[0],
+            sprite=Assets.get().playerImgs_right[0],
             acceleration=Vec2(0, 0),
             speed=Vec2(0, 0),
             hitboxEventHandler=playerCollisionHandler,
             tileBottomLeftRightCollisionEventHandler=None,
             tileTopCollisionEventHandler=None,
             score=0,
-            animations={"default": Animation(
-                [AnimationFrame(Assets.get().playerImgs[i], 0.3) for i in range(len(Assets.get().playerImgs))])},
-            activeAnimation="default",
+            animations={"right": Animation(
+                [AnimationFrame(Assets.get().playerImgs_right[i], 0.3) for i in range(len(Assets.get().playerImgs_right))]),
+                "left": Animation(
+                [AnimationFrame(Assets.get().playerImgs_left[i], 0.3) for i in range(len(Assets.get().playerImgs_left))])
+                },
+            activeAnimation="right",
             currentTime=0,
             loopAnimation=True,
             click_event_handler=None

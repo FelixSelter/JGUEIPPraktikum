@@ -6,6 +6,7 @@ from ecs_pattern import System, EntityManager
 from pygame.locals import K_a, K_d, K_SPACE
 
 from components.movement_component import MovementComponent
+from components.sprite_component import SpriteComponent
 from entities.player_entity import PlayerEntity
 from events import KeyboardEvent, KeyboardEventType
 from resources import TimeResource
@@ -31,9 +32,10 @@ class ControllerSystem(System):
         self.keyboard_events.append(event)
 
     def update(self):
+        time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
         for player_entity in self.entities.get_by_class(PlayerEntity):
             player_entity: MovementComponent = player_entity
-            time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
+            sprite: SpriteComponent = player_entity
 
             for event in self.keyboard_events:
                 # Jumping
@@ -56,10 +58,12 @@ class ControllerSystem(System):
 
             # Stop right movement then move left
             elif self.movement_keys[K_a] and not self.movement_keys[K_d]:
+                player_entity.activeAnimation = "left"
                 horizontal_movement = HorizontalMovementType.AccelerateLeft if player_entity.speed.x <= 0 else HorizontalMovementType.Decelerate
 
             # Stop left movement then move right
             elif self.movement_keys[K_d] and not self.movement_keys[K_a]:
+                player_entity.activeAnimation = "right"
                 horizontal_movement = HorizontalMovementType.AccelerateRight if player_entity.speed.x >= 0 else HorizontalMovementType.Decelerate
 
             # Apply horizontal movement
