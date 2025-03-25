@@ -18,6 +18,7 @@ from map import Map, MapResource
 from resources import CameraResource, TimeResource
 from scenes import Scene
 from systems.click_event_system import ClickEventSystem
+from systems.power_up_system import PowerUpSystem
 from systems.spawner_system import SpawnerSystem
 from systems.camera_movement_system import CameraMovementSystem
 from systems.entity_collision_system import EntityCollisionSystem
@@ -83,7 +84,8 @@ class GameScene(Scene):
             AnimationSystem(self.entities),
             CameraMovementSystem(self.entities, screen),
             RenderingSystem(self.entities, screen),
-            SpawnerSystem(self.entities)
+            SpawnerSystem(self.entities),
+            PowerUpSystem(self.entities)
         ])
 
     def load(self):

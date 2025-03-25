@@ -34,13 +34,13 @@ class ControllerSystem(System):
     def update(self):
         time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
         for player_entity in self.entities.get_by_class(PlayerEntity):
-            player_entity: MovementComponent = player_entity
+            player_entity: PlayerEntity = player_entity
             sprite: SpriteComponent = player_entity
 
             for event in self.keyboard_events:
                 # Jumping
                 if event.key == K_SPACE and event.event_type == KeyboardEventType.KeyDown and player_entity.speed.y == 0:
-                    player_entity.speed.y = 15
+                    player_entity.speed.y = player_entity.jump
 
                 # Horizontal Controls
                 if event.key in self.movement_keys:
@@ -69,7 +69,6 @@ class ControllerSystem(System):
             # Apply horizontal movement
             deceleration = 30
             acceleration = 30
-            maxSpeed = 10
 
             player_entity.acceleration.x = 0
             match horizontal_movement:
@@ -85,15 +84,15 @@ class ControllerSystem(System):
                                                                 requiredStopAcceleration)  # apply max deceleration in the correct direction
 
                 case HorizontalMovementType.AccelerateLeft:
-                    if abs(player_entity.speed.x) >= maxSpeed:
-                        player_entity.speed.x = -maxSpeed
+                    if abs(player_entity.speed.x) >= player_entity.maxspeed:
+                        player_entity.speed.x = -player_entity.maxspeed
                         player_entity.acceleration.x = 0
                     else:
                         player_entity.acceleration.x = -acceleration
 
                 case HorizontalMovementType.AccelerateRight:
-                    if abs(player_entity.speed.x) >= maxSpeed:
-                        player_entity.speed.x = maxSpeed
+                    if abs(player_entity.speed.x) >= player_entity.maxspeed:
+                        player_entity.speed.x = player_entity.maxspeed
                         player_entity.acceleration.x = 0
                     else:
                         player_entity.acceleration.x = acceleration
