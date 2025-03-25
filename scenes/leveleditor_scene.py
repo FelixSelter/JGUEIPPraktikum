@@ -98,6 +98,20 @@ class LevelEditorScene(Scene):
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
                 self.entities.add(e)
+            case "shit":
+                pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
+                d = CoinData(pos, -1, "Shit")
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
+            case "mushroom":
+                pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
+                d = CoinData(pos, 10, "Mushroom")
+                map_rsc.map.entity_data.append(d)
+                e = d.deserialize()
+                e.click_event_handler = self.entity_click_handler
+                self.entities.add(e)
             case "egg":
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
                 d = CoinData(pos, 1, "Egg")
@@ -183,7 +197,7 @@ class LevelEditorScene(Scene):
                      tool_tip_text=tile.value)
             i += 1
 
-        for obj in ["coin", "egg", "spawner-pig", "spawner-cow", "spawner-sheep", "player"]:
+        for obj in ["coin", "shit", "mushroom", "egg", "spawner-pig", "spawner-cow", "spawner-sheep", "player"]:
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
                      container=scrolling_container,
