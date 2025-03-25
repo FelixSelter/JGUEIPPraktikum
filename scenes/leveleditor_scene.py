@@ -10,6 +10,7 @@ from pygame_gui.elements import UIScrollingContainer, UIButton
 from animation import AnimationSystem
 from entities.coin_entity import CoinData
 from entities.player_entity import PlayerData, PlayerEntity
+from entities.power_up_entity import PowerUpData
 from entities.spawner_entity import SpawnerData
 from entities.tile_entity import TileEntity
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, MouseEvent, UiButtonEventName, UiButtonEvent, \
@@ -109,14 +110,14 @@ class LevelEditorScene(Scene):
                 self.entities.add(e)
             case "mushroom":
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
-                d = CoinData(pos, 10, "Mushroom")
+                d = PowerUpData(pos, 5, "Mushroom")
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
                 self.entities.add(e)
             case "egg":
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
-                d = CoinData(pos, 1, "Egg")
+                d = CoinData(pos, 42, "Egg")
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler

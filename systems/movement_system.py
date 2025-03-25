@@ -9,6 +9,8 @@ from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
 from map import MapResource
 from resources import TimeResource
+from events import EventManagerResource
+from events.game_end_event import GameEndEventName, GameEndEvent, GameEndEventType
 from util import CollisionDirection
 from util.additional_math import sign_zero, fract
 
@@ -201,3 +203,8 @@ class MovementSystem(System):
 
             target_delta_position = movement.speed * time_rsc.deltaTime
             moveUntilCollision(entity, target_delta_position.x, target_delta_position.y, map_rsc, self.entities)
+
+            # Above 0
+            if transform.position.y < 0:
+                next(self.entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameLost,
+                                                                             GameEndEvent(GameEndEventType.GameLost))
