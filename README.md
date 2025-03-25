@@ -13,15 +13,14 @@
 - [x] Scenes
 - [ ] Click event
 - [ ] UI renderer
-- [ ] Goal
+- [x] Goal
 
 ### Features
 
 - [ ] Map loading/saving abstraction
 - [ ] Backgrounds
-- [ ] Coin sound
-- [ ] Score
-- [ ] Health
+- [x] Coin sound
+- [x] Score
 
 ### Neue Entities einfügen
 
