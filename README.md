@@ -21,6 +21,7 @@
 - [ ] Backgrounds
 - [x] Coin sound
 - [x] Score
+- [x] PowerUps
 
 ### Neue Entities einfügen
 
