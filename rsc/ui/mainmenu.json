@@ -1,0 +1,24 @@
+{
+  "#panel": {
+    "colours": {
+      "dark_bg": "#EEEFEF",
+      "normal_border": "#884422"
+    },
+    "misc": {
+      "border_width": "6",
+      "padding": "5,5",
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+  "#title": {
+    "colours": {
+      "normal_text": "rgb(101,93,231),rgb(0,212,255),rgb(0,255,181),60",
+      "dark_bg": "rgba(0,0,0,0)",
+      "normal_border": "rgba(0,0,0,0)"
+    },
+    "misc": {
+      "text_horiz_alignment": "center"
+    }
+  }
+}

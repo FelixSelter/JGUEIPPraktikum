@@ -1,22 +1,22 @@
-from datetime import timedelta, datetime
 from math import floor
 
 import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface, Rect
-from pygame_gui import TEXT_EFFECT_TYPING_APPEAR, TEXT_EFFECT_FADE_IN, TEXT_EFFECT_BOUNCE, TEXT_EFFECT_TILT, \
-    TEXT_EFFECT_EXPAND_CONTRACT
+from pygame_gui import TEXT_EFFECT_TYPING_APPEAR, TEXT_EFFECT_EXPAND_CONTRACT
 from pygame_gui.core import ObjectID
-from pygame_gui.elements import UITextBox, UIButton, UIPanel
+from pygame_gui.elements import UITextBox, UIButton
 
 from animation import AnimationSystem
+from app import app
 from assets import Assets
 from entities.player_entity import PlayerEntity
-from events import EventParsingSystem, MouseEventName, KeyboardEventName, EventManagerResource
+from events import EventParsingSystem, MouseEventName, KeyboardEventName, EventManagerResource, UiButtonEventName
 from events.game_end_event import GameEndEvent, GameEndEventType, GameEndEventName
 from map import Map, MapResource
 from resources import CameraResource, TimeResource
 from scenes import Scene
+from scenes.mainmenu_scene import MainMenuScene
 from systems.click_event_system import ClickEventSystem
 from systems.spawner_system import SpawnerSystem
 from systems.camera_movement_system import CameraMovementSystem
@@ -46,14 +46,16 @@ class GameScene(Scene):
                  (self.screen.width // 3, self.screen.height // 3)),
             anchors={"center": "center"},
             manager=self.ui_manager,
-            object_id=ObjectID(class_id="@textbox",
-                               object_id="#textbox-win"))
+            object_id=ObjectID(class_id="@textbox"))
         text.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag='eff1')
         text.set_active_effect(TEXT_EFFECT_TYPING_APPEAR, effect_tag='eff2')
 
         UIButton(
             Rect(0, -self.screen.height // 5 + 80, self.screen.width // 6, 30), "Menü",
             manager=self.ui_manager, anchors={"center": "center"})
+
+    def menu_button_listener(self, _):
+        app.change_scene(MainMenuScene(app.screen))
 
     def __init__(self, screen: Surface, map: str):
         super().__init__(screen, "rsc/ui/gamescene.json")
@@ -66,7 +68,8 @@ class GameScene(Scene):
             KeyboardEventName.KeyDown: [controller_system.keypress_event_handler],
             KeyboardEventName.KeyUp: [controller_system.keypress_event_handler],
             GameEndEventName.GameLost: [self.game_end_handler],
-            GameEndEventName.GameWon: [self.game_end_handler]
+            GameEndEventName.GameWon: [self.game_end_handler],
+            UiButtonEventName: [self.menu_button_listener]
         })
         self.map = map
         self.screen = screen
@@ -117,4 +120,3 @@ class GameScene(Scene):
 
     def start(self):
         super().start()
-        pygame.mixer.Sound.play(Assets.get().backgroundMusic)

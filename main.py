@@ -2,32 +2,18 @@ import os
 
 import pygame
 
+from app import app
 from assets import Assets
-from scenes.game_scene import GameScene
-from scenes.leveleditor_scene import LevelEditorScene
+from scenes.mainmenu_scene import MainMenuScene
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
 
-
-def App():
-    pygame.init()
-    pygame.display.set_caption("Super Chicken 16")
-
-    screen = pygame.display.set_mode((16 * 80, 9 * 80))
-    clock = pygame.time.Clock()
-
-    scene = GameScene(screen, "rsc/Maps/77.map")
-    # scene = LevelEditorScene(screen, "rsc/Maps/23.map")
-
-    scene.load()
-    scene.start()
+if __name__ == '__main__':
+    pygame.mixer.Sound.play(Assets.get().backgroundMusic)
+    app.change_scene(MainMenuScene(app.screen))
 
     while True:
-        screen.fill((0, 0, 0))
-        clock.tick_busy_loop(60)
-        scene.update()
+        app.screen.fill((0, 0, 0))
+        app.clock.tick_busy_loop(60)
+        app.update()
         pygame.display.flip()
-
-
-if __name__ == '__main__':
-    App()

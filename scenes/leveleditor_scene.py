@@ -33,6 +33,8 @@ class LevelEditorScene(Scene):
         self.entities.delete_buffer_add(entity)
 
     def button_click_handler(self, event: UiButtonEvent):
+        if "#sliding_button" in event.button.object_ids:
+            return
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
         if event.button == self.save_button:
             map_rsc.map.save(f"{randint(0, 100)}.map")
@@ -46,11 +48,10 @@ class LevelEditorScene(Scene):
         while map_rsc.map.height <= floor(event.world_start_pos.y):
             map_rsc.map.tiles.append([])
             map_rsc.map.height += 1
-        for row in map_rsc.map.tiles:
-            while len(row) <= floor(event.world_start_pos.x):
-                row.append(Tiles.Air)
         map_rsc.map.width = max(map_rsc.map.width, floor(event.world_start_pos.x) + 1)
-        print(f"MAP EDITOR DEBUG: ({map_rsc.map.width})", [len(row) for row in map_rsc.map.tiles])
+        for row in map_rsc.map.tiles:
+            while len(row) < map_rsc.map.width:
+                row.append(Tiles.Air)
 
         # Set the tile
         tilemap_x, tilemap_y = floor(event.world_start_pos.x), floor(
@@ -186,7 +187,7 @@ class LevelEditorScene(Scene):
     def create_ui(self):
         scrolling_container = UIScrollingContainer(Rect(self.screen.width - 86, 0, 86, self.screen.height),
                                                    allow_scroll_x=False,
-                                                   should_grow_automatically=False)
+                                                   should_grow_automatically=False, manager=self.ui_manager)
         i = 0
         for tile in Tiles:
             if tile == Tiles.Air:
