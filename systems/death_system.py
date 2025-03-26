@@ -21,3 +21,5 @@ class DeathSystem(System):
                     self.entities.delete_buffer_add(entity)
 
         self.entities.delete_buffer_purge()
+        self.entities.add(*self.entities.add_buffer)
+        self.entities.add_buffer = []

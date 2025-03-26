@@ -1,7 +1,7 @@
 from ecs_pattern import entity, EntityManager
 
 from assets import Assets
-from attack import AttackComponent, Attack
+from timed_action import TimedActionComponent, TimedAction
 from components.clickable_component import ClickableComponent
 from components.gravity_component import GravityComponent
 from components.health_component import HealthComponent
@@ -15,28 +15,28 @@ from util.additional_math import Vec2
 from animation import AnimationComponent, Animation, AnimationFrame
 
 
-class SpawnReinforcementsAttack(Attack):
-    def __init__(self):
-        super().__init__(attack_delay=4)
-
-    def execute_attack(self, entities: EntityManager):
-        print("Spawn reinforcements")
-
-
-class TeleportAttack(Attack):
-    def __init__(self):
-        super().__init__(attack_delay=5)
-
-    def execute_attack(self, entities: EntityManager):
-        print("teleport")
-
-
 @entity
 class BunnyEntity(SpriteComponent, TransformComponent, HitboxComponent, ClickableComponent, GravityComponent,
-                  MovementComponent, TileColliderComponent, HealthComponent, AttackComponent):
+                  MovementComponent, TileColliderComponent, HealthComponent, TimedActionComponent):
 
     def serialize(self):
         return BunnyData(self.position)
+
+
+class SpawnReinforcementsAttack(TimedAction):
+    def __init__(self):
+        super().__init__(attack_delay=4)
+
+    def execute_action(self, bunny: BunnyEntity, entities: EntityManager):
+        print("Spawn reinforcements")
+
+
+class TeleportAttack(TimedAction):
+    def __init__(self):
+        super().__init__(attack_delay=5)
+
+    def execute_action(self, bunny: BunnyEntity, entities: EntityManager):
+        print("teleport")
 
 
 class BunnyData:
@@ -56,5 +56,5 @@ class BunnyData:
             click_event_handler=None,
             tileBottomLeftRightCollisionEventHandler=None,
             tileTopCollisionEventHandler=None,
-            attacks=[SpawnReinforcementsAttack(), TeleportAttack()]
+            actions=[SpawnReinforcementsAttack(), TeleportAttack()]
         )

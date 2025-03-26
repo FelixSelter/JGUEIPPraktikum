@@ -1,16 +1,13 @@
 import os
 
-import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface, Rect
-from pygame_gui import TEXT_EFFECT_EXPAND_CONTRACT
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UITextBox, UIButton, UIPanel
 from pygame_gui.elements.ui_drop_down_menu import UIDropDownMenu
 
 from animation import AnimationSystem
 from app import app
-from assets import Assets
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, EventManagerResource, UiButtonEvent, \
     UiButtonEventName
 from events.game_end_event import GameEndEventName
@@ -18,7 +15,6 @@ from map import Map, MapResource
 from resources import CameraResource, TimeResource
 from scenes import Scene
 from scenes.leveleditor_scene import LevelEditorScene
-from systems.spawner_system import SpawnerSystem
 from systems.entity_collision_system import EntityCollisionSystem
 from systems.gravity_system import GravitySystem
 from systems.movement_system import MovementSystem
@@ -63,8 +59,7 @@ class MainMenuScene(Scene):
             GravitySystem(self.entities),
             DeathSystem(self.entities),
             AnimationSystem(self.entities),
-            RenderingSystem(self.entities, screen),
-            SpawnerSystem(self.entities)
+            RenderingSystem(self.entities, screen)
         ])
 
     def load(self):

@@ -11,6 +11,7 @@ class Scene:
 
     def __init__(self, screen: Surface, theme: str):
         self.ui_manager = pygame_gui.UIManager((screen.width, screen.height), theme)
+        self.entities.add_buffer = []
 
     @abstractmethod
     def load(self):
