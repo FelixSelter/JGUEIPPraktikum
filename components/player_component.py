@@ -1,6 +1,7 @@
 from ecs_pattern import component
 from typing import List
 
+
 @component
 class PlayerComponent:
     speed: float
@@ -11,3 +12,5 @@ class PlayerComponent:
     key_left: int
     key_array: dict[str: bool]
     statusEffects: List[List[float]]
+    last_hit: float
+    invincibility_time: float

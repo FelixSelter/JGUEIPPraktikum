@@ -10,6 +10,11 @@ class Assets:
     def __load_all_assets(self):
         self.playerImgs_right = [self.__load_img(f"rsc/img/entities/rooster/rooster{i}.png") for i in range(2)]
         self.playerImgs_left = [pygame.transform.flip(image, True, False) for image in self.playerImgs_right]
+        self.playerImgs_invincible_right = [self.__load_img(f"rsc/img/entities/rooster/rooster-invincible{i}.png") for i
+                                            in
+                                            range(4)]
+        self.playerImgs_invincible_left = [pygame.transform.flip(image, True, False) for image in
+                                           self.playerImgs_invincible_right]
 
         self.spawnerImg = {"Pig": self.__load_img("rsc/img/objects/spawner/spawner-pig-16x16.png"),
                            "Cow": self.__load_img("rsc/img/objects/spawner/spawner-cow-16x16.png"),
@@ -50,6 +55,7 @@ class Assets:
         self.backgroundMusic = self.__load_audio('rsc/sounds/cyber-farm-271090.mp3', 0.5)
         self.coinCollection = self.__load_audio('rsc/sounds/coin-collection-6075.mp3', 1)
         self.eggCollection = self.__load_audio('rsc/sounds/level-win-6416.mp3', 1)
+        self.player_hit = self.__load_audio('rsc/sounds/retro-hurt-2-236675.mp3', 3)
 
         self.enemyImgsDict = {"Cow": [self.enemyImgs_cow_left, self.enemyImgs_cow_right],
                               "Pig": [self.enemyImgs_pig_left, self.enemyImgs_pig_right],

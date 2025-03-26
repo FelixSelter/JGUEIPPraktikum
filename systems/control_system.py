@@ -54,13 +54,13 @@ class ControllerSystem(System):
             # Stop right movement then move left
             elif player_entity.key_array[player_entity.key_left] and not player_entity.key_array[
                 player_entity.key_right]:
-                player_entity.activeAnimation = "left"
+                player_entity.activeAnimation = "left" if player_entity.last_hit + player_entity.invincibility_time < time_rsc.totalTime else "invincible-left"
                 horizontal_movement = HorizontalMovementType.AccelerateLeft if player_entity.speed.x <= 0 else HorizontalMovementType.Decelerate
 
             # Stop left movement then move right
             elif player_entity.key_array[player_entity.key_right] and not player_entity.key_array[
                 player_entity.key_left]:
-                player_entity.activeAnimation = "right"
+                player_entity.activeAnimation = "right" if player_entity.last_hit + player_entity.invincibility_time < time_rsc.totalTime else "invincible-right"
                 horizontal_movement = HorizontalMovementType.AccelerateRight if player_entity.speed.x >= 0 else HorizontalMovementType.Decelerate
 
             # Apply horizontal movement

@@ -19,9 +19,11 @@ from components.transform_component import TransformComponent
 from entities.bunny_entity import BunnyEntity
 from entities.coin_entity import CoinEntity
 from entities.enemy_entity import EnemyEntity
+from entities.liveup_entity import LiveUpEntity
 from entities.power_up_entity import PowerUpEntity
 from events import EventManagerResource
 from events.game_end_event import GameEndEventName, GameEndEvent, GameEndEventType
+from resources import TimeResource
 from util import CollisionDirection
 from util.additional_math import Vec2
 
@@ -50,12 +52,21 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
         player.jump += other.power
         entities.delete_buffer_add(other)
 
+    if isinstance(other, LiveUpEntity):
+        player.health += 1
+        entities.delete_buffer_add(other)
+
     if isinstance(other, EnemyEntity) or isinstance(other, BunnyEntity):
         if direction == CollisionDirection.Top:
             player.speed.y = 10
             other.health -= 1
         else:
-            player.health -= 1
+            time_rsc: TimeResource = next(entities.get_by_class(TimeResource))
+            if player.last_hit + player.invincibility_time < time_rsc.totalTime:
+                pygame.mixer.Sound.play(Assets.get().player_hit)
+                player.health -= 1
+                player.activeAnimation = "invincible-right" if "right" in player.activeAnimation else "invincible-left"
+                player.last_hit = time_rsc.totalTime
 
 
 class PlayerData:
@@ -92,15 +103,23 @@ class PlayerData:
             tileTopCollisionEventHandler=None,
             score=0,
             animations={"right": Animation(
-                [AnimationFrame(Assets.get().playerImgs_right[i], 0.3) for i in
-                 range(len(Assets.get().playerImgs_right))]),
+                [AnimationFrame(img, 0.3) for img in
+                 Assets.get().playerImgs_right]),
                 "left": Animation(
-                    [AnimationFrame(Assets.get().playerImgs_left[i], 0.3) for i in
-                     range(len(Assets.get().playerImgs_left))])
+                    [AnimationFrame(img, 0.3) for img in
+                     Assets.get().playerImgs_left]),
+                "invincible-right": Animation(
+                    [AnimationFrame(img, 0.15) for img in
+                     Assets.get().playerImgs_invincible_right]),
+                "invincible-left": Animation(
+                    [AnimationFrame(img, 0.15) for img in
+                     Assets.get().playerImgs_invincible_left])
             },
             activeAnimation="right",
             currentTime=0,
             loopAnimation=True,
             click_event_handler=None,
-            statusEffects=[]
+            statusEffects=[],
+            last_hit=0,
+            invincibility_time=2
         )

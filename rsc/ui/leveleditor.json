@@ -146,5 +146,12 @@
         "path": "rsc/img/entities/bunny/bunny-60x60.png"
       }
     }
+  },
+  "#button-liveup": {
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/objects/melon/melon-60x60.png"
+      }
+    }
   }
 }
