@@ -3,6 +3,7 @@ from ecs_pattern import entity
 from assets import Assets
 from components.clickable_component import ClickableComponent
 from components.gravity_component import GravityComponent
+from components.health_component import HealthComponent
 from components.hitbox_component import HitboxComponent
 from components.movement_component import MovementComponent
 from components.sprite_component import SpriteComponent
@@ -15,7 +16,7 @@ from animation import AnimationComponent, Animation, AnimationFrame
 
 @entity
 class BunnyEntity(SpriteComponent, TransformComponent, HitboxComponent, ClickableComponent, GravityComponent,
-                  MovementComponent, TileColliderComponent):
+                  MovementComponent, TileColliderComponent, HealthComponent):
 
     def serialize(self):
         return BunnyData(self.position)
@@ -30,6 +31,7 @@ class BunnyData:
             position=self.position,
             width=1,
             height=1,
+            health=3,
             speed=Vec2(0, 0),
             acceleration=Vec2(0, 0),
             sprite=Assets.get().bunnyImg,

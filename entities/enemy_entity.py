@@ -2,6 +2,7 @@ from enum import Enum
 
 from assets import Assets
 from components.gravity_component import GravityComponent
+from components.health_component import HealthComponent
 from components.hitbox_component import HitboxComponent
 from components.movement_component import MovementComponent
 from components.name_component import NameComponent
@@ -22,7 +23,7 @@ class EnemyType(Enum):
 
 @entity
 class EnemyEntity(SpriteComponent, TransformComponent, HitboxComponent, TileColliderComponent, GravityComponent,
-                  MovementComponent, NameComponent, AnimationComponent):
+                  MovementComponent, NameComponent, AnimationComponent, HealthComponent):
     animals_dict = {
         "Cow": 3,
         "Pig": 2,
@@ -56,6 +57,7 @@ class EnemyData:
             position=self.position,
             width=1,
             height=1,
+            health=1,
             sprite=Assets.get().enemyImgsDict[self.name][0][0],
             acceleration=Vec2(0, 0),
             speed=Vec2(-EnemyEntity.animals_dict[self.name], 0),

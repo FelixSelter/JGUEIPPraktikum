@@ -25,7 +25,7 @@ from systems.entity_collision_system import EntityCollisionSystem
 from systems.control_system import ControllerSystem
 from systems.gravity_system import GravitySystem
 from systems.movement_system import MovementSystem
-from systems.purge_delete_buffer_system import PurgeDeleteBufferSystem
+from systems.death_system import PurgeDeleteBufferSystem
 from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
 from util.additional_math import fract
