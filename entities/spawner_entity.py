@@ -41,9 +41,9 @@ class SpawnAction(TimedAction):
     def execute_action(self, spawner: SpawnerEntity, entities: EntityManager):
         if len(spawner.spawnTile) == 4:
             randomTuple = choice(spawner.spawnTile)
-            entities.add_buffer.append(EnemyData(spawner.enemyType, Vec2(spawner.position.x + randomTuple[0],
-                                                                         spawner.position.y + randomTuple[
-                                                                             1])).deserialize())
+            entities.add_buffer.append(EnemyData(spawner.enemyType.value, Vec2(spawner.position.x + randomTuple[0],
+                                                                               spawner.position.y + randomTuple[
+                                                                                   1])).deserialize())
         else:
             self.isTileFree(spawner, entities)
 

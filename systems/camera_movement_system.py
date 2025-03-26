@@ -5,6 +5,7 @@ from ecs_pattern import System, EntityManager
 from entities.player_entity import PlayerEntity
 from map import MapResource
 from resources import CameraResource
+from systems.parallax_system import ParallaxItem, ParallaxLayer, Range, ParallaxManager
 
 
 class CameraMovementSystem(System):
@@ -28,47 +29,69 @@ class CameraMovementSystem(System):
             rect_width, rect_height
         )
 
-        self.background_img = pygame.image.load("rsc/img/background/background.png").convert_alpha()
-        self.clouds_img = pygame.image.load("rsc/img/background/clouds.png").convert_alpha()
-        self.bushes_img = pygame.image.load("rsc/img/background/bushes.png").convert_alpha()
-        self.trees_img = pygame.image.load("rsc/img/background/trees.png").convert_alpha()
+        # Parallax Layers
+        self.ParallaxManager = ParallaxManager(self.screen)
 
-        self.clouds = []
-        self.trees = []
-        self.bushes = []
-        self.parallax_offsets = {
-            "clouds": [0.0, 0.0],
-            "bushes": [0.0, 0.0],
-            "trees": [0.0, 0.0],
-        }
+        # Hintergrundbild
+        self.BackgroundLayer = ParallaxItem(
+            x=0, y=0,
+            z_index=0,
+            image=pygame.image.load("rsc/img/background/background.png").convert_alpha(),
+            scale=(self.screen_width, self.screen_height)
+        )
+        self.ParallaxManager.add_object(self.BackgroundLayer)
+        # Wolken
+        self.CloudsLayer = ParallaxLayer(
+            image_path="rsc/img/background/clouds.png",
+            z_index=1,
+            scale=Range(1.8, 2.0)
+        )
+        self.ParallaxManager.add_object(self.CloudsLayer)
+        # Bäume
+        self.TreeLayer = ParallaxLayer(
+            image_path="rsc/img/background/trees.png",
+            z_index=2,
+            scale=Range(1.95,2.05)
+        )
+        self.ParallaxManager.add_object(self.TreeLayer)
+        # Büsche
+        self.BushLayer = ParallaxLayer(
+            image_path="rsc/img/background/bushes.png",
+            z_index=3,
+            scale=Range(1.45, 1.55)
+        )
+        self.ParallaxManager.add_object(self.BushLayer)
 
         self.prev_camera_x = None
         self.prev_camera_y = None
 
-    def init_parallax_layers(self):
-        cloud_width = self.clouds_img.get_width()
-        x = 0
-        while x < self.screen_width * 2:
-            scale = random.uniform(1.8, 2.0)
-            self.clouds.append({"x": x, "scale": scale})
-            x += cloud_width * scale / 2
 
-        tree_width = self.trees_img.get_width() * 2.0
+    def init_parallax_layers(self):
+        # Wolken
+        x: int = 0
+        while x < self.screen_width * 2:
+            scale = self.CloudsLayer.add_item(x)
+            x += scale[0] / 2
+
+        # Bäume
+        tree_width = self.TreeLayer.image.get_width() * 2.0
         x = 0
         while x < self.screen_width * 3:
             group_size = random.choice([1, 2]) if random.random() < 0.85 else 1
             for i in range(group_size):
-                y_offset = random.randint(360, 370)  # Bodennahe zufällige Y-Position für Bäume
-                self.trees.append({"x": x + i * tree_width * 0.9, "y": y_offset})
+                y_offset = random.randint(360, 370) # Bodennahe Y-Position
+                self.TreeLayer.add_item(x + i * tree_width * 0.9, y_offset)
             x += tree_width * group_size + random.randint(100, 300)
 
-        bush_width = self.bushes_img.get_width() * 1.5
+        # Büsche
+        bush_width = self.BushLayer.image.get_width() * 1.5
         x = 0
         while x < self.screen_width * 3:
             if random.random() < 0.6:
-                y_offset = random.randint(395, 410)  # Bodennahe zufällige Y-Position für Büsche
-                self.bushes.append({"x": x, "y": y_offset})
+                y_offset = random.randint(395, 410)  # Bodennahe Y-Position
+                self.BushLayer.add_item(x, y_offset)
             x += bush_width + random.randint(100, 300)
+
 
     def start(self):
         self.camera = next(self.entities.get_by_class(CameraResource))
@@ -114,16 +137,8 @@ class CameraMovementSystem(System):
         self.camera.x = max(self.min_camera_x, min(self.camera.x, self.max_camera_x))
         self.camera.y = max(self.min_camera_y, min(self.camera.y, self.max_camera_y))
 
-
-        # Hintergrund zeichnen
-        background_img = pygame.transform.smoothscale(self.background_img, (self.screen_width, self.screen_height))
-        self.screen.blit(background_img, (0, 0))
-
         # Parallax Layer zeichnen
-        self.update_parallax_layers()
-
-        # Wolken zeichnen
-        self.update_parallax_layers()
+        self.ParallaxManager.update(self.camera.x - self.prev_camera_x, self.camera.y - self.prev_camera_y)
 
         # Kamera-Movement speichern
         self.prev_camera_x = self.camera.x
@@ -132,7 +147,8 @@ class CameraMovementSystem(System):
         # Debug
         pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 2)
 
-    def update_parallax_layers(self):
+
+    def update_parallax_layers_OLD(self):
         dx = self.camera.x - self.prev_camera_x
         dy = self.camera.y - self.prev_camera_y
 

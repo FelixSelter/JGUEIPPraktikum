@@ -1,6 +1,8 @@
 import os
+import random
 
 from ecs_pattern import SystemManager
+import pygame
 from pygame import Surface, Rect
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UITextBox, UIButton, UIPanel
@@ -15,6 +17,7 @@ from map import Map, MapResource
 from resources import CameraResource, TimeResource
 from scenes import Scene
 from scenes.leveleditor_scene import LevelEditorScene
+from systems.parallax_system import ParallaxItem, ParallaxLayer, Range, ParallaxManager
 from systems.entity_collision_system import EntityCollisionSystem
 from systems.gravity_system import GravitySystem
 from systems.movement_system import MovementSystem
@@ -61,6 +64,40 @@ class MainMenuScene(Scene):
             AnimationSystem(self.entities),
             RenderingSystem(self.entities, screen)
         ])
+
+        # Parallax Layers
+        self.ParallaxManager = ParallaxManager(self.screen)
+        self.screen_width, self.screen_height = pygame.display.get_surface().get_size()
+
+        # Hintergrundbild
+        self.BackgroundLayer = ParallaxItem(
+            x=0, y=0,
+            z_index=0,
+            image=pygame.image.load("rsc/img/background/background.png").convert_alpha(),
+            scale=(self.screen_width, self.screen_height)
+        )
+        self.ParallaxManager.add_object(self.BackgroundLayer)
+        # Wolken
+        self.CloudsLayer = ParallaxLayer(
+            image_path="rsc/img/background/clouds.png",
+            z_index=1,
+            scale=Range(1.8, 2.0)
+        )
+        self.ParallaxManager.add_object(self.CloudsLayer)
+        # Bäume
+        self.TreeLayer = ParallaxLayer(
+            image_path="rsc/img/background/trees.png",
+            z_index=2,
+            scale=Range(1.95, 2.05)
+        )
+        self.ParallaxManager.add_object(self.TreeLayer)
+        # Büsche
+        self.BushLayer = ParallaxLayer(
+            image_path="rsc/img/background/bushes.png",
+            z_index=3,
+            scale=Range(1.45, 1.55)
+        )
+        self.ParallaxManager.add_object(self.BushLayer)
 
     def load(self):
         self.create_ui()
@@ -114,10 +151,36 @@ class MainMenuScene(Scene):
     def start(self):
         super().start()
 
+        # Wolken
+        x: int = 0
+        while x < self.screen_width * 2:
+            scale = self.CloudsLayer.add_item(x)
+            x += scale[0] / 2
+
+        # Bäume
+        tree_width = self.TreeLayer.image.get_width() * 2.0
+        x = 0
+        while x < self.screen_width * 3:
+            group_size = random.choice([1, 2]) if random.random() < 0.85 else 1
+            for i in range(group_size):
+                y_offset = random.randint(360, 370)  # Bodennahe Y-Position
+                self.TreeLayer.add_item(x + i * tree_width * 0.9, y_offset)
+            x += tree_width * group_size + random.randint(100, 300)
+
+        # Büsche
+        bush_width = self.BushLayer.image.get_width() * 1.5
+        x = 0
+        while x < self.screen_width * 3:
+            if random.random() < 0.6:
+                y_offset = random.randint(395, 410)  # Bodennahe Y-Position
+                self.BushLayer.add_item(x, y_offset)
+            x += bush_width + random.randint(100, 300)
+
     def update(self):
         camera_rsc: CameraResource = next(self.entities.get_by_class(CameraResource))
         time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
+        self.ParallaxManager.update(0.1, 0)
 
         camera_rsc.x += self.camera_direction * 0.5 * time_rsc.deltaTime
         if not (0 <= camera_rsc.x <= map_rsc.map.width - camera_rsc.screenWidthInTiles):
