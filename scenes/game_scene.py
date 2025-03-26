@@ -10,6 +10,7 @@ from pygame_gui.elements import UITextBox, UIButton
 from animation import AnimationSystem
 from app import app
 from assets import Assets
+from attack import AttackSystem
 from entities.player_entity import PlayerEntity
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, EventManagerResource, UiButtonEventName
 from events.game_end_event import GameEndEvent, GameEndEventType, GameEndEventName
@@ -25,7 +26,7 @@ from systems.entity_collision_system import EntityCollisionSystem
 from systems.control_system import ControllerSystem
 from systems.gravity_system import GravitySystem
 from systems.movement_system import MovementSystem
-from systems.death_system import PurgeDeleteBufferSystem
+from systems.death_system import DeathSystem
 from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
 from util.additional_math import fract
@@ -83,12 +84,13 @@ class GameScene(Scene):
             MovementSystem(self.entities),
             EntityCollisionSystem(self.entities),
             GravitySystem(self.entities),
-            PurgeDeleteBufferSystem(self.entities),
+            DeathSystem(self.entities),
             AnimationSystem(self.entities),
             CameraMovementSystem(self.entities, screen),
             RenderingSystem(self.entities, screen),
             SpawnerSystem(self.entities),
-            PowerUpSystem(self.entities)
+            PowerUpSystem(self.entities),
+            AttackSystem(self.entities)
         ])
 
     def load(self):

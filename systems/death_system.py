@@ -6,7 +6,7 @@ from events import EventManagerResource
 from events.game_end_event import GameEndEventName, GameEndEvent, GameEndEventType
 
 
-class PurgeDeleteBufferSystem(System):
+class DeathSystem(System):
     def __init__(self, entities: EntityManager):
         self.entities = entities
 

@@ -24,7 +24,7 @@ from resources import CameraResource, TimeResource
 from scenes import Scene
 from systems.click_event_system import ClickEventSystem
 from systems.leveleditor_control_system import LevelEditorControlSystem
-from systems.death_system import PurgeDeleteBufferSystem
+from systems.death_system import DeathSystem
 from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
 from util.additional_math import Vec2
@@ -203,7 +203,7 @@ class LevelEditorScene(Scene):
             click_event_system,
             control_system,
             TimeSystem(self.entities),
-            PurgeDeleteBufferSystem(self.entities),
+            DeathSystem(self.entities),
             AnimationSystem(self.entities),
             RenderingSystem(self.entities, screen)
         ])

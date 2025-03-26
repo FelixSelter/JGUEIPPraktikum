@@ -22,7 +22,7 @@ from systems.spawner_system import SpawnerSystem
 from systems.entity_collision_system import EntityCollisionSystem
 from systems.gravity_system import GravitySystem
 from systems.movement_system import MovementSystem
-from systems.death_system import PurgeDeleteBufferSystem
+from systems.death_system import DeathSystem
 from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
 
@@ -61,7 +61,7 @@ class MainMenuScene(Scene):
             MovementSystem(self.entities),
             EntityCollisionSystem(self.entities),
             GravitySystem(self.entities),
-            PurgeDeleteBufferSystem(self.entities),
+            DeathSystem(self.entities),
             AnimationSystem(self.entities),
             RenderingSystem(self.entities, screen),
             SpawnerSystem(self.entities)
