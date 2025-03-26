@@ -67,11 +67,11 @@ class PlayerData:
 
     def deserialize(self):
         if not hasattr(self, "jump"):
-            self.jump = K_d
+            self.jump = K_SPACE
         if not hasattr(self, "left"):
             self.left = K_a
         if not hasattr(self, "right"):
-            self.right = K_SPACE
+            self.right = K_d
 
         return PlayerEntity(
             key_up=self.jump,
