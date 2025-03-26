@@ -41,6 +41,7 @@ class Assets:
         self.eggImgs = [self.__load_img(f"rsc/img/objects/egg/egg_animated{i + 1}-16x16.png") for i in range(4)]
         self.mushroomImgs = [self.__load_img(f"rsc/img/objects/mushroom/mushroom_animated{i + 1}-16x16.png") for i in
                              range(2)]
+        self.melonImg = self.__load_img("rsc/img/objects/melon/melon-16x16.png")
         self.collectibleImgsDict = {"Coin": self.coinImgs,
                                     "Shit": self.shitImgs,
                                     "Egg": self.eggImgs,

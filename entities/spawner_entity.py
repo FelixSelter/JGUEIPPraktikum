@@ -39,11 +39,12 @@ class SpawnAction(TimedAction):
                 entity.spawnTile.append(position)
 
     def execute_action(self, spawner: SpawnerEntity, entities: EntityManager):
+        name = spawner.enemyType if isinstance(spawner.enemyType, str) else spawner.enemyType.value
         if len(spawner.spawnTile) == 4:
             randomTuple = choice(spawner.spawnTile)
-            entities.add_buffer.append(EnemyData(spawner.enemyType.value, Vec2(spawner.position.x + randomTuple[0],
-                                                                               spawner.position.y + randomTuple[
-                                                                                   1])).deserialize())
+            entities.add_buffer.append(EnemyData(name, Vec2(spawner.position.x + randomTuple[0],
+                                                            spawner.position.y + randomTuple[
+                                                                1])).deserialize())
         else:
             self.isTileFree(spawner, entities)
 
