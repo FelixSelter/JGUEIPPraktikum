@@ -12,6 +12,10 @@
     }
   },
   "#title": {
+    "font": {
+      "name": "TitleFont",
+      "size": 100
+    },
     "colours": {
       "normal_text": "rgb(101,93,231),rgb(0,212,255),rgb(0,255,181),60",
       "dark_bg": "rgba(0,0,0,0)",
