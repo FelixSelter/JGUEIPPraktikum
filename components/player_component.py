@@ -9,4 +9,5 @@ class PlayerComponent:
     key_up: int
     key_right: int
     key_left: int
+    key_array: dict[str: bool]
     statusEffects: List[List[float]]

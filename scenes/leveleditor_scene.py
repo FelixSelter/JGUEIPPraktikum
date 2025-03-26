@@ -7,6 +7,8 @@ from pygame import Surface, Rect
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UIScrollingContainer, UIButton, UIWindow
 
+from pygame import K_a, K_d, K_SPACE
+
 from animation import AnimationSystem
 from entities.coin_entity import CoinData
 from entities.player_entity import PlayerData, PlayerEntity
@@ -156,7 +158,7 @@ class LevelEditorScene(Scene):
                 self.entities.add(e)
             case "player":
                 pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
-                d = PlayerEntity(pos)
+                d = PlayerData(pos, left=K_a, right=K_d, jump=K_SPACE)
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler

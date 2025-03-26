@@ -2,7 +2,6 @@ from typing import Any
 
 from ecs_pattern import entity, EntityManager
 import pygame
-from pygame import K_a, K_d, K_SPACE
 
 from animation import AnimationComponent, Animation, AnimationFrame
 from assets import Assets
@@ -58,14 +57,18 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
 
 
 class PlayerData:
-    def __init__(self, position: Vec2):
+    def __init__(self, position: Vec2, left: int, right: int, jump: int):
         self.position = position
+        self.left = left
+        self.right = right
+        self.jump = jump
 
     def deserialize(self):
         return PlayerEntity(
-            key_up=K_SPACE,
-            key_right=K_d,
-            key_left=K_a,
+            key_up=self.jump,
+            key_right=self.right,
+            key_left=self.left,
+            key_array={self.left: False, self.right: False},
             jump=15,
             position=self.position,
             width=1,
