@@ -33,6 +33,11 @@ class LevelEditorScene(Scene):
     def entity_click_handler(self, entity):
         self.entities.delete_buffer_add(entity)
 
+        map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
+        for entity_data in map_rsc.map.entity_data:
+            if entity_data.position == entity.position:
+                map_rsc.map.entity_data.remove(entity_data)
+
     def button_click_handler(self, event: UiButtonEvent):
         if "#sliding_button" in event.button.object_ids:
             return

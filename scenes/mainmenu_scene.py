@@ -101,7 +101,7 @@ class MainMenuScene(Scene):
         self.ui_manager.add_font_paths("TitleFont", "rsc/fonts/RetroSigned.ttf")
         self.ui_manager.preload_fonts([{'name': 'TitleFont', 'point_size': 100, 'style': 'regular'}])
 
-        maps = [file for file in os.listdir("rsc/Maps") if not file.endswith(".py")]
+        maps = sorted([file for file in os.listdir("rsc/Maps") if not file.endswith(".py")])
         panel = UIPanel(Rect(0, 50, 333, 233), manager=self.ui_manager, anchors={"center": "center"},
                         object_id=ObjectID(object_id="#panel"))
         self.level_select = UIDropDownMenu(maps, maps[0], Rect(0, 0, 300, 50), manager=self.ui_manager,
