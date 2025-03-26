@@ -98,6 +98,9 @@ class MainMenuScene(Scene):
         )
 
     def create_ui(self):
+        self.ui_manager.add_font_paths("TitleFont", "rsc/fonts/RetroSigned.ttf")
+        self.ui_manager.preload_fonts([{'name': 'TitleFont', 'point_size': 100, 'style': 'regular'}])
+
         maps = [file for file in os.listdir("rsc/Maps") if not file.endswith(".py")]
         panel = UIPanel(Rect(0, 50, 333, 233), manager=self.ui_manager, anchors={"center": "center"},
                         object_id=ObjectID(object_id="#panel"))
@@ -108,10 +111,7 @@ class MainMenuScene(Scene):
         self.new_button = UIButton(Rect(0, 150, 300, 50), "Neues Level", manager=self.ui_manager, container=panel)
 
         title_box = UITextBox(
-            html_text=
-            "<font pixel_size=100>"
-            "<effect id=title>Super Chicken 16</effect> "
-            "</font>",
+            html_text="<effect id=title>Super Chicken 16</effect>",
             relative_rect=pygame.Rect(0, 20, self.screen.width, self.screen.height),
             manager=self.ui_manager, object_id=ObjectID(object_id="#title"))
         title_box.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag="title")
