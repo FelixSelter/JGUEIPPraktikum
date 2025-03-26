@@ -34,6 +34,7 @@ class ControllerSystem(System):
             player_entity: PlayerEntity = player_entity
 
             for event in self.keyboard_events:
+
                 # Jumping
                 if event.key == player_entity.key_up and event.event_type == KeyboardEventType.KeyDown and player_entity.speed.y == 0:
                     player_entity.speed.y = player_entity.jump
@@ -41,8 +42,6 @@ class ControllerSystem(System):
                 # Horizontal Controls
                 if event.key in player_entity.key_array:
                     player_entity.key_array[event.key] = event.event_type == KeyboardEventType.KeyDown
-
-            self.keyboard_events.clear()
 
             # Determine horizontal movement
             horizontal_movement = HorizontalMovementType.NoMovement
@@ -53,12 +52,14 @@ class ControllerSystem(System):
                     horizontal_movement = HorizontalMovementType.Decelerate
 
             # Stop right movement then move left
-            elif player_entity.key_array[player_entity.key_left] and not player_entity.key_array[player_entity.key_right]:
+            elif player_entity.key_array[player_entity.key_left] and not player_entity.key_array[
+                player_entity.key_right]:
                 player_entity.activeAnimation = "left"
                 horizontal_movement = HorizontalMovementType.AccelerateLeft if player_entity.speed.x <= 0 else HorizontalMovementType.Decelerate
 
             # Stop left movement then move right
-            elif player_entity.key_array[player_entity.key_right] and not player_entity.key_array[player_entity.key_left]:
+            elif player_entity.key_array[player_entity.key_right] and not player_entity.key_array[
+                player_entity.key_left]:
                 player_entity.activeAnimation = "right"
                 horizontal_movement = HorizontalMovementType.AccelerateRight if player_entity.speed.x >= 0 else HorizontalMovementType.Decelerate
 
@@ -92,3 +93,5 @@ class ControllerSystem(System):
                         player_entity.acceleration.x = 0
                     else:
                         player_entity.acceleration.x = acceleration
+
+        self.keyboard_events.clear()
