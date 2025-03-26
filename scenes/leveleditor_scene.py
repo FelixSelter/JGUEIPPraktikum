@@ -11,6 +11,7 @@ from pygame import K_a, K_d, K_SPACE
 from pygame_gui.windows import UIFileDialog
 
 from animation import AnimationSystem
+from entities.bunny_entity import BunnyData
 from entities.coin_entity import CoinData
 from entities.player_entity import PlayerData, PlayerEntity
 from entities.power_up_entity import PowerUpData
@@ -164,9 +165,9 @@ class LevelEditorScene(Scene):
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
                 self.entities.add(e)
-            case "player":
+            case "bunny":
                 pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
-                d = PlayerData(pos, left=K_a, right=K_d, jump=K_SPACE)
+                d = BunnyData(pos)
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
@@ -222,7 +223,8 @@ class LevelEditorScene(Scene):
                      tool_tip_text=tile.value)
             i += 1
 
-        for obj in ["coin", "shit", "mushroom", "egg", "spawner-pig", "spawner-cow", "spawner-sheep", "player"]:
+        for obj in ["coin", "shit", "mushroom", "egg", "spawner-pig", "spawner-cow", "spawner-sheep", "player",
+                    "bunny"]:
             UIButton(Rect(0, i * 66, 66, 66), "",
                      manager=self.ui_manager,
                      container=scrolling_container,
