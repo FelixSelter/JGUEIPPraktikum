@@ -3,7 +3,7 @@ from random import randint
 
 import pygame.event
 from ecs_pattern import SystemManager
-from pygame import Surface, Rect, K_LEFT, K_RIGHT, K_RETURN
+from pygame import Surface, Rect, K_LEFT, K_RIGHT, K_UP
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UIScrollingContainer, UIButton, UIWindow
 
@@ -105,7 +105,7 @@ class LevelEditorScene(Scene):
                     case 0:
                         left, right, jump = K_a, K_d, K_SPACE
                     case 1:
-                        left, right, jump = K_LEFT, K_RIGHT, K_RETURN
+                        left, right, jump = K_LEFT, K_RIGHT, K_UP
                     case _:
                         return
 
