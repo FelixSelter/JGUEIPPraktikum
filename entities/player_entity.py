@@ -2,6 +2,7 @@ from typing import Any
 
 from ecs_pattern import entity, EntityManager
 import pygame
+from pygame import K_a, K_d, K_SPACE
 
 from animation import AnimationComponent, Animation, AnimationFrame
 from assets import Assets
@@ -66,11 +67,11 @@ class PlayerData:
 
     def deserialize(self):
         if not hasattr(self, "jump"):
-            self.jump = 0
+            self.jump = K_d
         if not hasattr(self, "left"):
-            self.left = 0
+            self.left = K_a
         if not hasattr(self, "right"):
-            self.right = 0
+            self.right = K_SPACE
 
         return PlayerEntity(
             key_up=self.jump,
