@@ -7,6 +7,7 @@ from ecs_pattern import System, EntityManager
 from components.movement_component import MovementComponent
 from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
+from entities.player_entity import PlayerEntity
 from map import MapResource
 from resources import TimeResource
 from events import EventManagerResource
@@ -206,5 +207,9 @@ class MovementSystem(System):
 
             # Above 0
             if transform.position.y < 0:
-                next(self.entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameLost,
-                                                                             GameEndEvent(GameEndEventType.GameLost))
+                if isinstance(entity, PlayerEntity):
+                    next(self.entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameLost,
+                                                                                      GameEndEvent(
+                                                                                          GameEndEventType.GameLost))
+                else:
+                    self.entities.delete_buffer_add(entity)
