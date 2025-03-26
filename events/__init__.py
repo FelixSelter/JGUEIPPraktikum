@@ -6,7 +6,7 @@ from typing import Callable, List, Dict, Any
 import pygame
 from ecs_pattern import System, EntityManager, entity
 from pygame import MOUSEBUTTONDOWN, MOUSEBUTTONUP, Surface, QUIT
-from pygame_gui import UI_BUTTON_PRESSED
+from pygame_gui import UI_BUTTON_PRESSED, UI_FILE_DIALOG_PATH_PICKED, UI_WINDOW_CLOSE
 
 from resources import CameraResource
 
@@ -18,6 +18,7 @@ class Event:
 from events.mouse_event import MouseEvent, MouseEventType, MouseButton, MouseEventName
 from events.keyboard_event import KeyboardEvent, KeyboardEventName, KeyboardEventType
 from events.ui_button_event import UiButtonEventName, UiButtonEvent
+from events.file_picker_event import FilePickerEventName, FilePickerEvent, FilePickerEventType
 
 
 @entity
@@ -57,6 +58,7 @@ class EventParsingSystem(System):
         self.delayed_events.clear()
 
         was_ui_click = False
+        picked_file_dialogs = []
         for event in pygame.event.get():
             camera.ui_manager.process_events(event)
 
@@ -108,6 +110,16 @@ class EventParsingSystem(System):
             elif event.type == UI_BUTTON_PRESSED:
                 self.emit_event(UiButtonEventName, UiButtonEvent(event.ui_element))
                 was_ui_click = True
+
+            elif event.type == UI_FILE_DIALOG_PATH_PICKED:
+                picked_file_dialogs.append(event.ui_element)
+                self.emit_event(FilePickerEventName.FilePicked,
+                                FilePickerEvent(FilePickerEventType.FilePicked, event.ui_element, event.text))
+
+            elif event.type == UI_WINDOW_CLOSE:
+                if event.ui_element not in picked_file_dialogs:
+                    self.emit_event(FilePickerEventName.Aborted,
+                                    FilePickerEvent(FilePickerEventType.Aborted, event.ui_element, None))
 
         if not was_ui_click:
             for name, event in delayed_events:
