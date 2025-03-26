@@ -139,5 +139,12 @@
         "path": "rsc/img/entities/rooster/rooster-60x60.png"
       }
     }
+  },
+  "#button-bunny": {
+    "images": {
+      "normal_image": {
+        "path": "rsc/img/entities/bunny/bunny-60x60.png"
+      }
+    }
   }
 }

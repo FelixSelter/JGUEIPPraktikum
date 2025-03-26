@@ -8,6 +8,7 @@ from animation import AnimationComponent, Animation, AnimationFrame
 from assets import Assets
 from components.clickable_component import ClickableComponent
 from components.gravity_component import GravityComponent
+from components.health_component import HealthComponent
 from components.hitbox_component import HitboxComponent
 from components.movement_component import MovementComponent
 from components.player_component import PlayerComponent
@@ -15,6 +16,7 @@ from components.score_component import ScoreComponent
 from components.sprite_component import SpriteComponent
 from components.tile_collider_component import TileColliderComponent
 from components.transform_component import TransformComponent
+from entities.bunny_entity import BunnyEntity
 from entities.coin_entity import CoinEntity
 from entities.enemy_entity import EnemyEntity
 from entities.power_up_entity import PowerUpEntity
@@ -27,16 +29,15 @@ from util.additional_math import Vec2
 @entity
 class PlayerEntity(PlayerComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent,
                    TileColliderComponent,
-                   GravityComponent, ScoreComponent, AnimationComponent, ClickableComponent):
+                   GravityComponent, ScoreComponent, AnimationComponent, ClickableComponent, HealthComponent):
     def serialize(self):
-        return PlayerData(self.position)
+        return PlayerData(self.position, self.key_left, self.key_right, self.key_up)
 
 
 def playerCollisionHandler(player: PlayerEntity, other: Any, direction: CollisionDirection, entities: EntityManager):
     if isinstance(other, CoinEntity):
         if other.treasure == 42:
             pygame.mixer.Sound.play(Assets.get().eggCollection)
-            print("You win!")
             next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameWon,
                                                                          GameEndEvent(GameEndEventType.GameWon))
         else:
@@ -49,13 +50,12 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
         player.jump += other.power
         entities.delete_buffer_add(other)
 
-    if isinstance(other, EnemyEntity):
+    if isinstance(other, EnemyEntity) or isinstance(other, BunnyEntity):
         if direction == CollisionDirection.Top:
             player.speed.y = 10
-            entities.delete_buffer_add(other)
+            other.health -= 1
         else:
-            next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameLost,
-                                                                         GameEndEvent(GameEndEventType.GameLost))
+            player.health -= 1
 
 
 class PlayerData:
@@ -74,6 +74,7 @@ class PlayerData:
             self.right = K_d
 
         return PlayerEntity(
+            health=1,
             key_up=self.jump,
             key_right=self.right,
             key_left=self.left,
