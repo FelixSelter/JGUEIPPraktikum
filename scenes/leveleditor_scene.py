@@ -3,7 +3,7 @@ from random import randint
 
 import pygame.event
 from ecs_pattern import SystemManager
-from pygame import Surface, Rect
+from pygame import Surface, Rect, K_LEFT, K_RIGHT, K_RETURN
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UIScrollingContainer, UIButton, UIWindow
 
@@ -101,8 +101,16 @@ class LevelEditorScene(Scene):
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
         match self.current_item:
             case "player":
+                match len(list(self.entities.get_by_class(PlayerEntity))):
+                    case 0:
+                        left, right, jump = K_a, K_d, K_SPACE
+                    case 1:
+                        left, right, jump = K_LEFT, K_RIGHT, K_RETURN
+                    case _:
+                        return
+
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
-                d = PlayerData(pos)
+                d = PlayerData(pos, left, right, jump)
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler

@@ -24,7 +24,8 @@ from util.additional_math import Vec2
 
 
 @entity
-class PlayerEntity(PlayerComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, TileColliderComponent,
+class PlayerEntity(PlayerComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent,
+                   TileColliderComponent,
                    GravityComponent, ScoreComponent, AnimationComponent, ClickableComponent):
     def serialize(self):
         return PlayerData(self.position)
@@ -64,6 +65,13 @@ class PlayerData:
         self.jump = jump
 
     def deserialize(self):
+        if not hasattr(self, "jump"):
+            self.jump = 0
+        if not hasattr(self, "left"):
+            self.left = 0
+        if not hasattr(self, "right"):
+            self.right = 0
+
         return PlayerEntity(
             key_up=self.jump,
             key_right=self.right,
