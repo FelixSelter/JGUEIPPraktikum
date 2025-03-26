@@ -25,7 +25,8 @@ from util.additional_math import Vec2
 
 
 @entity
-class PlayerEntity(PlayerComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent, TileColliderComponent,
+class PlayerEntity(PlayerComponent, SpriteComponent, TransformComponent, MovementComponent, HitboxComponent,
+                   TileColliderComponent,
                    GravityComponent, ScoreComponent, AnimationComponent, ClickableComponent):
     def serialize(self):
         return PlayerData(self.position)
@@ -58,14 +59,25 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
 
 
 class PlayerData:
-    def __init__(self, position: Vec2):
+    def __init__(self, position: Vec2, left: int, right: int, jump: int):
         self.position = position
+        self.left = left
+        self.right = right
+        self.jump = jump
 
     def deserialize(self):
+        if not hasattr(self, "jump"):
+            self.jump = K_SPACE
+        if not hasattr(self, "left"):
+            self.left = K_a
+        if not hasattr(self, "right"):
+            self.right = K_d
+
         return PlayerEntity(
-            key_up=K_SPACE,
-            key_right=K_d,
-            key_left=K_a,
+            key_up=self.jump,
+            key_right=self.right,
+            key_left=self.left,
+            key_array={self.left: False, self.right: False},
             jump=15,
             position=self.position,
             width=1,

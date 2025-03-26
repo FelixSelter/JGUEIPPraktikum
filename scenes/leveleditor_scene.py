@@ -3,9 +3,12 @@ from random import randint
 
 import pygame.event
 from ecs_pattern import SystemManager
-from pygame import Surface, Rect
+from pygame import Surface, Rect, K_LEFT, K_RIGHT, K_UP
 from pygame_gui.core import ObjectID
-from pygame_gui.elements import UIScrollingContainer, UIButton
+from pygame_gui.elements import UIScrollingContainer, UIButton, UIWindow
+
+from pygame import K_a, K_d, K_SPACE
+from pygame_gui.windows import UIFileDialog
 
 from animation import AnimationSystem
 from entities.coin_entity import CoinData
@@ -14,7 +17,7 @@ from entities.power_up_entity import PowerUpData
 from entities.spawner_entity import SpawnerData
 from entities.tile_entity import TileEntity
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, MouseEvent, UiButtonEventName, UiButtonEvent, \
-    MouseButton
+    MouseButton, FilePickerEvent, FilePickerEventType, FilePickerEventName
 from map import Map, MapResource, Tiles
 from resources import CameraResource, TimeResource
 from scenes import Scene
@@ -28,20 +31,33 @@ from util.additional_math import Vec2
 
 class LevelEditorScene(Scene):
     current_item = None
-    placed_player = False
+
+    def save_map(self, event: FilePickerEvent):
+        if event.event_type == FilePickerEventType.FilePicked:
+            map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
+            map_rsc.map.save(event.file)
+            exit()
 
     def entity_click_handler(self, entity):
         self.entities.delete_buffer_add(entity)
 
+        map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
+        for entity_data in map_rsc.map.entity_data:
+            if entity_data.position == entity.position:
+                map_rsc.map.entity_data.remove(entity_data)
+
     def button_click_handler(self, event: UiButtonEvent):
         if "#sliding_button" in event.button.object_ids:
             return
-        map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
         if event.button == self.save_button:
-            map_rsc.map.save(f"{randint(0, 100)}.map")
-            exit()
-
-        self.current_item = event.button.object_ids[1][8:]
+            UIFileDialog(pygame.Rect(160, 50, 440, 500),
+                         self.ui_manager,
+                         window_title='Save Level',
+                         initial_file_path='rsc/Maps/',
+                         allow_picking_directories=False,
+                         allow_existing_files_only=False)
+        else:
+            self.current_item = event.button.object_ids[1][8:]
 
     def place_tile(self, event: MouseEvent):
         # Make the map as large as the clicked area
@@ -85,11 +101,16 @@ class LevelEditorScene(Scene):
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
         match self.current_item:
             case "player":
-                if self.placed_player:
-                    return
-                self.placed_player = True
+                match len(list(self.entities.get_by_class(PlayerEntity))):
+                    case 0:
+                        left, right, jump = K_a, K_d, K_SPACE
+                    case 1:
+                        left, right, jump = K_LEFT, K_RIGHT, K_UP
+                    case _:
+                        return
+
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
-                d = PlayerData(pos)
+                d = PlayerData(pos, left, right, jump)
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
@@ -145,7 +166,7 @@ class LevelEditorScene(Scene):
                 self.entities.add(e)
             case "player":
                 pos = Vec2(floor(event.world_start_pos.x), floor(event.world_start_pos.y))
-                d = PlayerEntity(pos)
+                d = PlayerData(pos, left=K_a, right=K_d, jump=K_SPACE)
                 map_rsc.map.entity_data.append(d)
                 e = d.deserialize()
                 e.click_event_handler = self.entity_click_handler
@@ -175,7 +196,8 @@ class LevelEditorScene(Scene):
                 MouseEventName.MouseDragEnd: [click_event_system.click_event_handler],
                 KeyboardEventName.KeyDown: [control_system.keypress_event_handler],
                 KeyboardEventName.KeyUp: [control_system.keypress_event_handler],
-                UiButtonEventName: [self.button_click_handler]
+                UiButtonEventName: [self.button_click_handler],
+                FilePickerEventName.FilePicked: [self.save_map]
             }),
             click_event_system,
             control_system,

@@ -3,7 +3,6 @@ from math import copysign
 from typing import List
 
 from ecs_pattern import System, EntityManager
-from pygame.locals import K_a, K_d, K_SPACE
 
 from components.movement_component import MovementComponent
 from components.sprite_component import SpriteComponent
@@ -26,8 +25,6 @@ class ControllerSystem(System):
         self.entities = entities
         self.event_getter = event_getter
 
-        self.movement_keys = {K_a: False, K_d: False}
-
     def keypress_event_handler(self, event: KeyboardEvent) -> None:
         self.keyboard_events.append(event)
 
@@ -35,34 +32,34 @@ class ControllerSystem(System):
         time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
         for player_entity in self.entities.get_by_class(PlayerEntity):
             player_entity: PlayerEntity = player_entity
-            sprite: SpriteComponent = player_entity
 
             for event in self.keyboard_events:
+
                 # Jumping
-                if event.key == K_SPACE and event.event_type == KeyboardEventType.KeyDown and player_entity.speed.y == 0:
+                if event.key == player_entity.key_up and event.event_type == KeyboardEventType.KeyDown and player_entity.speed.y == 0:
                     player_entity.speed.y = player_entity.jump
 
                 # Horizontal Controls
-                if event.key in self.movement_keys:
-                    self.movement_keys[event.key] = event.event_type == KeyboardEventType.KeyDown
-
-            self.keyboard_events.clear()
+                if event.key in player_entity.key_array:
+                    player_entity.key_array[event.key] = event.event_type == KeyboardEventType.KeyDown
 
             # Determine horizontal movement
             horizontal_movement = HorizontalMovementType.NoMovement
 
             # Stop the player if no or both keys pressed
-            if self.movement_keys[K_a] == self.movement_keys[K_d]:
+            if player_entity.key_array[player_entity.key_left] == player_entity.key_array[player_entity.key_right]:
                 if not player_entity.speed.x == 0:
                     horizontal_movement = HorizontalMovementType.Decelerate
 
             # Stop right movement then move left
-            elif self.movement_keys[K_a] and not self.movement_keys[K_d]:
+            elif player_entity.key_array[player_entity.key_left] and not player_entity.key_array[
+                player_entity.key_right]:
                 player_entity.activeAnimation = "left"
                 horizontal_movement = HorizontalMovementType.AccelerateLeft if player_entity.speed.x <= 0 else HorizontalMovementType.Decelerate
 
             # Stop left movement then move right
-            elif self.movement_keys[K_d] and not self.movement_keys[K_a]:
+            elif player_entity.key_array[player_entity.key_right] and not player_entity.key_array[
+                player_entity.key_left]:
                 player_entity.activeAnimation = "right"
                 horizontal_movement = HorizontalMovementType.AccelerateRight if player_entity.speed.x >= 0 else HorizontalMovementType.Decelerate
 
@@ -96,3 +93,5 @@ class ControllerSystem(System):
                         player_entity.acceleration.x = 0
                     else:
                         player_entity.acceleration.x = acceleration
+
+        self.keyboard_events.clear()
