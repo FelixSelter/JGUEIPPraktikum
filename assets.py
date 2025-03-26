@@ -12,8 +12,8 @@ class Assets:
         self.playerImgs_left = [pygame.transform.flip(image, True, False) for image in self.playerImgs_right]
 
         self.spawnerImg = {"Pig": self.__load_img("rsc/img/objects/spawner/spawner-pig-16x16.png"),
-                            "Cow": self.__load_img("rsc/img/objects/spawner/spawner-cow-16x16.png"),
-                            "Sheep": self.__load_img("rsc/img/objects/spawner/spawner-sheep-16x16.png")}
+                           "Cow": self.__load_img("rsc/img/objects/spawner/spawner-cow-16x16.png"),
+                           "Sheep": self.__load_img("rsc/img/objects/spawner/spawner-sheep-16x16.png")}
 
         self.enemyImg_cow = self.__load_img("rsc/img/entities/cow/cow-16x16.png")
         self.enemyImgs_cow_left = [self.__load_img(f"rsc/img/entities/cow/cow_animated{i + 1}-16x16.png") for i in
@@ -33,6 +33,8 @@ class Assets:
         self.roosterImg = self.__load_img("rsc/img/entities/rooster/rooster-16x16.png")
         self.roosterImgs_jump = [self.__load_img(f"rsc/img/entities/rooster/rooster_jump{i + 1}-16x16.png") for i in
                                  range(2)]
+
+        self.bunnyImg = self.__load_img("rsc/img/entities/bunny/bunny-16x16.png")
 
         self.coinImgs = [self.__load_img(f"rsc/img/objects/coin/coin_animated{i + 1}-16x16.png") for i in range(4)]
         self.shitImgs = [self.__load_img(f"rsc/img/objects/shit/shit_animated{i + 1}-16x16.png") for i in range(4)]
