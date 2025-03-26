@@ -5,7 +5,7 @@ import pygame.event
 from ecs_pattern import SystemManager
 from pygame import Surface, Rect
 from pygame_gui.core import ObjectID
-from pygame_gui.elements import UIScrollingContainer, UIButton
+from pygame_gui.elements import UIScrollingContainer, UIButton, UIWindow
 
 from animation import AnimationSystem
 from entities.coin_entity import CoinData
@@ -26,9 +26,17 @@ from systems.time_system import TimeSystem
 from util.additional_math import Vec2
 
 
+class ScalingWindow(UIWindow):
+    def __init__(self, rect, ui_manager):
+        super().__init__(rect, ui_manager,
+                         window_display_title='map Speichern',
+                         resizable=True)
+
+        self.set_blocking(True)
+
+
 class LevelEditorScene(Scene):
     current_item = None
-    placed_player = False
 
     def entity_click_handler(self, entity):
         self.entities.delete_buffer_add(entity)
@@ -43,10 +51,11 @@ class LevelEditorScene(Scene):
             return
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
         if event.button == self.save_button:
+            ScalingWindow(Rect(self.screen.width / 2 - 150, self.screen.height / 2 - 150, 300, 300), self.ui_manager)
             map_rsc.map.save(f"{randint(0, 100)}.map")
-            exit()
-
-        self.current_item = event.button.object_ids[1][8:]
+            # exit()
+        else:
+            self.current_item = event.button.object_ids[1][8:]
 
     def place_tile(self, event: MouseEvent):
         # Make the map as large as the clicked area
@@ -90,9 +99,6 @@ class LevelEditorScene(Scene):
         map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
         match self.current_item:
             case "player":
-                if self.placed_player:
-                    return
-                self.placed_player = True
                 pos = Vec2(floor(event.world_start_pos.x) + 0.25, floor(event.world_start_pos.y) + 0.25)
                 d = PlayerData(pos)
                 map_rsc.map.entity_data.append(d)
