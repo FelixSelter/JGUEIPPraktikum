@@ -108,6 +108,10 @@ class MainMenuScene(Scene):
         )
         self.ParallaxManager.add_object(self.BushLayer)
 
+        self.level_select = None
+        self.play_button, self.edit_button, self.new_button = None, None, None
+
+
     def load(self):
         self.create_ui()
         m = Map.load("rsc/Maps/MainMenuMap.map")
@@ -141,18 +145,19 @@ class MainMenuScene(Scene):
     def create_ui(self):
         maps = sorted([file for file in os.listdir("rsc/Maps") if not file.endswith(".py")])
         panel = UIPanel(Rect(0, 50, 333, 233), manager=self.ui_manager, anchors={"center": "center"},
-                        object_id=ObjectID(object_id="#panel"))
+                        object_id=ObjectID(object_id="#panel", class_id=None))
         self.level_select = UIDropDownMenu(maps, maps[0], Rect(0, 0, 300, 50), manager=self.ui_manager,
                                            container=panel)
         self.play_button = UIButton(Rect(0, 50, 300, 50), "Spielen", manager=self.ui_manager, container=panel)
         self.edit_button = UIButton(Rect(0, 100, 300, 50), "Level bearbeiten", manager=self.ui_manager, container=panel)
         self.new_button = UIButton(Rect(0, 150, 300, 50), "Neues Level", manager=self.ui_manager, container=panel)
 
-        # title_box = UITextBox(
-        #     html_text="<effect id=title>Super Chicken 16</effect>",
-        #     relative_rect=pygame.Rect(0, 20, self.screen.width, self.screen.height),
-        #     manager=self.ui_manager, object_id=ObjectID(object_id="#title"))
-        # title_box.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag="title")
+        title_box = UITextBox(
+            html_text="<effect id=title>Super Chicken 16</effect>",
+            relative_rect=pygame.Rect(0, 20, self.screen.width, self.screen.height),
+            manager=self.ui_manager, object_id=ObjectID(object_id="#title", class_id=None)
+        )
+        title_box.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag="title")
 
     def start(self):
         super().start()
