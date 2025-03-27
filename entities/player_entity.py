@@ -40,8 +40,7 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
     if isinstance(other, CoinEntity):
         if other.treasure == 42:
             Assets.get().eggCollection.play()
-            next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameWon,
-                                                                         GameEndEvent(GameEndEventType.GameWon))
+            next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameWon, GameEndEvent(GameEndEventType.GameWon))
         elif other.treasure == -1:
             Assets.get().shitCollection.play()
             player.score += other.treasure
@@ -64,6 +63,8 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
         if direction == CollisionDirection.Top:
             player.speed.y = 10
             other.health -= 1
+            if isinstance(other, BunnyEntity) and other.health == 0:
+                next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameWon, GameEndEvent(GameEndEventType.GameWon))
         else:
             time_rsc: TimeResource = next(entities.get_by_class(TimeResource))
             if player.last_hit + player.invincibility_time < time_rsc.totalTime:
