@@ -9,16 +9,16 @@
 
 - [x] Animationen
 - [x] Camera folgt Spieler
-- [ ] Event system
+- [x] Event system
 - [x] Scenes
-- [ ] Click event
-- [ ] UI renderer
+- [x] Click event
+- [x] UI renderer
 - [x] Goal
 
 ### Features
 
-- [ ] Map loading/saving abstraction
-- [ ] Backgrounds
+- [x] Map loading/saving abstraction
+- [x] Backgrounds
 - [x] Coin sound
 - [x] Score
 - [x] PowerUps
@@ -29,7 +29,7 @@
 
 - [ ] Screen shake
 - [ ] Particles
-- [ ] Sounds
+- [X] Sounds
 
 ### Grafiken
 
