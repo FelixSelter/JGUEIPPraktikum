@@ -11,7 +11,7 @@ from animation import AnimationComponent, Animation, AnimationFrame
 
 
 @entity
-class LiveUpEntity(SpriteComponent, TransformComponent, HitboxComponent, ClickableComponent):
+class LiveUpEntity(SpriteComponent, TransformComponent, HitboxComponent, ClickableComponent, AnimationComponent):
 
     def serialize(self):
         return LiveUpData(self.position)
@@ -26,7 +26,13 @@ class LiveUpData:
             position=self.position,
             width=0.5,
             height=0.5,
-            sprite=Assets.get().melonImg,
+            sprite=Assets.get().collectibleImgsDict["Melon"][0],
+            animations={"sparkling": Animation(
+                [AnimationFrame(Assets.get().collectibleImgsDict["Melon"][i], 0.1) for i in
+                 range(len(Assets.get().collectibleImgsDict["Melon"]))])},
+            activeAnimation="sparkling",
+            currentTime=0,
+            loopAnimation=True,
             hitboxEventHandler=None,
             click_event_handler=None
         )

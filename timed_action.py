@@ -10,8 +10,15 @@ from resources import CameraResource, TimeResource
 class TimedAction:
     last_attack_time: float = 0
 
-    def __init__(self, attack_delay: float):
+    def __init__(self, attack_delay: float, executed_immediate: bool):
         self.attack_delay = attack_delay
+        self.executed_immediate = executed_immediate
+
+    def internal_execute_action(self, this: Any, entities: EntityManager):
+        if not self.executed_immediate:
+            self.executed_immediate = True
+            return
+        self.execute_action(this, entities)
 
     @abstractmethod
     def execute_action(self, this: Any, entities: EntityManager):
@@ -45,7 +52,7 @@ class TimedActionSystem(System):
             if visible_x and visible_y:
 
                 # Execute all available attacks and reset their delay
-                for attack in action_comp.actions:
-                    if attack.last_attack_time + attack.attack_delay < time_rsc.totalTime:
-                        attack.last_attack_time = time_rsc.totalTime
-                        attack.execute_action(entity, self.entities)
+                for action in action_comp.actions:
+                    if action.last_attack_time + action.attack_delay < time_rsc.totalTime:
+                        action.last_attack_time = time_rsc.totalTime
+                        action.internal_execute_action(entity, self.entities)

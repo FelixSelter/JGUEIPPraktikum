@@ -23,7 +23,7 @@ class SpawnerEntity(SpriteComponent, TransformComponent, SpawnerComponent, Click
 
 class SpawnAction(TimedAction):
     def __init__(self, spawn_delay: float):
-        super().__init__(attack_delay=spawn_delay)
+        super().__init__(attack_delay=spawn_delay, executed_immediate=True)
 
     def isTileFree(self, entity: SpawnerEntity, entities: EntityManager):
 
