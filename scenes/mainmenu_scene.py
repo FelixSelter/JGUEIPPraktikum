@@ -4,6 +4,7 @@ import random
 from ecs_pattern import SystemManager
 import pygame
 from pygame import Surface, Rect
+from pygame_gui import TEXT_EFFECT_EXPAND_CONTRACT
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UITextBox, UIButton, UIPanel
 from pygame_gui.elements.ui_drop_down_menu import UIDropDownMenu
@@ -142,11 +143,11 @@ class MainMenuScene(Scene):
         self.edit_button = UIButton(Rect(0, 100, 300, 50), "Level bearbeiten", manager=self.ui_manager, container=panel)
         self.new_button = UIButton(Rect(0, 150, 300, 50), "Neues Level", manager=self.ui_manager, container=panel)
 
-        '''title_box = UITextBox(
+        title_box = UITextBox(
             html_text="<effect id=title>Super Chicken 16</effect>",
             relative_rect=pygame.Rect(0, 20, self.screen.width, self.screen.height),
             manager=self.ui_manager, object_id=ObjectID(object_id="#title"))
-        title_box.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag="title")'''
+        title_box.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag="title")
 
     def start(self):
         super().start()
