@@ -6,10 +6,10 @@ from resources import TimeResource
 
 
 class TimeSystem(System):
-    last_time = time.time()
 
     def __init__(self, entities: EntityManager):
         self.entities = entities
+        self.last_time = time.time()
 
     def update(self):
         time_rsc: TimeResource = next(self.entities.get_by_class(TimeResource))
