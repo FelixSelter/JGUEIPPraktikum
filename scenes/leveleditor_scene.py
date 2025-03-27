@@ -11,6 +11,7 @@ from pygame import K_a, K_d, K_SPACE
 from pygame_gui.windows import UIFileDialog
 
 from animation import AnimationSystem
+from app import app
 from entities.bunny_entity import BunnyData
 from entities.coin_entity import CoinData
 from entities.liveup_entity import LiveUpData
@@ -38,7 +39,8 @@ class LevelEditorScene(Scene):
         if event.event_type == FilePickerEventType.FilePicked:
             map_rsc: MapResource = next(self.entities.get_by_class(MapResource))
             map_rsc.map.save(event.file)
-            exit()
+            from scenes.mainmenu_scene import MainMenuScene
+            app.change_scene(MainMenuScene(self.screen))
 
     def entity_click_handler(self, entity):
         self.entities.delete_buffer_add(entity)

@@ -64,6 +64,9 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
         if direction == CollisionDirection.Top:
             player.speed.y = 10
             other.health -= 1
+            if isinstance(other, BunnyEntity) and other.health == 0:
+                next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameWon,
+                                                                             GameEndEvent(GameEndEventType.GameWon))
         else:
             time_rsc: TimeResource = next(entities.get_by_class(TimeResource))
             if player.last_hit + player.invincibility_time < time_rsc.totalTime:
@@ -124,6 +127,6 @@ class PlayerData:
             loopAnimation=True,
             click_event_handler=None,
             statusEffects=[],
-            last_hit=0,
+            last_hit=-1000000000000000000000000,
             invincibility_time=2
         )
