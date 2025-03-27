@@ -4,7 +4,7 @@ import random
 from ecs_pattern import SystemManager
 import pygame
 from pygame import Surface, Rect
-from pygame_gui import TEXT_EFFECT_EXPAND_CONTRACT
+from pygame_gui import TEXT_EFFECT_EXPAND_CONTRACT, UIManager
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UITextBox, UIButton, UIPanel
 from pygame_gui.elements.ui_drop_down_menu import UIDropDownMenu
@@ -27,6 +27,14 @@ from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
 
 
+
+def preload_mainmenu_fonts(ui_manager: UIManager):
+    ui_manager.add_font_paths("TitleFont", "rsc/fonts/RetroSigned.ttf")
+    ui_manager.preload_fonts([
+        {'name': 'freesans', 'point_size': 20, 'style': 'regular'},
+        {'name': 'TitleFont', 'point_size': 100, 'style': 'regular'}
+    ])
+
 class MainMenuScene(Scene):
     camera_direction = 1
 
@@ -41,7 +49,7 @@ class MainMenuScene(Scene):
             app.change_scene(LevelEditorScene(self.screen, None))
 
     def __init__(self, screen: Surface):
-        super().__init__(screen, "rsc/ui/mainmenu.json")
+        super().__init__(screen, "rsc/ui/mainmenu.json", preload_mainmenu_fonts)
         self.event_parsing_system = EventParsingSystem(screen, self.entities, {
             MouseEventName.MouseButtonUp: [],
             MouseEventName.MouseButtonDown: [],
@@ -100,6 +108,10 @@ class MainMenuScene(Scene):
         )
         self.ParallaxManager.add_object(self.BushLayer)
 
+        self.level_select = None
+        self.play_button, self.edit_button, self.new_button = None, None, None
+
+
     def load(self):
         self.create_ui()
         m = Map.load("rsc/Maps/MainMenuMap.map")
@@ -131,23 +143,21 @@ class MainMenuScene(Scene):
         )
 
     def create_ui(self):
-        self.ui_manager.add_font_paths("TitleFont", "rsc/fonts/RetroSigned.ttf")
-        self.ui_manager.preload_fonts([{'name': 'TitleFont', 'point_size': 100, 'style': 'regular'}])
-
         maps = sorted([file for file in os.listdir("rsc/Maps") if not file.endswith(".py")])
         panel = UIPanel(Rect(0, 50, 333, 233), manager=self.ui_manager, anchors={"center": "center"},
-                        object_id=ObjectID(object_id="#panel"))
+                        object_id=ObjectID(object_id="#panel", class_id=None))
         self.level_select = UIDropDownMenu(maps, maps[0], Rect(0, 0, 300, 50), manager=self.ui_manager,
                                            container=panel)
         self.play_button = UIButton(Rect(0, 50, 300, 50), "Spielen", manager=self.ui_manager, container=panel)
         self.edit_button = UIButton(Rect(0, 100, 300, 50), "Level bearbeiten", manager=self.ui_manager, container=panel)
         self.new_button = UIButton(Rect(0, 150, 300, 50), "Neues Level", manager=self.ui_manager, container=panel)
 
-        # title_box = UITextBox(
-        #     html_text="<effect id=title>Super Chicken 16</effect>",
-        #     relative_rect=pygame.Rect(0, 20, self.screen.width, self.screen.height),
-        #     manager=self.ui_manager, object_id=ObjectID(object_id="#title"))
-        # title_box.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag="title")
+        title_box = UITextBox(
+            html_text="<effect id=title>Super Chicken 16</effect>",
+            relative_rect=pygame.Rect(0, 20, self.screen.width, self.screen.height),
+            manager=self.ui_manager, object_id=ObjectID(object_id="#title", class_id=None)
+        )
+        title_box.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag="title")
 
     def start(self):
         super().start()

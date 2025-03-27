@@ -8,7 +8,7 @@ from resources import CameraResource, TimeResource
 
 
 class TimedAction:
-    last_attack_time: float = 0
+    last_attack_time: float = -1000
 
     def __init__(self, attack_delay: float, executed_immediate: bool):
         self.attack_delay = attack_delay

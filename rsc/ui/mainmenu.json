@@ -1,4 +1,11 @@
 {
+  "defaults": {
+    "font": "freesans",
+    "font_size": 20,
+    "text_horiz_alignment": "center",
+    "text_vert_alignment": "center"
+  },
+
   "#panel": {
     "colours": {
       "dark_bg": "#EEEFEF",
@@ -11,6 +18,7 @@
       "shape_corner_radius": "10"
     }
   },
+
   "#title": {
     "font": {
       "name": "TitleFont",
@@ -23,6 +31,20 @@
     },
     "misc": {
       "text_horiz_alignment": "center"
+    }
+  },
+
+  "UIButton": {
+    "font": {
+      "name": "freesans",
+      "size": 20
+    }
+  },
+
+  "UIDropDownMenu": {
+    "font": {
+      "name": "freesans",
+      "size": 20
     }
   }
 }
