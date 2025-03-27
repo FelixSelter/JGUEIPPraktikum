@@ -2,6 +2,7 @@ from random import choice
 
 from ecs_pattern import entity, EntityManager
 
+from animation import AnimationComponent
 from assets import Assets
 from components.gravity_component import GravityComponent
 from components.hitbox_component import HitboxComponent
@@ -21,7 +22,7 @@ class BunnyEggEntity(SpriteComponent, TransformComponent, HitboxComponent, Movem
 
 class BunnyEggAction(TimedAction):
     def __init__(self):
-        super().__init__(attack_delay=1.5, executed_immediate=False)
+        super().__init__(attack_delay=0.5, executed_immediate=False)
 
     def execute_action(self, egg: BunnyEggEntity, entities: EntityManager):
         entities.delete_buffer_add(egg)
