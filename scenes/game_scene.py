@@ -9,7 +9,6 @@ from pygame_gui.elements import UITextBox, UIButton
 
 from animation import AnimationSystem
 from app import app
-from assets import Assets
 from timed_action import TimedActionSystem
 from entities.player_entity import PlayerEntity
 from events import EventParsingSystem, MouseEventName, KeyboardEventName, EventManagerResource, UiButtonEventName
@@ -41,8 +40,11 @@ class GameScene(Scene):
             self.entities.delete_buffer_add(player_entity)
             treasure_sum += player_entity.score
 
+        minutes = int(time_rsc.totalTime // 60)
+        seconds = int(time_rsc.totalTime % 60)
+        milliseconds = round(fract(time_rsc.totalTime) * 100)
         text = UITextBox(
-            f'<font face=noto_sans pixel_size=30 color=#000000><effect id=eff1>Du hast {"gewonnen !!!" if event.event_type == GameEndEventType.GameWon else "verloren :("}!</effect></font><br><br><effect id="eff2"><font color=#000000 pixel_size=20>Deine Zeit: <body bgcolor=#990000>{int(time_rsc.totalTime // 60)}:{floor(time_rsc.totalTime)},{round(fract(time_rsc.totalTime) * 100)}</body><br>Erreichte Punkte: <body bgcolor=#990000>{treasure_sum}</body></font></effect>',
+            f'<font face=noto_sans pixel_size=30 color=#000000><effect id=eff1>Du hast {"gewonnen !!!" if event.event_type == GameEndEventType.GameWon else "verloren :("}!</effect></font><br><br><effect id="eff2"><font color=#000000 pixel_size=20>Deine Zeit: <body bgcolor=#990000>{minutes}:{seconds},{milliseconds}</body><br>Erreichte Punkte: <body bgcolor=#990000>{treasure_sum}</body></font></effect>',
             Rect((0, -self.screen.height // 5),
                  (self.screen.width // 3, self.screen.height // 3)),
             anchors={"center": "center"},
