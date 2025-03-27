@@ -10,7 +10,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'  # Mittiges Fenster
 
 if __name__ == '__main__':
     
-    background_music = pygame.mixer.Sound(Assets.get().backgroundMusic)
+    background_music = Assets.get().backgroundMusic
     background_music.play(loops=-1)
     app.change_scene(MainMenuScene(app.screen))
 

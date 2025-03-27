@@ -15,7 +15,7 @@ from timed_action import TimedActionComponent, TimedAction
 
 @entity
 class BunnyEggEntity(SpriteComponent, TransformComponent, HitboxComponent, MovementComponent, GravityComponent,
-                     TileColliderComponent, TimedActionComponent):
+                     TileColliderComponent, TimedActionComponent, AnimationComponent):
     pass
 
 
