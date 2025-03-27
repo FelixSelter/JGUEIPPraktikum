@@ -145,7 +145,7 @@ class CameraMovementSystem(System):
         self.prev_camera_y = self.camera.y
 
         # Debug
-        pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 2)
+        #pygame.draw.rect(self.screen, (255, 0, 0), self.rect, 2)
 
 
     def update_parallax_layers_OLD(self):
