@@ -20,7 +20,7 @@ from animation import AnimationComponent, Animation, AnimationFrame
 
 @entity
 class BunnyEggEntity(SpriteComponent, TransformComponent, HitboxComponent, MovementComponent, GravityComponent,
-                     TileColliderComponent, TimedActionComponent):
+                     TileColliderComponent, TimedActionComponent, AnimationComponent):
     pass
 
 

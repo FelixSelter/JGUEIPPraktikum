@@ -44,13 +44,14 @@ class Assets:
         self.coinImgs = [self.__load_img(f"rsc/img/objects/coin/coin_animated{i + 1}-16x16.png") for i in range(4)]
         self.shitImgs = [self.__load_img(f"rsc/img/objects/shit/shit_animated{i + 1}-16x16.png") for i in range(4)]
         self.eggImgs = [self.__load_img(f"rsc/img/objects/egg/egg_animated{i + 1}-16x16.png") for i in range(4)]
-        self.mushroomImgs = [self.__load_img(f"rsc/img/objects/mushroom/mushroom_animated{i + 1}-16x16.png") for i in
-                             range(2)]
-        self.melonImg = self.__load_img("rsc/img/objects/melon/melon-16x16.png")
+        self.eggDestroyImgs = [self.__load_img(f"rsc/img/objects/egg/egg_animated_destroy{i + 1}-16x16.png") for i in range(6)]
+        self.mushroomImgs = [self.__load_img(f"rsc/img/objects/mushroom/mushroom_animated{i + 1}-16x16.png") for i in range(2)]
+        self.melonImg = [self.__load_img(f"rsc/img/objects/melon/melon_animated{i + 1}-16x16.png") for i in range(2)]
         self.collectibleImgsDict = {"Coin": self.coinImgs,
                                     "Shit": self.shitImgs,
                                     "Egg": self.eggImgs,
-                                    "Mushroom": self.mushroomImgs}
+                                    "Mushroom": self.mushroomImgs,
+                                    "Melon": self.melonImg}
 
         self.backgroundMusic = self.__load_audio('rsc/sounds/cyber-farm-271090.mp3', 0.5)
         self.coinCollection = self.__load_audio('rsc/sounds/coin-collection-6075.mp3', 1)

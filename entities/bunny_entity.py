@@ -2,6 +2,7 @@ from math import floor
 
 from ecs_pattern import entity, EntityManager
 
+from animation import Animation, AnimationFrame
 from assets import Assets
 from entities.bunnyegg_entity import BunnyEggEntity, BunnyEggAction
 from map import MapResource
@@ -64,13 +65,18 @@ class SpawnReinforcementsAttack(TimedAction):
             action = BunnyEggAction()
             action.last_attack_time = time_rsc.totalTime
             entities.add_buffer.append(BunnyEggEntity(
-                sprite=Assets.get().eggImgs[0],
+                sprite=Assets.get().eggDestroyImgs[0],
                 position=Vec2(tiles[i].x, camera_rsc.y + camera_rsc.screenHeightInTiles + random()),
                 width=1,
                 height=1,
                 speed=Vec2(0, 0),
                 acceleration=Vec2(0, 0),
                 hitboxEventHandler=None,
+                animations={"destroy": Animation(
+                [AnimationFrame(Assets.get().eggDestroyImgs[i], 0.2) for i in range(len(Assets.get().eggDestroyImgs))])},
+                activeAnimation="destroy",
+                currentTime=0,
+                loopAnimation=False,
                 tileBottomLeftRightCollisionEventHandler=None,
                 tileTopCollisionEventHandler=None,
                 actions=[action]
