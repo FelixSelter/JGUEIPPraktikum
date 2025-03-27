@@ -1,4 +1,11 @@
 {
+  "defaults": {
+    "font": "freesans",
+    "font_size": 20,
+    "text_horiz_alignment": "center",
+    "text_vert_alignment": "center"
+  },
+
   "@panel": {
     "colours": {
       "dark_bg": "rgba(0,0,0,0)"

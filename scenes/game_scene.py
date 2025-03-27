@@ -1,9 +1,7 @@
-from math import floor
-
 import pygame
 from ecs_pattern import SystemManager
 from pygame import Surface, Rect
-from pygame_gui import TEXT_EFFECT_TYPING_APPEAR, TEXT_EFFECT_EXPAND_CONTRACT
+from pygame_gui import TEXT_EFFECT_TYPING_APPEAR, TEXT_EFFECT_EXPAND_CONTRACT, UIManager
 from pygame_gui.core import ObjectID
 from pygame_gui.elements import UITextBox, UIButton
 
@@ -30,6 +28,12 @@ from systems.time_system import TimeSystem
 from util.additional_math import fract
 
 
+def preload_gamescene_fonts(ui_manager: UIManager):
+    ui_manager.preload_fonts([
+        {'name': 'freesans', 'point_size': 20, 'style': 'regular'},
+        {'name': 'freesans', 'point_size': 30, 'style': 'regular'}
+    ])
+
 class GameScene(Scene):
 
     def game_end_handler(self, event: GameEndEvent):
@@ -44,12 +48,12 @@ class GameScene(Scene):
         seconds = int(time_rsc.totalTime % 60)
         milliseconds = round(fract(time_rsc.totalTime) * 100)
         text = UITextBox(
-            f'<font face=noto_sans pixel_size=30 color=#000000><effect id=eff1>Du hast {"gewonnen !!!" if event.event_type == GameEndEventType.GameWon else "verloren :("}!</effect></font><br><br><effect id="eff2"><font color=#000000 pixel_size=20>Deine Zeit: <body bgcolor=#990000>{minutes}:{seconds},{milliseconds}</body><br>Erreichte Punkte: <body bgcolor=#990000>{treasure_sum}</body></font></effect>',
+            f'<font face=freesans pixel_size=30 color=#000000><effect id=eff1>Du hast {"gewonnen !!!" if event.event_type == GameEndEventType.GameWon else "verloren :("}!</effect></font><br><br><effect id="eff2"><font face=freesans color=#000000 pixel_size=20>Deine Zeit: <body bgcolor=#990000>{minutes}:{seconds},{milliseconds}</body><br>Erreichte Punkte: <body bgcolor=#990000>{treasure_sum}</body></font></effect>',
             Rect((0, -self.screen.height // 5),
                  (self.screen.width // 3, self.screen.height // 3)),
             anchors={"center": "center"},
             manager=self.ui_manager,
-            object_id=ObjectID(class_id="@textbox"))
+            object_id=ObjectID(class_id="@textbox", object_id=None))
         text.set_active_effect(TEXT_EFFECT_EXPAND_CONTRACT, effect_tag='eff1')
         text.set_active_effect(TEXT_EFFECT_TYPING_APPEAR, effect_tag='eff2')
 
@@ -61,7 +65,7 @@ class GameScene(Scene):
         app.change_scene(MainMenuScene(app.screen))
 
     def __init__(self, screen: Surface, map: str):
-        super().__init__(screen, "rsc/ui/gamescene.json")
+        super().__init__(screen, "rsc/ui/gamescene.json", preload_gamescene_fonts)
         click_event_system = ClickEventSystem(self.entities, None)
         controller_system = ControllerSystem(self.entities, pygame.event.get)
         self.event_parsing_system = EventParsingSystem(screen, self.entities, {
