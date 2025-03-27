@@ -39,11 +39,14 @@ class PlayerEntity(PlayerComponent, SpriteComponent, TransformComponent, Movemen
 def playerCollisionHandler(player: PlayerEntity, other: Any, direction: CollisionDirection, entities: EntityManager):
     if isinstance(other, CoinEntity):
         if other.treasure == 42:
-            pygame.mixer.Sound.play(Assets.get().eggCollection)
+            Assets.get().eggCollection.play()
             next(entities.get_by_class(EventManagerResource)).emit_event(GameEndEventName.GameWon,
                                                                          GameEndEvent(GameEndEventType.GameWon))
+        elif other.treasure == -1:
+            Assets.get().shitCollection.play()
+            player.score += other.treasure
         else:
-            pygame.mixer.Sound.play(Assets.get().coinCollection)
+            Assets.get().coinCollection.play()
             player.score += other.treasure
         entities.delete_buffer_add(other)
 
@@ -53,6 +56,7 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
         entities.delete_buffer_add(other)
 
     if isinstance(other, LiveUpEntity):
+        Assets.get().melonCollection.play()
         player.health += 1
         entities.delete_buffer_add(other)
 
@@ -63,7 +67,7 @@ def playerCollisionHandler(player: PlayerEntity, other: Any, direction: Collisio
         else:
             time_rsc: TimeResource = next(entities.get_by_class(TimeResource))
             if player.last_hit + player.invincibility_time < time_rsc.totalTime:
-                pygame.mixer.Sound.play(Assets.get().player_hit)
+                Assets.get().player_hit.play()
                 player.health -= 1
                 player.activeAnimation = "invincible-right" if "right" in player.activeAnimation else "invincible-left"
                 player.last_hit = time_rsc.totalTime
