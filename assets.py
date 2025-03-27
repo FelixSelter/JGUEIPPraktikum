@@ -16,6 +16,10 @@ class Assets:
         self.playerImgs_invincible_left = [pygame.transform.flip(image, True, False) for image in
                                            self.playerImgs_invincible_right]
 
+        self.smokeImgs = [self.__load_img(f"rsc/img/entities/smoke/smoke{i}.png") for i
+                          in
+                          range(46)]
+
         self.spawnerImg = {"Pig": self.__load_img("rsc/img/objects/spawner/spawner-pig-16x16.png"),
                            "Cow": self.__load_img("rsc/img/objects/spawner/spawner-cow-16x16.png"),
                            "Sheep": self.__load_img("rsc/img/objects/spawner/spawner-sheep-16x16.png")}

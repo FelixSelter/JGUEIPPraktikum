@@ -2,6 +2,7 @@ from random import choice
 
 from ecs_pattern import entity, EntityManager
 
+from animation import AnimationComponent
 from assets import Assets
 from components.gravity_component import GravityComponent
 from components.hitbox_component import HitboxComponent
@@ -14,16 +15,14 @@ from timed_action import TimedActionComponent, TimedAction
 
 
 @entity
-class BunnyEggEntity(SpriteComponent, TransformComponent, HitboxComponent, MovementComponent, GravityComponent,
-                     TileColliderComponent, TimedActionComponent):
+class SmokeEntity(SpriteComponent, TransformComponent, AnimationComponent, TimedActionComponent):
     pass
 
 
-class BunnyEggAction(TimedAction):
-    def __init__(self):
-        super().__init__(attack_delay=1.5, executed_immediate=False)
+class SmokeDeleteAction(TimedAction):
 
-    def execute_action(self, egg: BunnyEggEntity, entities: EntityManager):
-        entities.delete_buffer_add(egg)
-        entities.add_buffer.append(
-            EnemyData(choice([name for name in Assets.get().enemyImgsDict.keys()]), egg.position).deserialize())
+    def __init__(self):
+        super().__init__(attack_delay=0.5, executed_immediate=False)
+
+    def execute_action(self, smoke: SmokeEntity, entities: EntityManager):
+        entities.delete_buffer_add(smoke)
