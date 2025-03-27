@@ -25,6 +25,7 @@ from systems.movement_system import MovementSystem
 from systems.death_system import DeathSystem
 from systems.rendering_system import RenderingSystem
 from systems.time_system import TimeSystem
+from timed_action import TimedActionSystem
 
 
 
@@ -67,11 +68,11 @@ class MainMenuScene(Scene):
             self.event_parsing_system,
             TimeSystem(self.entities),
             MovementSystem(self.entities),
-            EntityCollisionSystem(self.entities),
             GravitySystem(self.entities),
             DeathSystem(self.entities),
             AnimationSystem(self.entities),
-            RenderingSystem(self.entities, screen)
+            RenderingSystem(self.entities, screen),
+            TimedActionSystem(self.entities)
         ])
 
         # Parallax Layers
